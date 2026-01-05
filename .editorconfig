@@ -1,0 +1,4 @@
+[*.lua]
+call_arg_parentheses = always
+max_line_length = 144
+space_around_table_field_list = false

@@ -1,0 +1,32 @@
+# Project files
+.xmake/
+
+build/
+cmake-build-*/
+
+# Generated files
+.cache/
+vs*/
+vsxmake*/
+CMakeLists.txt
+compile_commands.json
+makefile
+
+*.sln
+*.tmp
+
+# Analysis files
+workspace/
+*.etl
+*.nativecodeanalysis.xml
+*.scor
+*.scor.*
+
+# IDE files
+.idea/
+.vs/
+.vscode/
+*.DotSettings.user
+
+# OS Files
+.DS_Store

@@ -1,0 +1,76 @@
+--- # Version 21.1.1
+BasedOnStyle: LLVM
+ColumnLimit: 120
+Standard: Latest
+DisableFormat: false
+
+AccessModifierOffset: -4
+AlignConsecutiveDeclarations:
+  AlignFunctionDeclarations: false
+AlignEscapedNewlines: DontAlign
+AlignOperands: AlignAfterOperator
+AlignTrailingComments:
+  Kind: Leave
+AllowBreakBeforeNoexceptSpecifier: OnlyWithParen
+AllowShortBlocksOnASingleLine: Empty
+AllowShortNamespacesOnASingleLine: true
+AttributeMacros: [OK_EMPTY_BASES]
+BinPackArguments: true # We would prefer 'Leave'.
+BinPackParameters: OnePerLine # BinPack
+BraceWrapping:
+  AfterExternBlock: true
+  AfterFunction: true
+  AfterNamespace: true
+  BeforeCatch: true
+  BeforeElse: true
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+BreakAfterReturnType: Automatic
+BreakBeforeBinaryOperators: None # NonAssignment
+BreakBeforeBraces: Custom # Attach
+BreakStringLiterals: false # true
+BreakTemplateDeclarations: Leave # MultiLine
+CommentPragmas: '^ *(ReSharper disable|ReSharper restore|NOLINT)'
+CompactNamespaces: true # false
+EmptyLineBeforeAccessModifier: Always
+ForEachMacros: []
+IfMacros: []
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '^"' # Internal includes.
+    Priority: 1
+  - Regex: '^<[^/.]*$' # std includes.
+    Priority: 3
+  - Regex: '^<' # External includes.
+    Priority: 2
+IncludeIsMainRegex: '(_tests)?$'
+IndentExportBlock: false
+IndentExternBlock: NoIndent
+IndentPPDirectives: BeforeHash
+IndentWidth: 4
+InsertBraces: false # true
+InsertNewlineAtEOF: true
+MaxEmptyLinesToKeep: 2
+NamespaceMacros: [OK_EXPORT, EXPORT]
+PackConstructorInitializers: NextLineOnly
+PenaltyBreakComment: 0 # 300
+PenaltyBreakOpenParenthesis: 500 # 0
+PenaltyExcessCharacter: 400 # 1000000
+PenaltyIndentedWhitespace: 9 # 0 or 2
+PenaltyReturnTypeOnItsOwnLine: 475 # 60
+PointerAlignment: Left # Right
+ReflowComments: Never # Always - Uses spaces instead of tabs for indent.
+RemoveEmptyLinesInUnwrappedLines: true # false
+RequiresClausePosition: WithPreceding # OwnLine
+SkipMacroDefinitionBody: true # false
+SpaceAfterTemplateKeyword: false
+SpaceBeforeParens: ControlStatementsExceptControlMacros
+SpacesInAngles: Never # Leave
+SpacesInContainerLiterals: false
+StatementAttributeLikeMacros: []
+StatementMacros: [OK_SUPPRESS_GSL]
+TabWidth: 4
+UseTab: ForIndentation # Never
+WhitespaceSensitiveMacros: [OK_STRINGIFY]
+...
