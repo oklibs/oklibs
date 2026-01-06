@@ -13,8 +13,9 @@ AlignTrailingComments:
   Kind: Leave
 AllowBreakBeforeNoexceptSpecifier: OnlyWithParen
 AllowShortBlocksOnASingleLine: Empty
+AllowShortEnumsOnASingleLine: false
 AllowShortNamespacesOnASingleLine: true
-AttributeMacros: [OK_EMPTY_BASES]
+AttributeMacros: [OKL_EMPTY_BASES, OKL_EXPORT, EXPORT]
 BinPackArguments: true # We would prefer 'Leave'.
 BinPackParameters: OnePerLine # BinPack
 BraceWrapping:
@@ -52,7 +53,7 @@ IndentWidth: 4
 InsertBraces: false # true
 InsertNewlineAtEOF: true
 MaxEmptyLinesToKeep: 2
-NamespaceMacros: [OK_EXPORT, EXPORT]
+NamespaceMacros: []
 PackConstructorInitializers: NextLineOnly
 PenaltyBreakComment: 0 # 300
 PenaltyBreakOpenParenthesis: 500 # 0
@@ -69,8 +70,8 @@ SpaceBeforeParens: ControlStatementsExceptControlMacros
 SpacesInAngles: Never # Leave
 SpacesInContainerLiterals: false
 StatementAttributeLikeMacros: []
-StatementMacros: [OK_SUPPRESS_GSL]
+StatementMacros: [OKL_SUPPRESS_GSL]
 TabWidth: 4
 UseTab: ForIndentation # Never
-WhitespaceSensitiveMacros: [OK_STRINGIFY]
+WhitespaceSensitiveMacros: [OKL_STRINGIFY]
 ...
