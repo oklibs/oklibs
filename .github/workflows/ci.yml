@@ -1,0 +1,72 @@
+name: Build and Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main, dev]
+    paths-ignore: [.gitignore, LICENSE, README.md]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    timeout-minutes: 30
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+#          - { plat: android, os: ubuntu-latest, arch: armeabi-v7a, toolchain: ndk, mode: debug }
+#          - { plat: android, os: ubuntu-latest, arch: armeabi-v7a, toolchain: ndk, mode: releasedbg }
+          - { plat: android, os: ubuntu-latest, arch: arm64-v8a, toolchain: ndk, mode: debug }
+#          - { plat: android, os: ubuntu-latest, arch: arm64-v8a, toolchain: ndk, mode: releasedbg }
+
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: debug }
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg }
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: release, args: --dev=n }
+
+#          - { plat: wasm, os: ubuntu-latest, arch: wasm32, toolchain: emcc, mode: debug }
+#          - { plat: wasm, os: ubuntu-latest, arch: wasm32, toolchain: emcc, mode: releasedbg }
+          - { plat: wasm, os: ubuntu-latest, arch: wasm64, toolchain: emcc, mode: debug, args: --setup_toolchains=y }
+#          - { plat: wasm, os: ubuntu-latest, arch: wasm64, toolchain: emcc, mode: releasedbg }
+
+#          - { plat: iphoneos, os: macos-latest, arch: arm64, toolchain: xcode, mode: debug }
+#          - { plat: iphoneos, os: macos-latest, arch: arm64, toolchain: xcode, mode: releasedbg }
+
+          - { plat: macosx, os: macos-latest, arch: arm64, toolchain: xcode, mode: debug }
+#          - { plat: macosx, os: macos-latest, arch: arm64, toolchain: xcode, mode: releasedbg }
+
+#          - { plat: windows, os: windows-latest, arch: x64, toolchain: clang-cl, mode: debug }
+#          - { plat: windows, os: windows-latest, arch: x64, toolchain: clang-cl, mode: releasedbg }
+
+#          - { plat: windows, os: windows-latest, arch: x64, toolchain: msvc, mode: debug }
+#          - { plat: windows, os: windows-latest, arch: x64, toolchain: msvc, mode: releasedbg }
+#          - { plat: windows, os: windows-latest, arch: x86, toolchain: msvc, mode: debug }
+#          - { plat: windows, os: windows-latest, arch: x86, toolchain: msvc, mode: releasedbg }
+
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg, args: --use_modules=y }
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: 3.0.3
+          actions-cache-folder: .xmake-cache
+          package-cache: true
+          package-cache-key: ${{ matrix.plat }}_${{ matrix.arch }}_${{ matrix.toolchain }}_${{ matrix.mode }}
+          build-cache: true
+          build-cache-key: ${{ matrix.plat }}_${{ matrix.arch }}_${{ matrix.toolchain }}_${{ matrix.mode }}
+
+      - name: Config and dependencies
+        run: xmake f -vy -p ${{ matrix.plat }} -a ${{ matrix.arch }} --toolchain=${{ matrix.toolchain }} -m ${{ matrix.mode }} ${{ matrix.args }}
+
+      - name: Build and run tests
+        run: xmake test
