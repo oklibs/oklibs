@@ -35,6 +35,12 @@ add_cxflags("/Zc:preprocessor", {tools = "cl"})
 if has_config("use_modules") then
     add_defines("OKL_USE_MODULES")
     set_policy("build.c++.modules.hide_dependencies", true)
+
+    -- These do not apply for c++20 but will be wrongly reported if the fallback scanner is used.
+    add_cxflags(
+        "-Wno-variadic-macro-arguments-omitted",
+        "-Wno-gnu-zero-variadic-macro-arguments",
+        {tools = {"clang", "clangxx", "emcc", "emxx"}})
 end
 
 if has_config("use_std_module") then
