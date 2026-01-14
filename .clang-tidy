@@ -39,7 +39,9 @@ Checks:
 
 #  - '-readability-static-accessed-through-instance'
   - '-readability-use-concise-preprocessor-directives'
-#  - '-readability-uppercase-literal-suffix'
+
+  - '-readability-uppercase-literal-suffix'
+  - '-hicpp-uppercase-literal-suffix' # ^^^
 
 #  # Checks we would like to enable:
 #  - '-readability-redundant-declaration' # Displays warnings from std headers.
