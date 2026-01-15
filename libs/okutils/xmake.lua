@@ -25,5 +25,5 @@ target("okutils", function()
 
     add_extrafiles("*|xmake.lua", "templates/**", "tests/**")
 
-    add_tests("tests", {kind = "binary", files = "tests/*.cpp", build_should_pass = is_cross()})
+    add_tests("tests", {kind = "binary", files = "tests/**.cpp", build_should_pass = is_cross()})
 end)
