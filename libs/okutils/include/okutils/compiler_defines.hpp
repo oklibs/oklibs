@@ -96,6 +96,7 @@
 	#define OKL_COMPILER_CLANG 1
 	#define OKL_DISABLE_WARNING_CLANG(warningName, ...) OKL_DISABLE_WARNING(, warningName)
 #elif OKL_COMPILER_GCC_AVAILABLE
+	// Modules currently work with GCC 11.0.0 or later.
 	#if OKL_COMPILER_GCC_VERSION < OKL_ENCODE_VERSION(11, 0, 0)
 		#error "okutils: Requires GCC version 11.0.0 or later."
 	#endif
