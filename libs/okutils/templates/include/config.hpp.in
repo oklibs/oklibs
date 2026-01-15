@@ -5,15 +5,15 @@
 
 #include "okutils/core_defines.hpp"
 
-#define OKL_UTILS_VERSION_MAJOR ${VERSION_MAJOR}
-#define OKL_UTILS_VERSION_MINOR ${VERSION_MINOR}
-#define OKL_UTILS_VERSION_PATCH ${VERSION_ALTER}
+#define OKUTILS_VERSION_MAJOR ${VERSION_MAJOR}
+#define OKUTILS_VERSION_MINOR ${VERSION_MINOR}
+#define OKUTILS_VERSION_PATCH ${VERSION_ALTER}
 
 /**
  * Encoded version of okutils as 'MajorMinorPatch'.
  * @see OKL_ENCODE_VERSION
  */
-#define OKL_UTILS_VERSION OKL_ENCODE_VERSION(OKL_UTILS_VERSION_MAJOR, OKL_UTILS_VERSION_MINOR, OKL_UTILS_VERSION_PATCH)
+#define OKUTILS_VERSION OKL_ENCODE_VERSION(OKUTILS_VERSION_MAJOR, OKUTILS_VERSION_MINOR, OKUTILS_VERSION_PATCH)
 
 #define OKL_BUILD_${MODE} 1
 #if !defined(OKL_BUILD_DEBUG)
@@ -29,6 +29,6 @@
 	#error "okutils: Exactly one build define should be defined to 1!"
 #endif
 
-${define_export OKL_UTILS}
+${define_export OKUTILS}
 
 #endif

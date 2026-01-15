@@ -39,10 +39,10 @@ import std;
 namespace Okl::Detail
 {
 struct Reporter final {
-	OKL_UTILS_EXPORT static inline size_t num_tests{0};
-	OKL_UTILS_EXPORT static inline size_t num_constexpr_tests{0};
-	OKL_UTILS_EXPORT static inline size_t num_asserts{0};
-	OKL_UTILS_EXPORT static inline size_t num_failures{0};
+	OKUTILS_EXPORT static inline size_t num_tests{0};
+	OKUTILS_EXPORT static inline size_t num_constexpr_tests{0};
+	OKUTILS_EXPORT static inline size_t num_asserts{0};
+	OKUTILS_EXPORT static inline size_t num_failures{0};
 
 	Reporter() = default;
 	~Reporter() noexcept(false)
@@ -61,7 +61,7 @@ struct Reporter final {
 OKL_WARNING_PUSH()
 OKL_DISABLE_WARNING_CLANG("-Wglobal-constructors")
 OKL_DISABLE_WARNING_APPLE_CLANG("-Wglobal-constructors")
-OKL_ALWAYS_DESTROY OKL_UTILS_EXPORT inline const Reporter reporter{};
+OKL_ALWAYS_DESTROY OKUTILS_EXPORT inline const Reporter reporter{};
 OKL_WARNING_POP()
 
 struct TestCase final {
