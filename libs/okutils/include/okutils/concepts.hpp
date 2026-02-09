@@ -35,7 +35,7 @@ concept CReference = std::is_reference_v<T>;
 
 /**
  * True if @a T is an arithmetic type.
- * This does not include arithmetic wrapper, reference, and pointer types.
+ * This does not include reference, pointer, and arithmetic wrapper types.
  */
 template<class T>
 concept CArithmetic = std::is_arithmetic_v<T>;
@@ -44,10 +44,7 @@ concept CArithmetic = std::is_arithmetic_v<T>;
 template<class T>
 concept CBoolean = std::same_as<std::remove_cv_t<T>, bool>;
 
-/**
- * True if @a T is a char type.
- * This checks okl's char types and may also include other integral types.
- */
+/** True if @a T is a char type. */
 template<class T>
 concept CChar = CAnyOf<std::remove_cv_t<T>, char, signed char, unsigned char, wchar, char8, char16, char32>;
 
@@ -120,10 +117,10 @@ concept CNonConst = !std::is_const_v<T>;
 template<class T>
 concept CTriviallyCopyable = std::is_trivially_copyable_v<T>;
 
-// https://github.com/cplusplus/papers/issues/724
+// https://github.com/cplusplus/papers/issues/724 (P0870)
 /**
- * Whether a type (@a From) is convertible to another type (@a To) without loss of information.
- * Will always be false for user-defined types.
+ * Whether @a From is convertible to @a To without loss of information.
+ * @note Will always be false for user-defined types.
  */
 template<class From, class To>
 concept CNonNarrowingConversion = std::is_convertible_v<From, To> && requires(From&& from_value) {
