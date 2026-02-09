@@ -22,8 +22,8 @@
  * this macro allows its argument to expand before it is turned into a string.
  * @param x The preprocessor token to turn into a string.
  */
-#define OKL_STRINGIFY(...) OKL_PRIVATE_STRINGIFY(__VA_ARGS__)
-#define OKL_PRIVATE_STRINGIFY(...) #__VA_ARGS__
+#define OKL_STRINGIFY(...) OKUTILS_PRIVATE_STRINGIFY(__VA_ARGS__)
+#define OKUTILS_PRIVATE_STRINGIFY(...) #__VA_ARGS__
 
 /**
  * Concatenates two preprocessor tokens.
@@ -32,8 +32,8 @@
  * @param x The first preprocessor token to concatenate.
  * @param y The second preprocessor token to concatenate.
  */
-#define OKL_CONCAT(x, y) OKL_PRIVATE_CONCAT(x, y)
-#define OKL_PRIVATE_CONCAT(x, y) x ## y
+#define OKL_CONCAT(x, y) OKUTILS_PRIVATE_CONCAT(x, y)
+#define OKUTILS_PRIVATE_CONCAT(x, y) x ## y
 
 /**
  * Expands macro arguments before they are used.
@@ -87,14 +87,14 @@
  * Expands to the number of variadic arguments.
  * @param ... The variadic arguments to count. [va_size >= 0, va_size <= 10]
  */
-#define OKL_VA_SIZE(...) OKL_PRIVATE_VA_COUNT(__VA_OPT__(__VA_ARGS__,) 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
-#define OKL_PRIVATE_VA_COUNT(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, num, ...) num
+#define OKL_VA_SIZE(...) OKUTILS_PRIVATE_VA_COUNT(__VA_OPT__(__VA_ARGS__,) 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+#define OKUTILS_PRIVATE_VA_COUNT(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, num, ...) num
 
 /**
  * Expands to the last index of the variadic arguments, or nothing if va args are empty.
  * @param ... The variadic arguments to get the last index of. [va_size >= 0, va_size <= 10]
  */
-#define OKL_VA_LAST_INDEX(...) __VA_OPT__(OKL_PRIVATE_VA_COUNT(__VA_ARGS__, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
+#define OKL_VA_LAST_INDEX(...) __VA_OPT__(OKUTILS_PRIVATE_VA_COUNT(__VA_ARGS__, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
 
 /**
  * Expands to the last variadic argument.
@@ -118,8 +118,8 @@
  * @param trueValue The value to return if the condition is 1.
  * @param falseValue The value to return if the condition is 0.
  */
-#define OKL_IF(condition, trueValue, falseValue) OKL_EXPAND(OKL_CONCAT(OKL_PRIVATE_IF_, condition)(trueValue, falseValue))
-#define OKL_PRIVATE_IF_0(trueValue, falseValue) falseValue
-#define OKL_PRIVATE_IF_1(trueValue, falseValue) trueValue
+#define OKL_IF(condition, trueValue, falseValue) OKL_EXPAND(OKL_CONCAT(OKUTILS_PRIVATE_IF_, condition)(trueValue, falseValue))
+#define OKUTILS_PRIVATE_IF_0(trueValue, falseValue) falseValue
+#define OKUTILS_PRIVATE_IF_1(trueValue, falseValue) trueValue
 
 #endif
