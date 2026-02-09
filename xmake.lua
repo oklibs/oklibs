@@ -75,8 +75,17 @@ if has_config("dev") then
         "/we4289", -- "nonstandard extension used: ...".
 
         "/wd4514", -- "unreferenced inline function has been removed".
+        "/wd4623", -- "default constructor was implicitly defined as deleted".
+        "/wd4625", -- "copy constructor was implicitly defined as deleted".
+        "/wd4626", -- "assignment operator was implicitly defined as deleted".
         "/wd4710", -- marked 'inline' but "function not inlined".
         "/wd4711", -- not marked 'inline' but "function selected for inline expansion".
+        "/wd4820", -- "'x' bytes padding added after construct".
+        "/wd4866", -- "compiler may not enforce left-to-right evaluation order for call to operator".
+        "/wd4868", -- "compiler may not enforce left-to-right evaluation order in braced initializer list".
+        "/wd5027", -- "move assignment operator was implicitly defined as deleted".
+
+        "/wd5045", -- "Compiler will insert Spectre mitigation".
         {tools = {"cl"}})
     add_cxflags("/external:env:INCLUDE", {tools = {"cl"}, force = true})
 
@@ -84,7 +93,7 @@ if has_config("dev") then
     -- attributes that are incompatible with strict conformance mode.
     add_defines("SAL_NO_ATTRIBUTE_DECLARATIONS=1", {tools = {"cl"}})
 
-    add_cxflags("-Wno-c++98-compat-pedantic", "-Wno-c++20-compat", {tools = {"clang", "clangxx", "clang_cl", "emcc", "emxx"}})
+    add_cxflags("-Wno-c++98-compat-pedantic", "-Wno-c++20-compat", "-Wno-padded", {tools = {"clang", "clangxx", "clang_cl", "emcc", "emxx"}})
     add_cxflags("-pedantic-errors", "-fsafe-buffer-usage-suggestions", {tools = {"clang", "clangxx", "emcc", "emxx"}})
 end
 
