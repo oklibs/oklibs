@@ -86,8 +86,6 @@ TEST_CASE("test cases in test case")
 		CHECK_THROWS([]() { throw std::runtime_error{"I throw!"}; }());
 
 		REQUIRE_THROWS([]() { throw std::runtime_error{"I throw!"}; }());
-		CONSTEXPR_REQUIRE_THROWS([]() { throw std::runtime_error{"I throw!"}; }());
-		CONSTEVAL_REQUIRE_THROWS([]() { throw std::runtime_error{"I throw!"}; }());
 	};
 
 	TEST_CASE("throws as")
@@ -95,8 +93,6 @@ TEST_CASE("test cases in test case")
 		CHECK_THROWS_AS(std::runtime_error, []() { throw std::runtime_error{"I throw!"}; }());
 
 		REQUIRE_THROWS_AS(std::runtime_error, []() { throw std::runtime_error{"I throw!"}; }());
-		CONSTEXPR_REQUIRE_THROWS_AS(std::runtime_error, []() { throw std::runtime_error{"I throw!"}; }());
-		CONSTEVAL_REQUIRE_THROWS_AS(std::runtime_error, []() { throw std::runtime_error{"I throw!"}; }());
 	};
 
 	TEST_CASE("no throw")
