@@ -3,13 +3,14 @@
 set_project("oklibs")
 set_xmakever("3.0.3")
 set_license("BSL-1.0")
+set_version("0.1.0")
 
 includes("libs/*/xmake.lua")
 
 ----------------------------------------------------------------------------------------------------
 --- Library options
 
-option("use_modules", {description = "Build libraries as modules.", default = false})
+option("use_modules", {description = "Build libraries as c++ modules.", default = false})
 option("use_std_module", {description = "Use std module instead of includes.", default = false})
 option("dev", {description = "Enable developer mode.", default = true})
 
@@ -50,8 +51,6 @@ else
 end
 
 if has_config("dev") then
-    -- All settings in dev mode are optional and not required.
-
     set_policy("check.target_package_licenses", true)
     set_warnings("everything")
 
@@ -119,8 +118,6 @@ set_policy("build.sanitizer.undefined", has_config("ubsan"))
 
 ----------------------------------------------------------------------------------------------------
 --- Targets
-
-set_version("0.1.0")
 
 target("oklibs", function()
     set_kind("phony")
