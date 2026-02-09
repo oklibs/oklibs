@@ -53,7 +53,8 @@ template<CUnsignedEnum T>
 			}
 			else if (names.at(i) == ',' || i == end - 1) {
 				if (is_valid) {
-					valid_flags |= static_cast<UnderlyingType>(UnderlyingType{1} << flag_index);
+					OKL_SUPPRESS_GSL(type.1, "Don't use a static_cast for arithmetic conversions.")
+					valid_flags |= static_cast<UnderlyingType>(UnderlyingType{1u} << flag_index);
 				}
 				++flag_index;
 				is_valid = true;
