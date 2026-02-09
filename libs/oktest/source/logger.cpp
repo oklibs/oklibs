@@ -46,8 +46,8 @@ void Logger::after_failed_assert(const AssertData& assert) const
 
 void Logger::before_shutdown(const RunData& summary) const
 {
-	const size_t total_test_cases{
-	    summary.passed_test_cases + summary.failed_test_cases + summary.compile_time_test_cases};
+	const size_t num_runtime_test_cases{summary.passed_test_cases + summary.failed_test_cases};
+	const size_t total_test_cases{num_runtime_test_cases + summary.compile_time_test_cases};
 	const size_t total_asserts{summary.passed_asserts + summary.failed_asserts};
 
 	fmt::print("\n==========================================\n");
@@ -61,14 +61,14 @@ void Logger::before_shutdown(const RunData& summary) const
 	else if (tests_failed) {
 		fmt::print(m_config.theme.error, "error:");
 		fmt::print(" some tests failed\n"
-		           "  Tests:      {} failed, {} passed, {} total ({} at compile-time)\n"
+		           "  Tests:      {} failed, {} passed, {} total (+{} at compile-time)\n"
 		           "  Assertions: {} failed, {} passed, {} total\n",
-		           summary.failed_test_cases, summary.passed_test_cases, total_test_cases,
+		           summary.failed_test_cases, summary.passed_test_cases, num_runtime_test_cases,
 		           summary.compile_time_test_cases, summary.failed_asserts, summary.passed_asserts, total_asserts);
 	}
 	else {
 		fmt::print(m_config.theme.success, "success:");
-		fmt::print(" all tests passed ({} test cases ({} at compile-time), {} assertions)\n", total_test_cases,
+		fmt::print(" all tests passed ({} test cases (+{} at compile-time), {} assertions)\n", num_runtime_test_cases,
 		           summary.compile_time_test_cases, total_asserts);
 	}
 }
