@@ -3,10 +3,10 @@
 #ifndef OKUTILS_DEFINES_HPP
 #define OKUTILS_DEFINES_HPP
 
-#include "okutils/compiler_defines.hpp"
-#include "okutils/config.hpp"
-#include "okutils/core_defines.hpp"
-#include "okutils/macro_utils.hpp"
+#include "okutils/compiler_defines.hpp" // IWYU pragma: export
+#include "okutils/config.hpp" // IWYU pragma: export
+#include "okutils/core_defines.hpp" // IWYU pragma: export
+#include "okutils/macro_utils.hpp" // IWYU pragma: export
 
 #include <type_traits>
 #include <version>
