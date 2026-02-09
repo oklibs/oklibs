@@ -28,7 +28,7 @@ struct Expression {
 
 	Expression() = default;
 
-	template<class T> void append_value(T&& value) noexcept(false);
+	template<class T> void append_value(T&& value);
 
 	// clang-format off
 	auto operator<=>(const auto&) = delete; /* Expression too complex, rewrite as a binary expression or use parentheses. */
@@ -64,28 +64,28 @@ template<auto ExpectedValue, class LhsT>
 struct ExtractedUnaryExpression {
 	const LhsT& lhs; // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
 
-	[[nodiscard]] explicit constexpr operator Expression() const noexcept(false)
+	[[nodiscard]] explicit constexpr operator Expression() const
 	    requires std::convertible_to<decltype(lhs), decltype(ExpectedValue)>;
 
-	[[nodiscard]] constexpr Expression operator<=>(const auto& rhs) const noexcept(false)
+	[[nodiscard]] constexpr Expression operator<=>(const auto& rhs) const
 	    requires std::convertible_to<decltype(lhs <=> rhs), decltype(ExpectedValue)>;
 
-	[[nodiscard]] constexpr Expression operator<(const auto& rhs) const noexcept(false)
+	[[nodiscard]] constexpr Expression operator<(const auto& rhs) const
 	    requires std::convertible_to<decltype(lhs < rhs), decltype(ExpectedValue)>;
 
-	[[nodiscard]] constexpr Expression operator>(const auto& rhs) const noexcept(false)
+	[[nodiscard]] constexpr Expression operator>(const auto& rhs) const
 	    requires std::convertible_to<decltype(lhs > rhs), decltype(ExpectedValue)>;
 
-	[[nodiscard]] constexpr Expression operator<=(const auto& rhs) const noexcept(false)
+	[[nodiscard]] constexpr Expression operator<=(const auto& rhs) const
 	    requires std::convertible_to<decltype(lhs <= rhs), decltype(ExpectedValue)>;
 
-	[[nodiscard]] constexpr Expression operator>=(const auto& rhs) const noexcept(false)
+	[[nodiscard]] constexpr Expression operator>=(const auto& rhs) const
 	    requires std::convertible_to<decltype(lhs >= rhs), decltype(ExpectedValue)>;
 
-	[[nodiscard]] constexpr Expression operator==(const auto& rhs) const noexcept(false)
+	[[nodiscard]] constexpr Expression operator==(const auto& rhs) const
 	    requires std::convertible_to<decltype(lhs == rhs), decltype(ExpectedValue)>;
 
-	[[nodiscard]] constexpr Expression operator!=(const auto& rhs) const noexcept(false)
+	[[nodiscard]] constexpr Expression operator!=(const auto& rhs) const
 	    requires std::convertible_to<decltype(lhs != rhs), decltype(ExpectedValue)>;
 
 	// clang-format off
@@ -124,7 +124,7 @@ constexpr auto ExpressionExtractor<ExpectedValue>::operator<(const LhsT& lhs) co
 }
 
 template<class T>
-void Expression::append_value(T&& value) noexcept(false)
+void Expression::append_value(T&& value)
 {
 	if constexpr (std::is_pointer_v<std::remove_reference_t<T>> || std::is_array_v<std::remove_reference_t<T>>) {
 		fmt::format_to(fmt::appender{result_string}, "{}", fmt::ptr(value));
@@ -139,7 +139,7 @@ void Expression::append_value(T&& value) noexcept(false)
 
 
 template<auto ExpectedValue, class LhsT>
-constexpr ExtractedUnaryExpression<ExpectedValue, LhsT>::operator Expression() const noexcept(false)
+constexpr ExtractedUnaryExpression<ExpectedValue, LhsT>::operator Expression() const
     requires std::convertible_to<decltype(lhs), decltype(ExpectedValue)>
 {
 	Expression expr{};
@@ -154,7 +154,7 @@ constexpr ExtractedUnaryExpression<ExpectedValue, LhsT>::operator Expression() c
 
 #define OKL_DEFINE_UNARY_EXPRESSION(op) \
 	template<auto ExpectedValue, class LhsT> \
-	constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator op(const auto& rhs) const noexcept(false) \
+	constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator op(const auto& rhs) const \
 		requires std::convertible_to<decltype(lhs op rhs), decltype(ExpectedValue)> \
 	{ \
 		Expression expr{}; \

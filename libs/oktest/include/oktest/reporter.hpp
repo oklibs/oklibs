@@ -31,8 +31,8 @@ public:
 	Reporter& operator=(const Reporter&) = delete;
 
 	void before_test_node(const TestNodeData&);
-	void after_test_node(const TestNodeData&) noexcept(false);
-	void after_passed_assert(const AssertData&) noexcept(false);
+	void after_test_node(const TestNodeData&);
+	void after_passed_assert(const AssertData&) noexcept;
 	void after_failed_assert(const AssertData&);
 
 protected:
@@ -74,7 +74,7 @@ void Reporter<LoggerT, ConfigT>::before_test_node(const TestNodeData& test_node)
 }
 
 template<class LoggerT, class ConfigT>
-void Reporter<LoggerT, ConfigT>::after_test_node(const TestNodeData& test_node) noexcept(false)
+void Reporter<LoggerT, ConfigT>::after_test_node(const TestNodeData& test_node)
 {
 	if (test_node.mode.has_flags(EMode::compile_time)) {
 		if (test_node.type == ETestNodeType::test_case) {
@@ -97,7 +97,7 @@ void Reporter<LoggerT, ConfigT>::after_test_node(const TestNodeData& test_node) 
 }
 
 template<class LoggerT, class ConfigT>
-void Reporter<LoggerT, ConfigT>::after_passed_assert(const AssertData& assert) noexcept(false)
+void Reporter<LoggerT, ConfigT>::after_passed_assert(const AssertData& assert) noexcept
 {
 	++m_summary.passed_asserts;
 	m_logger.after_passed_assert(assert);

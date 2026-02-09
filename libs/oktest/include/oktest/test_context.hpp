@@ -67,9 +67,9 @@ template<class...> struct TypeList {};
 
 template<size_t MaxDepth>
 struct TestContext {
-	[[nodiscard]] constexpr bool enter_section() noexcept(false);
+	[[nodiscard]] constexpr bool enter_section();
 	constexpr void leave_section() noexcept;
-	[[nodiscard]] constexpr bool next_section() noexcept(false);
+	[[nodiscard]] constexpr bool next_section();
 
 protected:
 	std::array<size_t, MaxDepth> target_path{}; /* Index to select at each nesting level for the current run. */
@@ -85,7 +85,7 @@ protected:
  * @return `true` if the section should be executed, `false` otherwise.
  */
 template<size_t MaxDepth>
-constexpr bool TestContext<MaxDepth>::enter_section() noexcept(false)
+constexpr bool TestContext<MaxDepth>::enter_section()
 {
 	if (current_depth >= MaxDepth) {
 		fmt::print(stderr, "\nerror: sections can only be nested {} times.\n", MaxDepth);
@@ -125,7 +125,7 @@ constexpr void TestContext<MaxDepth>::leave_section() noexcept
  * @return `true` if a new path was found, `false` otherwise.
  */
 template<size_t MaxDepth>
-constexpr bool TestContext<MaxDepth>::next_section() noexcept(false)
+constexpr bool TestContext<MaxDepth>::next_section()
 {
 	while (path_length > 0) {
 		const size_t depth_index{path_length - 1};

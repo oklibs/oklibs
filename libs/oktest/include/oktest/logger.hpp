@@ -25,7 +25,7 @@ public:
 	Logger() = default;
 	explicit constexpr Logger(const LoggerConfig&) noexcept;
 
-	void before_test_node(const TestNodeData&) noexcept(false);
+	void before_test_node(const TestNodeData&);
 	void after_runtime_test_node(const TestNodeData&, bool success) noexcept;
 	void after_compile_time_test_node(const TestNodeData&, bool success) noexcept;
 

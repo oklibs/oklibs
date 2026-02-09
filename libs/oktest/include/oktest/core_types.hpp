@@ -43,14 +43,14 @@ enum class EAssertModifier : uint8 {
 	_count
 };
 
-[[nodiscard]] constexpr std::string_view to_string(Mode) noexcept(false);
-[[nodiscard]] constexpr std::string_view to_string(ETestNodeType) noexcept(false);
-[[nodiscard]] constexpr std::string_view to_string(EAssertType) noexcept(false);
-[[nodiscard]] constexpr std::string_view to_string(EAssertModifier) noexcept(false);
+[[nodiscard]] constexpr std::string_view to_string(Mode);
+[[nodiscard]] constexpr std::string_view to_string(ETestNodeType);
+[[nodiscard]] constexpr std::string_view to_string(EAssertType);
+[[nodiscard]] constexpr std::string_view to_string(EAssertModifier);
 OKL_EXPORT_END
 
 
-constexpr std::string_view to_string(const Mode mode) noexcept(false)
+constexpr std::string_view to_string(const Mode mode)
 {
 	OKL_STATIC_VAR constexpr std::array mode_strings{[] {
 		std::array<std::string_view, 3> strings{};
@@ -64,7 +64,7 @@ constexpr std::string_view to_string(const Mode mode) noexcept(false)
 	return mode_strings.at(static_cast<size_t>(mode.m_flags) - 1);
 }
 
-constexpr std::string_view to_string(const ETestNodeType test_node_type) noexcept(false)
+constexpr std::string_view to_string(const ETestNodeType test_node_type)
 {
 	OKL_STATIC_VAR constexpr std::array test_node_type_strings{[] {
 		std::array<std::string_view, 3> strings{};
@@ -78,7 +78,7 @@ constexpr std::string_view to_string(const ETestNodeType test_node_type) noexcep
 	return test_node_type_strings.at(static_cast<size_t>(test_node_type));
 }
 
-constexpr std::string_view to_string(const EAssertType assert_type) noexcept(false)
+constexpr std::string_view to_string(const EAssertType assert_type)
 {
 	OKL_STATIC_VAR constexpr std::array assert_type_strings{[] {
 		std::array<std::string_view, 2> strings{};
@@ -91,7 +91,7 @@ constexpr std::string_view to_string(const EAssertType assert_type) noexcept(fal
 	return assert_type_strings.at(static_cast<size_t>(assert_type));
 }
 
-constexpr std::string_view to_string(const EAssertModifier assert_modifier) noexcept(false)
+constexpr std::string_view to_string(const EAssertModifier assert_modifier)
 {
 	OKL_STATIC_VAR constexpr std::array assert_modifier_strings{[] {
 		std::array<std::string_view, 5> strings{};
