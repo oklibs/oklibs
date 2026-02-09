@@ -317,7 +317,7 @@ OKTEST_EXPORT int main()
  */
 #define OKL_REQUIRE(...) OKTEST_PRIVATE_CHECK(require, none, runtime_mode, true,, __VA_ARGS__)
 #define OKL_CONSTEXPR_REQUIRE(...) OKTEST_PRIVATE_CHECK(require, none, constexpr_mode, true, static_assert(__VA_ARGS__);, __VA_ARGS__)
-#define OKL_CONSTEVAL_REQUIRE(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(__VA_ARGS__)
+#define OKL_CONSTEVAL_REQUIRE(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(require, none, __VA_ARGS__)
 
 /**
  * Checks a condition. If true, logs a failure and aborts the current test case.
@@ -328,7 +328,7 @@ OKTEST_EXPORT int main()
  */
 #define OKL_REQUIRE_NOT(...) OKTEST_PRIVATE_CHECK(require, not_, runtime_mode, false,, __VA_ARGS__)
 #define OKL_CONSTEXPR_REQUIRE_NOT(...) OKTEST_PRIVATE_CHECK(require, not_, constexpr_mode, false, static_assert(!(__VA_ARGS__));, __VA_ARGS__)
-#define OKL_CONSTEVAL_REQUIRE_NOT(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(!(__VA_ARGS__))
+#define OKL_CONSTEVAL_REQUIRE_NOT(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(require, not_, !(__VA_ARGS__))
 
 /**
  * Checks a condition. If false, logs a failure but continues execution.
@@ -337,7 +337,7 @@ OKTEST_EXPORT int main()
  */
 #define OKL_CHECK(...) OKTEST_PRIVATE_CHECK(check, none, runtime_mode, true,, __VA_ARGS__)
 #define OKL_CONSTEXPR_CHECK(...) OKTEST_PRIVATE_CHECK(check, none, constexpr_mode, true, static_assert(__VA_ARGS__);, __VA_ARGS__)
-#define OKL_CONSTEVAL_CHECK(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(__VA_ARGS__)
+#define OKL_CONSTEVAL_CHECK(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(check, none, __VA_ARGS__)
 
 /**
  * Checks a condition. If true, logs a failure and aborts the current test case.
@@ -346,7 +346,7 @@ OKTEST_EXPORT int main()
  */
 #define OKL_CHECK_NOT(...) OKTEST_PRIVATE_CHECK(check, not_, runtime_mode, false,, __VA_ARGS__)
 #define OKL_CONSTEXPR_CHECK_NOT(...) OKTEST_PRIVATE_CHECK(check, not_, constexpr_mode, false, static_assert(!(__VA_ARGS__));, __VA_ARGS__)
-#define OKL_CONSTEVAL_CHECK_NOT(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(!(__VA_ARGS__))
+#define OKL_CONSTEVAL_CHECK_NOT(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(check, not_, !(__VA_ARGS__))
 
 #if OKTEST_WITH_EXCEPTIONS
 	/**
@@ -380,7 +380,7 @@ OKTEST_EXPORT int main()
 	 */
 	#define OKL_REQUIRE_NOTHROW(...) OKTEST_PRIVATE_CHECK_THROW(require, nothrow, runtime_mode, #__VA_ARGS__,, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
 	#define OKL_CONSTEXPR_REQUIRE_NOTHROW(...) OKTEST_PRIVATE_CHECK_THROW(require, nothrow, runtime_mode, #__VA_ARGS__, static_assert(!::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }));, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
-	#define OKL_CONSTEVAL_REQUIRE_NOTHROW(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(!::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
+	#define OKL_CONSTEVAL_REQUIRE_NOTHROW(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(require, nothrow, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
 
 	/**
 	 * Checks that the expression throws an exception of any type.
@@ -407,7 +407,7 @@ OKTEST_EXPORT int main()
 	 */
 	#define OKL_CHECK_NOTHROW(...) OKTEST_PRIVATE_CHECK_THROW(check, nothrow, runtime_mode, #__VA_ARGS__,, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
 	#define OKL_CONSTEXPR_CHECK_NOTHROW(...) OKTEST_PRIVATE_CHECK_THROW(check, nothrow, constexpr_mode, #__VA_ARGS__, static_assert(!::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }));, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
-	#define OKL_CONSTEVAL_CHECK_NOTHROW(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(!::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
+	#define OKL_CONSTEVAL_CHECK_NOTHROW(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(check, nothrow, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
 #endif
 
 // ToDo?:
@@ -436,9 +436,10 @@ OKTEST_EXPORT int main()
 		OKL_SUPPRESS_WARNING_MSVC(26444, "Don't try to declare a local variable with no name") \
 		::Okl::Test::Detail::AssertFailed<>{expressionString, {}, ::Okl::Test::EAssertType::assertType, ::Okl::Test::EAssertModifier::assertModifier, ::Okl::Test::assertMode}
 
-#define OKTEST_PRIVATE_CONSTEVAL_CHECK(...) \
+#define OKTEST_PRIVATE_CONSTEVAL_CHECK(assertType, assertModifier, ...) \
 	if constexpr (true) { \
 		static_assert(__VA_ARGS__); \
+		::Okl::Test::Detail::after_passed_assert(#__VA_ARGS__, {}, ::Okl::Test::EAssertType::assertType, ::Okl::Test::EAssertModifier::assertModifier, ::Okl::Test::consteval_mode); \
 	} \
 	else \
 		OKL_SUPPRESS_WARNING_MSVC(26444, "Don't try to declare a local variable with no name") \
