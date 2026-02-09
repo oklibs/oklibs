@@ -23,5 +23,5 @@ root
 2.4
 
 ==========================================
-success: all tests passed (1 test cases (0 at compile-time), 0 assertions)
+success: all tests passed (1 test cases (+0 at compile-time), 0 assertions)
 ]]
