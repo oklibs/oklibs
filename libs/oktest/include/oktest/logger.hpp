@@ -4,10 +4,10 @@
 #define OKTEST_LOGGER_HPP
 
 #include "oktest/config.hpp"
+#include "oktest/test_context.hpp"
 #include "oktest/theme.hpp"
-#include "oktest/types.hpp"
 
-#include <okutils//types.hpp>
+#include <okutils/types.hpp>
 
 #include <array>
 

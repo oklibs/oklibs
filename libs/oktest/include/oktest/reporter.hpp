@@ -3,7 +3,8 @@
 #ifndef OKTEST_REPORTER_HPP
 #define OKTEST_REPORTER_HPP
 
-#include "oktest/types.hpp"
+#include "oktest/core_types.hpp"
+#include "oktest/test_context.hpp"
 
 #include <fmt/base.h>
 #include <okutils/types.hpp>

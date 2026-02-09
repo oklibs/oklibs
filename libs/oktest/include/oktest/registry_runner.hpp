@@ -4,7 +4,7 @@
 #define OKTEST_REGISTRY_RUNNER_HPP
 
 #include "oktest/runner.hpp"
-#include "oktest/types.hpp"
+#include "oktest/test_context.hpp"
 
 #include <array>
 

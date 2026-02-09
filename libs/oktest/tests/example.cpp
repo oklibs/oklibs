@@ -2,11 +2,8 @@
 
 #include "oktest/short_test.hpp"
 
-#include <okutils/types.hpp>
-
 #include <cstdlib>
 #include <stdexcept>
-#include <string_view>
 
 TEST_CASE(""){};
 
@@ -65,13 +62,13 @@ TEST_CASE("test cases in test case")
 		REQUIRE(5 + 4 == 9) << "fatal";
 	};
 
-	TEST_CASE_TEMPLATE("executed for each type", int, int16_t)
+	TEST_CASE_TEMPLATE("executed for each type", int, std::int16_t)
 	{
 		CHECK(5 + 4 == 9) << "bad";
 		REQUIRE(5 + 4 == 9) << "fatal";
 	};
 
-	CONSTEXPR_TEST_CASE_TEMPLATE("executed for each type at compile- and runtime", int, int16_t)
+	CONSTEXPR_TEST_CASE_TEMPLATE("executed for each type at compile- and runtime", int, std::int16_t)
 	{
 		CHECK(5 + 4 == 9) << "bad";
 		REQUIRE(5 + 4 == 9) << "fatal";

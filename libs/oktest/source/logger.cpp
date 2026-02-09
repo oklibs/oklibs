@@ -2,7 +2,8 @@
 
 #include "oktest/logger.hpp"
 
-#include "oktest/types.hpp"
+#include "oktest/core_types.hpp"
+#include "oktest/test_context.hpp"
 
 #include <fmt/base.h>
 #include <fmt/color.h>

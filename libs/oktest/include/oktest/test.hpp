@@ -3,9 +3,11 @@
 #ifndef OKTEST_TEST_HPP
 #define OKTEST_TEST_HPP
 
+#include "oktest/assert_handler.hpp" // IWYU pragma: export
+#include "oktest/core_types.hpp" // IWYU pragma: export
 #include "oktest/expression.hpp" // IWYU pragma: export
-#include "oktest/test_structs.hpp" // IWYU pragma: export
-#include "oktest/types.hpp" // IWYU pragma: export
+#include "oktest/get_runner.hpp" // IWYU pragma: export
+#include "oktest/test_hierarchy.hpp" // IWYU pragma: export
 
 #include <fmt/format.h>
 #include <okutils/defines.hpp>

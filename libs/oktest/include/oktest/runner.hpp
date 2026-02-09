@@ -4,7 +4,8 @@
 #define OKTEST_RUNNER_HPP
 
 #include "oktest/config.hpp"
-#include "oktest/types.hpp"
+#include "oktest/core_types.hpp"
+#include "oktest/test_context.hpp"
 
 #if !OKTEST_WITH_EXCEPTIONS
 	#include <cstdlib>
