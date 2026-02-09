@@ -1,5 +1,6 @@
 macros_ouput = [[
 
 ==========================================
-success: all tests passed (22 test cases (7 at compile-time), 40 assertions)
+
+success: all tests passed (44 test cases (14 at compile-time), 83 assertions)
 ]]
