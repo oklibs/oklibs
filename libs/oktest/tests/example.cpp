@@ -2,6 +2,8 @@
 
 #include "oktest/short_test.hpp"
 
+#include <okutils/types.hpp>
+
 #include <cstdlib>
 #include <stdexcept>
 #include <string_view>
