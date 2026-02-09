@@ -10,11 +10,8 @@ module;
 
 // Compilers seem to only properly handle mixed includes and imports for std headers.
 #define OKUTILS_CONCEPTS_HPP
-#include "okutils/concepts.hpp"
 #define OKUTILS_TYPES_HPP
-#include <okutils/types.hpp>
 #define OKUTILS_UTILS_HPP
-#include "okutils/utils.hpp"
 
 #include <bit>
 #include <concepts>
