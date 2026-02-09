@@ -43,7 +43,6 @@ protected:
 	void print_assert_info(const AssertData&) const;
 	void print_user_message(std::string_view message) const;
 
-
 	LoggerConfig m_config{};
 	std::array<TestNodeData, OKTEST_MAX_NESTED_NODES> m_test_nodes{};
 	size_t m_test_nodes_size{0};

@@ -12,6 +12,7 @@
 
 #if defined(OKTEST_DEFINE_MAIN)
 	#include <cstdlib>
+
 OKTEST_EXPORT int main()
 {
 	Okl::Test::run_tests();
