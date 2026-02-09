@@ -91,7 +91,7 @@ struct TypeIdentity {
 
 template<size_t MaxDepth = OKTEST_MAX_NESTED_NODES>
 struct TestContext {
-	constexpr bool enter_section() noexcept(false)
+	[[nodiscard]] constexpr bool enter_section() noexcept(false)
 	{
 		if (current_depth >= MaxDepth) {
 			fmt::print(stderr, "\nerror: sections can only be nested {} times.\n", MaxDepth);
@@ -125,7 +125,7 @@ struct TestContext {
 	 * Calculates the path for the next iteration.
 	 * @return `true` if a new path was found, `false` otherwise.
 	 */
-	constexpr bool next_section() noexcept(false)
+	[[nodiscard]] constexpr bool next_section() noexcept(false)
 	{
 		while (path_length > 0) {
 			const size_t depth_index{path_length - 1};
