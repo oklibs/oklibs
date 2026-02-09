@@ -1,0 +1,144 @@
+// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+
+#define OKTEST_DEFINE_MAIN
+#include "oktest/short_test.hpp"
+
+TEST_CASE("1")
+{
+	TEST_CASE("1.1"){};
+	TEST_CASE("1.2"){};
+	TEST_CASE("1.3"){};
+	TEST_CASE("1.4"){};
+	TEST_CASE("1.5"){};
+	TEST_CASE("1.6"){};
+	TEST_CASE("1.7"){};
+	TEST_CASE("1.8"){};
+	TEST_CASE("1.9"){};
+	TEST_CASE("1.10"){};
+};
+
+TEST_CASE("2")
+{
+	TEST_CASE("2.1"){};
+	TEST_CASE("2.2"){};
+	TEST_CASE("2.3"){};
+	TEST_CASE("2.4"){};
+	TEST_CASE("2.5"){};
+	TEST_CASE("2.6"){};
+	TEST_CASE("2.7"){};
+	TEST_CASE("2.8"){};
+	TEST_CASE("2.9"){};
+	TEST_CASE("2.10"){};
+};
+
+TEST_CASE("3")
+{
+	TEST_CASE("3.1"){};
+	TEST_CASE("3.2"){};
+	TEST_CASE("3.3"){};
+	TEST_CASE("3.4"){};
+	TEST_CASE("3.5"){};
+	TEST_CASE("3.6"){};
+	TEST_CASE("3.7"){};
+	TEST_CASE("3.8"){};
+	TEST_CASE("3.9"){};
+	TEST_CASE("3.10"){};
+};
+
+TEST_CASE("4")
+{
+	TEST_CASE("4.1"){};
+	TEST_CASE("4.2"){};
+	TEST_CASE("4.3"){};
+	TEST_CASE("4.4"){};
+	TEST_CASE("4.5"){};
+	TEST_CASE("4.6"){};
+	TEST_CASE("4.7"){};
+	TEST_CASE("4.8"){};
+	TEST_CASE("4.9"){};
+	TEST_CASE("4.10"){};
+};
+
+TEST_CASE("5")
+{
+	TEST_CASE("5.1"){};
+	TEST_CASE("5.2"){};
+	TEST_CASE("5.3"){};
+	TEST_CASE("5.4"){};
+	TEST_CASE("5.5"){};
+	TEST_CASE("5.6"){};
+	TEST_CASE("5.7"){};
+	TEST_CASE("5.8"){};
+	TEST_CASE("5.9"){};
+	TEST_CASE("5.10"){};
+};
+
+TEST_CASE("6")
+{
+	TEST_CASE("6.1"){};
+	TEST_CASE("6.2"){};
+	TEST_CASE("6.3"){};
+	TEST_CASE("6.4"){};
+	TEST_CASE("6.5"){};
+	TEST_CASE("6.6"){};
+	TEST_CASE("6.7"){};
+	TEST_CASE("6.8"){};
+	TEST_CASE("6.9"){};
+	TEST_CASE("6.10"){};
+};
+
+TEST_CASE("7")
+{
+	TEST_CASE("7.1"){};
+	TEST_CASE("7.2"){};
+	TEST_CASE("7.3"){};
+	TEST_CASE("7.4"){};
+	TEST_CASE("7.5"){};
+	TEST_CASE("7.6"){};
+	TEST_CASE("7.7"){};
+	TEST_CASE("7.8"){};
+	TEST_CASE("7.9"){};
+	TEST_CASE("7.10"){};
+};
+
+TEST_CASE("8")
+{
+	TEST_CASE("8.1"){};
+	TEST_CASE("8.2"){};
+	TEST_CASE("8.3"){};
+	TEST_CASE("8.4"){};
+	TEST_CASE("8.5"){};
+	TEST_CASE("8.6"){};
+	TEST_CASE("8.7"){};
+	TEST_CASE("8.8"){};
+	TEST_CASE("8.9"){};
+	TEST_CASE("8.10"){};
+};
+
+TEST_CASE("9")
+{
+	TEST_CASE("9.1"){};
+	TEST_CASE("9.2"){};
+	TEST_CASE("9.3"){};
+	TEST_CASE("9.4"){};
+	TEST_CASE("9.5"){};
+	TEST_CASE("9.6"){};
+	TEST_CASE("9.7"){};
+	TEST_CASE("9.8"){};
+	TEST_CASE("9.9"){};
+	TEST_CASE("9.10"){};
+};
+
+TEST_CASE("10")
+{
+	TEST_CASE("10.1"){};
+	TEST_CASE("10.2"){};
+	TEST_CASE("10.3"){};
+	TEST_CASE("10.4"){};
+	TEST_CASE("10.5"){};
+	TEST_CASE("10.6"){};
+	TEST_CASE("10.7"){};
+	TEST_CASE("10.8"){};
+	TEST_CASE("10.9"){};
+	TEST_CASE("10.10"){};
+};
