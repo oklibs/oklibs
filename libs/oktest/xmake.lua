@@ -34,6 +34,7 @@ target("oktest", function()
     add_tests("fail_compile_time_assert", { kind = "binary", files = "tests/fail_compile_time_assert.cpp", build_should_fail = true})
     add_tests("fail_compile_time_test", { kind = "binary", files = "tests/fail_compile_time_test.cpp", build_should_fail = true})
     add_tests("macros", {kind = "binary", files = "tests/macros.cpp", plain = true, pass_outputs = macros_ouput, build_should_pass = is_cross()})
+    add_tests("short_macros", {kind = "binary", files = "tests/short_macros.cpp", plain = true, pass_outputs = macros_ouput, build_should_pass = is_cross()})
     add_tests("sections", {kind = "binary", files = "tests/sections.cpp", plain = true, pass_outputs = sections_output, build_should_pass = is_cross()})
     add_tests("success", {kind = "binary", files = "tests/success.cpp", plain = true, pass_outputs = success_ouput, build_should_pass = is_cross()})
     for _, testfile in ipairs(os.files("tests/benchmarks/*.cpp")) do
