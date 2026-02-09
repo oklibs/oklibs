@@ -6,8 +6,9 @@
 #include "oktest/config.hpp"
 #include "oktest/types.hpp"
 
-#include <exception>
-#include <utility>
+#if !OKTEST_WITH_EXCEPTIONS
+	#include <cstdlib>
+#endif
 
 OKL_EXPORT namespace Okl::Test
 {
@@ -18,7 +19,7 @@ public:
 	Runner(Runner&&) = default;
 	explicit constexpr Runner(const ConfigT&) noexcept;
 
-	~Runner() = default;
+	virtual ~Runner() = default;
 
 	Runner& operator=(Runner&&) = default;
 
