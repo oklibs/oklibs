@@ -23,7 +23,13 @@ target("okutils", function()
         add_files("source/okl.utils.ixx")
     end
 
-    add_extrafiles("*|xmake.lua", "templates/**", "tests/**")
+    add_extrafiles("*|xmake.lua", "templates/**")
+end)
 
+target("okutils_tests", function()
+    set_kind("phony")
+    set_group("okutils")
+    add_deps("okutils", "oktest")
+    add_extrafiles("tests/**")
     add_tests("tests", {kind = "binary", files = "tests/**.cpp", build_should_pass = is_cross()})
 end)
