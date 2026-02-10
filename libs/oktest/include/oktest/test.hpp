@@ -418,8 +418,6 @@ OKTEST_EXPORT int main()
 // OKL_FAIL_REQUIRE/CHECK (just fail the test)
 
 
-// Not using `OKL_STRINGIFY` here because we don't want to expand passed in macros.
-
 #define OKTEST_PRIVATE_CHECK(assertType, assertModifier, assertMode, expectedValue, extraSuccess, ...) \
 	if (const ::Okl::Test::Detail::Expression OKL_CHECK_IMPL_expression{::Okl::Test::Detail::ExpressionExtractor<expectedValue>{} <=> __VA_ARGS__}; /* NOLINT(bugprone-chained-comparison) */ \
 		OKL_CHECK_IMPL_expression.success) { \

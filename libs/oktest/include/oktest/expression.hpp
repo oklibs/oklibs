@@ -30,6 +30,8 @@ struct Expression {
 
 	template<class T> void append_value(T&& value);
 
+	OKL_WARNING_PUSH()
+	OKL_DISABLE_WARNING_GCC("-Weffc++", "user-defined operator always evaluates both arguments")
 	// clang-format off
 	auto operator<=>(const auto&) = delete; /* Expression too complex, rewrite as a binary expression or use parentheses. */
 	auto operator<=(const auto&) = delete; /* Expression too complex, rewrite as a binary expression or use parentheses. */
@@ -56,6 +58,7 @@ struct Expression {
 	auto operator&(const auto&) = delete; /* Expression too complex, rewrite as a binary expression or use parentheses. */
 	auto operator,(const auto&) = delete; /* Expression too complex, rewrite as a binary expression or use parentheses. */
 	// clang-format on
+	OKL_WARNING_POP()
 };
 OKL_EXPORT_END
 
@@ -88,6 +91,8 @@ struct ExtractedUnaryExpression {
 	[[nodiscard]] constexpr Expression operator!=(const auto& rhs) const
 	    requires std::convertible_to<decltype(lhs != rhs), decltype(ExpectedValue)>;
 
+	OKL_WARNING_PUSH()
+	OKL_DISABLE_WARNING_GCC("-Weffc++", "user-defined operator always evaluates both arguments")
 	// clang-format off
 	auto operator&&(const auto&) = delete; /* Expression too complex, rewrite as a binary expression or use parentheses. */
 	auto operator||(const auto&) = delete; /* Expression too complex, rewrite as a binary expression or use parentheses. */
@@ -107,6 +112,7 @@ struct ExtractedUnaryExpression {
 	auto operator&(const auto&) = delete; /* Expression too complex, rewrite as a binary expression or use parentheses. */
 	auto operator,(const auto&) = delete; /* Expression too complex, rewrite as a binary expression or use parentheses. */
 	// clang-format on
+	OKL_WARNING_POP()
 };
 
 

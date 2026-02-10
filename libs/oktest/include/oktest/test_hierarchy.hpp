@@ -247,7 +247,8 @@ consteval CompileTimeTestCase<Ts...>::CompileTimeTestCase(TypeList<TypeListT<Ts.
 {}
 
 template<class... Ts>
-consteval auto CompileTimeTestCase<Ts...>::operator=(auto test_case) const // NOLINT(misc-unconventional-assign-operator)
+consteval auto CompileTimeTestCase<Ts...>::operator=(auto test_case)
+    const // NOLINT(misc-unconventional-assign-operator)
 {
 	if constexpr (sizeof...(Ts) == 0) {
 		get_runner<Ts...>().on_test_case(TestCaseData{.test_case = test_case, .node = {}});
@@ -255,7 +256,10 @@ consteval auto CompileTimeTestCase<Ts...>::operator=(auto test_case) const // NO
 	else {
 		(get_runner<Ts...>().on_test_case(TestCaseData{.test_case = as_test_function<Ts>(test_case), .node = {}}), ...);
 	}
+	OKL_WARNING_PUSH()
+	OKL_DISABLE_WARNING_GCC("-Weffc++", "operator should return a reference to ‘*this’")
 	return test_case;
+	OKL_WARNING_POP()
 }
 
 

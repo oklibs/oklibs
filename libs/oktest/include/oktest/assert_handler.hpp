@@ -82,7 +82,7 @@ public:
 
 private:
 	AssertData m_assert_data;
-	fmt::basic_memory_buffer<char, 512> m_buffer;
+	fmt::basic_memory_buffer<char, 512> m_buffer{};
 };
 
 

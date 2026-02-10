@@ -1,13 +1,17 @@
 // Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
 #define OKTEST_DEFINE_MAIN
-#include "oktest/test.hpp"
+#include <oktest/test.hpp>
 
 #include <stdexcept>
 
 template<>
 struct Okl::Test::Config<Okl::Test::CustomRunner> {
-	static inline constinit RegistryRunner<Reporter<Logger>> runner{{.theme = Okl::Test::Themes::no_color}};
+	OKL_WARNING_PUSH()
+	OKL_DISABLE_WARNING_CLANG("-Wglobal-constructors")
+	OKL_ALWAYS_DESTROY static inline constinit RegistryRunner<Reporter<Logger>> runner{
+	    {.theme = Okl::Test::Themes::no_color}};
+	OKL_WARNING_POP()
 };
 
 OKL_TEST_CASE("OKL_TEST_CASE")
@@ -141,9 +145,11 @@ OKL_TEST_CASE("OKL_REQUIRE")
 	OKL_CONSTEXPR_REQUIRE_NOT(value == 0);
 	OKL_CONSTEVAL_REQUIRE_NOT(value == 0);
 
+	OKL_WARNING_PUSH()
+	OKL_DISABLE_WARNING_CLANG("-Wmissing-noreturn") // We can't use noreturn in c++20 here.
 	OKL_REQUIRE_THROWS([]() { throw std::runtime_error("error"); }());
-
 	OKL_REQUIRE_THROWS_AS(std::runtime_error, []() { throw std::runtime_error("error"); }());
+	OKL_WARNING_POP()
 
 	OKL_REQUIRE_NOTHROW([]() { return 0; }());
 	OKL_CONSTEXPR_REQUIRE_NOTHROW([]() { return 0; }());
@@ -162,9 +168,11 @@ OKL_TEST_CASE("OKL_CHECK")
 	OKL_CONSTEXPR_CHECK_NOT(value == 0);
 	OKL_CONSTEVAL_CHECK_NOT(value == 0);
 
+	OKL_WARNING_PUSH()
+	OKL_DISABLE_WARNING_CLANG("-Wmissing-noreturn") // We can't use noreturn in c++20 here.
 	OKL_CHECK_THROWS([]() { throw std::runtime_error("error"); }());
-
 	OKL_CHECK_THROWS_AS(std::runtime_error, []() { throw std::runtime_error("error"); }());
+	OKL_WARNING_POP()
 
 	OKL_CHECK_NOTHROW([]() { return 0; }());
 	OKL_CONSTEXPR_CHECK_NOTHROW([]() { return 0; }());

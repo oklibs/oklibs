@@ -1,7 +1,9 @@
 // Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#include "oktest/short_test.hpp"
+#include <oktest/short_test.hpp>
+#include <okutils/defines.hpp>
 
+#include <cstdint>
 #include <cstdlib>
 #include <stdexcept>
 
@@ -80,6 +82,8 @@ TEST_CASE("test cases in test case")
 		REQUIRE(5 + 4 == 9) << "fatal";
 	};
 
+	OKL_WARNING_PUSH()
+	OKL_DISABLE_WARNING_CLANG("-Wmissing-noreturn") // We can't use noreturn in c++20 here.
 	TEST_CASE("throws")
 	{
 		CHECK_THROWS([]() { throw std::runtime_error{"I throw!"}; }());
@@ -93,6 +97,7 @@ TEST_CASE("test cases in test case")
 
 		REQUIRE_THROWS_AS(std::runtime_error, []() { throw std::runtime_error{"I throw!"}; }());
 	};
+	OKL_WARNING_POP()
 
 	TEST_CASE("no throw")
 	{

@@ -3,7 +3,12 @@
 #ifndef OKTEST_SHORT_TEST_HPP
 #define OKTEST_SHORT_TEST_HPP
 
-#include "oktest/test.hpp" // IWYU pragma: export
+#include "oktest/assert_handler.hpp" // IWYU pragma: export
+#include "oktest/core_types.hpp" // IWYU pragma: export
+#include "oktest/expression.hpp" // IWYU pragma: export
+#include "oktest/get_runner.hpp" // IWYU pragma: export
+#include "oktest/test.hpp"
+#include "oktest/test_hierarchy.hpp" // IWYU pragma: export
 
 #define TEST_CASE(name) OKL_TEST_CASE(name)
 #define TEST_CASE_TEMPLATE(name, ...) OKL_TEST_CASE_TEMPLATE(name, __VA_ARGS__)

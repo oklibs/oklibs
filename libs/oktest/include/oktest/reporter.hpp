@@ -55,7 +55,7 @@ Reporter<LoggerT, ConfigT>::~Reporter() noexcept(false)
 	m_logger.before_shutdown(m_summary);
 	if (m_summary.failed_asserts != 0) {
 		// ToDo? Move this to main function.
-		std::exit(1);
+		std::exit(1); // NOLINT(concurrency-mt-unsafe)
 	}
 }
 

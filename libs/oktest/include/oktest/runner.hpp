@@ -79,7 +79,7 @@ void Runner<ReporterT, ConfigT>::after_failed_assert(const AssertData& assert_da
 #if OKTEST_WITH_EXCEPTIONS
 		throw AssertFailureException{};
 #else
-		std::exit(1);
+		std::exit(1); // NOLINT(concurrency-mt-unsafe)
 #endif
 	}
 }
