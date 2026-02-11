@@ -32,8 +32,8 @@ constexpr void after_passed_assert(
     const std::source_location& = std::source_location::current());
 
 #if OKTEST_WITH_EXCEPTIONS
-constexpr bool throws(auto&& callable, auto&&... args);
-template<class ExceptionT> constexpr bool throws_as(auto&& callable, auto&&... args);
+template<class Callable, class... Args> constexpr bool throws(Callable&& callable, Args&&... args);
+template<class ExceptionT, class Callable, class... Args> constexpr bool throws_as(Callable&& callable, Args&&... args);
 #endif
 } // namespace Detail
 OKL_EXPORT_END
