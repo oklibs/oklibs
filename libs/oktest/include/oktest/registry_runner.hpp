@@ -10,7 +10,7 @@
 
 OKL_EXPORT namespace Okl::Test
 {
-template<class ReporterT, class ConfigT = ReporterT::ConfigType>
+template<class ReporterT, size_t MaxTestCases = 5000, class ConfigT = ReporterT::ConfigType>
 class RegistryRunner : Runner<ReporterT, ConfigT> {
 public:
 	using Runner<ReporterT, ConfigT>::Runner;
@@ -25,13 +25,13 @@ public:
 	constexpr void on_test_case(const TestCaseData&);
 
 protected:
-	std::array<TestCaseData, 5000> m_test_cases{};
+	std::array<TestCaseData, MaxTestCases> m_test_cases{};
 	size_t m_test_case_size{0};
 	bool m_running{false};
 };
 
-template<class ReporterT, class ConfigT>
-void RegistryRunner<ReporterT, ConfigT>::run_tests()
+template<class ReporterT, size_t MaxTestCases, class ConfigT>
+void RegistryRunner<ReporterT, MaxTestCases, ConfigT>::run_tests()
 {
 	m_running = true;
 
@@ -40,8 +40,8 @@ void RegistryRunner<ReporterT, ConfigT>::run_tests()
 	}
 }
 
-template<class ReporterT, class ConfigT>
-constexpr void RegistryRunner<ReporterT, ConfigT>::on_test_case(const TestCaseData& test_case_data)
+template<class ReporterT, size_t MaxTestCases, class ConfigT>
+constexpr void RegistryRunner<ReporterT, MaxTestCases, ConfigT>::on_test_case(const TestCaseData& test_case_data)
 {
 	if OKL_IS_CONSTEVAL {
 		Runner<ReporterT, ConfigT>::on_test_case(test_case_data);
