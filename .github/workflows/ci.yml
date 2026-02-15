@@ -70,4 +70,4 @@ jobs:
         run: xmake f -vy -p ${{ matrix.plat }} -a ${{ matrix.arch }} --toolchain=${{ matrix.toolchain }} -m ${{ matrix.mode }} ${{ matrix.args }}
 
       - name: Build and run tests
-        run: xmake test
+        run: xmake test -v
