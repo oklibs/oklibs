@@ -504,4 +504,6 @@ int main()
 	CONSTEXPR_TEST_CASE_TEMPLATE("498", int, float){};
 	CONSTEXPR_TEST_CASE_TEMPLATE("499", int, float){};
 	CONSTEXPR_TEST_CASE_TEMPLATE("500", int, float){};
+
+	Okl::Test::run_tests();
 }

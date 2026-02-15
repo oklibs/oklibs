@@ -37,4 +37,6 @@ int main()
 			};
 		}
 	};
+
+	Okl::Test::run_tests();
 }
