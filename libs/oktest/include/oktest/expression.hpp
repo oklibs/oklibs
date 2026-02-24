@@ -164,7 +164,7 @@ constexpr ExtractedUnaryExpression<ExpectedValue, LhsT>::operator Expression() c
 		requires std::convertible_to<decltype(lhs op rhs), decltype(ExpectedValue)> \
 	{ \
 		Expression expr{}; \
-		OKL_SUPPRESS_GSL(type .1, "Don't use a static_cast for arithmetic conversions.") \
+		OKL_SUPPRESS_GSL(type.1, "Don't use a static_cast for arithmetic conversions.") \
 		expr.success = static_cast<decltype(ExpectedValue)>(lhs op rhs) == ExpectedValue; \
 		if OKL_IS_NOT_CONSTEVAL { \
 			if (!expr.success) { \
@@ -176,13 +176,13 @@ constexpr ExtractedUnaryExpression<ExpectedValue, LhsT>::operator Expression() c
 		return expr; \
 	}
 
-OKL_DEFINE_UNARY_EXPRESSION(<=>);
-OKL_DEFINE_UNARY_EXPRESSION(<);
-OKL_DEFINE_UNARY_EXPRESSION(>);
-OKL_DEFINE_UNARY_EXPRESSION(<=);
-OKL_DEFINE_UNARY_EXPRESSION(>=);
-OKL_DEFINE_UNARY_EXPRESSION(==);
-OKL_DEFINE_UNARY_EXPRESSION(!=);
+OKL_DEFINE_UNARY_EXPRESSION(<=>)
+OKL_DEFINE_UNARY_EXPRESSION(<)
+OKL_DEFINE_UNARY_EXPRESSION(>)
+OKL_DEFINE_UNARY_EXPRESSION(<=)
+OKL_DEFINE_UNARY_EXPRESSION(>=)
+OKL_DEFINE_UNARY_EXPRESSION(==)
+OKL_DEFINE_UNARY_EXPRESSION(!=)
 #undef OKL_DEFINE_UNARY_EXPRESSION
 } // namespace Okl::Test::Detail
 
