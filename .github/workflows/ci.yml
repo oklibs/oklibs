@@ -24,12 +24,12 @@ jobs:
         include:
 #          - { plat: android, os: ubuntu-latest, arch: armeabi-v7a, toolchain: ndk, mode: debug }
 #          - { plat: android, os: ubuntu-latest, arch: armeabi-v7a, toolchain: ndk, mode: releasedbg }
-          - { plat: android, os: ubuntu-latest, arch: arm64-v8a, toolchain: ndk, mode: debug }
+          - { plat: android, os: ubuntu-latest, arch: arm64-v8a, toolchain: ndk, mode: debug, args: --setup_toolchains="ndk 28.0" }
 #          - { plat: android, os: ubuntu-latest, arch: arm64-v8a, toolchain: ndk, mode: releasedbg }
 
-          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: debug }
-          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg }
-          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: release, args: --dev=n }
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: debug, args: --setup_toolchains="llvm 18.1.1" }
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg, args: --setup_toolchains="llvm 18.1.1" }
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: release, args: --dev=n --setup_toolchains="llvm 18.1.1" }
 
 #          - { plat: wasm, os: ubuntu-latest, arch: wasm32, toolchain: emcc, mode: debug }
 #          - { plat: wasm, os: ubuntu-latest, arch: wasm32, toolchain: emcc, mode: releasedbg }
