@@ -3,7 +3,13 @@
 #define OKTEST_DEFINE_MAIN
 #include <oktest/short_test.hpp>
 
-#include <stdexcept>
+#if !defined(OKL_USE_STD_MODULE)
+	#include <stdexcept>
+#endif
+
+#if defined(OKL_USE_STD_MODULE)
+import std;
+#endif
 
 template<>
 struct Okl::Test::Config<Okl::Test::CustomRunner> {

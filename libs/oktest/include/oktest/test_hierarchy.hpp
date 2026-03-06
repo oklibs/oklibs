@@ -6,8 +6,7 @@
 #include "oktest/core_types.hpp"
 #include "oktest/get_runner.hpp"
 #include "oktest/test_context.hpp"
-
-#include <okutils/defines.hpp>
+#include "okutils/defines.hpp"
 
 #include <source_location>
 #include <string_view>

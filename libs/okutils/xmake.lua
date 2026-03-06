@@ -20,7 +20,9 @@ target("okutils", function()
     add_includedirs("include", "$(builddir)/.configs/okutils/include", {public = true})
     add_headerfiles("include/(**.hpp)", "$(builddir)/.configs/okutils/include/(okutils/**.hpp)")
     if has_config("use_modules") then
-        add_files("source/okl.utils.ixx")
+        add_files("source/okl.utils.cppm", {public = true})
+    else
+        add_extrafiles("source/okl.utils.cppm")
     end
 
     add_extrafiles("*|xmake.lua", "templates/**")

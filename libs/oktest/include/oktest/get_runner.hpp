@@ -6,8 +6,7 @@
 #include "oktest/logger.hpp"
 #include "oktest/registry_runner.hpp"
 #include "oktest/reporter.hpp"
-
-#include <okutils/defines.hpp>
+#include "okutils/defines.hpp"
 
 namespace Okl::Test
 {

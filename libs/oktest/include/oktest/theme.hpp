@@ -3,10 +3,13 @@
 #ifndef OKTEST_THEME_HPP
 #define OKTEST_THEME_HPP
 
+#include "okutils/defines.hpp"
+
 #include <fmt/color.h>
 
 namespace Okl::Test
 {
+OKL_EXPORT_BEGIN
 struct Theme {
 	fmt::text_style error{};
 	fmt::text_style warning{};
@@ -27,6 +30,7 @@ inline constexpr Theme default_theme{
     .highlight = fmt::fg(fmt::terminal_color::bright_cyan),
     .indent = fmt::emphasis::faint};
 } // namespace Themes
+OKL_EXPORT_END
 } // namespace Okl::Test
 
 #endif

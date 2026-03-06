@@ -1,7 +1,7 @@
 -- Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
 set_project("oklibs")
-set_xmakever("3.0.3")
+set_xmakever("3.0.5")
 set_license("BSL-1.0")
 set_version("0.1.0")
 

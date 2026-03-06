@@ -5,9 +5,9 @@
 
 #include "oktest/config.hpp"
 #include "oktest/core_types.hpp"
+#include "okutils/types.hpp"
 
 #include <fmt/base.h>
-#include <okutils/types.hpp>
 
 #include <algorithm>
 #include <array>

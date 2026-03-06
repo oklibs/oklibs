@@ -5,9 +5,9 @@
 
 #include "oktest/core_types.hpp"
 #include "oktest/test_context.hpp"
+#include "okutils/types.hpp"
 
 #include <fmt/base.h>
-#include <okutils/types.hpp>
 
 #include <array>
 #include <cstdio>

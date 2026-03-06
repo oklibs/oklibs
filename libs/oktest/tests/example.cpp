@@ -3,9 +3,15 @@
 #include <oktest/short_test.hpp>
 #include <okutils/defines.hpp>
 
-#include <cstdint>
-#include <cstdlib>
-#include <stdexcept>
+#if !defined(OKL_USE_STD_MODULE)
+	#include <cstdint>
+	#include <cstdlib>
+	#include <stdexcept>
+#endif
+
+#if defined(OKL_USE_STD_MODULE)
+import std;
+#endif
 
 TEST_CASE(""){};
 

@@ -4,12 +4,12 @@
 
 #include "oktest/core_types.hpp"
 #include "oktest/test_context.hpp"
+#include "okutils/defines.hpp"
+#include "okutils/types.hpp"
 
 #include <fmt/base.h>
 #include <fmt/color.h>
 #include <fmt/ranges.h>
-#include <okutils/defines.hpp>
-#include <okutils/types.hpp>
 
 #include <cstdint>
 #include <ranges>

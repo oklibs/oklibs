@@ -3,19 +3,26 @@
 #ifndef OKTEST_TEST_HPP
 #define OKTEST_TEST_HPP
 
-#include "oktest/assert_handler.hpp" // IWYU pragma: export
-#include "oktest/core_types.hpp" // IWYU pragma: export
-#include "oktest/expression.hpp" // IWYU pragma: export
-#include "oktest/get_runner.hpp" // IWYU pragma: export
-#include "oktest/test_hierarchy.hpp" // IWYU pragma: export
+#if !defined(OKL_USE_MODULES)
+	#include "oktest/assert_handler.hpp" // IWYU pragma: export
+	#include "oktest/core_types.hpp" // IWYU pragma: export
+	#include "oktest/expression.hpp" // IWYU pragma: export
+	#include "oktest/get_runner.hpp" // IWYU pragma: export
+	#include "oktest/test_hierarchy.hpp" // IWYU pragma: export
+#endif
+#include "oktest/config.hpp"
+#include "okutils/defines.hpp"
 
 #include <fmt/format.h>
-#include <okutils/defines.hpp>
+
+#if defined(OKL_USE_MODULES)
+import okl.test;
+#endif
 
 #if defined(OKTEST_DEFINE_MAIN)
 	#include <cstdlib>
 
-OKTEST_EXPORT int main()
+OKTEST_EXPORT int main([[maybe_unused]] const int argc, [[maybe_unused]] char* argv[])
 {
 	Okl::Test::run_tests();
 	return EXIT_SUCCESS;

@@ -3,9 +3,10 @@
 #ifndef OKTEST_EXPRESSION_HPP
 #define OKTEST_EXPRESSION_HPP
 
+#include "okutils/defines.hpp"
+
 #include <fmt/base.h>
 #include <fmt/format.h>
-#include <okutils/defines.hpp>
 
 #include <concepts>
 #include <string_view>

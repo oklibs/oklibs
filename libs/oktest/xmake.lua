@@ -17,7 +17,7 @@ add_requires("fmt >=12.0.0")
 
 includes("tests/outputs/*.lua")
 target("oktest", function()
-    set_kind("static")
+    set_kind(has_config("use_modules") and "moduleonly" or "static")
     add_deps("okutils", "okbitflag")
     add_packages("fmt", {public = true})
 
@@ -26,7 +26,13 @@ target("oktest", function()
 
     add_includedirs("include", "$(builddir)/.configs/oktest/include", {public = true})
     add_headerfiles("include/(**.hpp)", "$(builddir)/.configs/oktest/include/(oktest/**.hpp)")
-    add_files("source/**.cpp")
+    if has_config("use_modules") then
+        add_extrafiles("source/**.cpp")
+        add_files("source/okl.test.ixx")
+    else
+        add_files("source/**.cpp")
+        add_extrafiles("source/okl.test.ixx")
+    end
 
     add_extrafiles("*|xmake.lua", "templates/**", "tests/**")
 
@@ -37,7 +43,10 @@ target("oktest", function()
     add_tests("short_macros", {kind = "binary", files = "tests/short_macros.cpp", plain = true, pass_outputs = macros_ouput, build_should_pass = is_cross()})
     add_tests("sections", {kind = "binary", files = "tests/sections.cpp", plain = true, pass_outputs = sections_output, build_should_pass = is_cross()})
     add_tests("success", {kind = "binary", files = "tests/success.cpp", plain = true, pass_outputs = success_ouput, build_should_pass = is_cross()})
-    for _, testfile in ipairs(os.files("tests/benchmarks/*.cpp")) do
-        add_tests("bench_" .. path.basename(testfile), {kind = "binary", group = "bench", files = testfile, build_should_pass = is_cross()})
-    end
+
+    add_tests("bench_asserts", {kind = "binary", group = "bench", files = "tests/benchmarks/asserts.cpp", build_should_pass = is_cross()})
+    add_tests("bench_include", {kind = "binary", group = "bench", files = "tests/benchmarks/include.cpp", build_should_pass = is_cross()})
+    add_tests("bench_template_test_cases", {kind = "binary", group = "bench", files = "tests/benchmarks/template_test_cases.cpp", build_should_pass = is_cross()})
+    add_tests("bench_test_cases", {kind = "binary", group = "bench", files = "tests/benchmarks/test_cases.cpp", build_should_pass = is_cross()})
+    add_tests("bench_test_cases2", {kind = "binary", group = "bench", files = "tests/benchmarks/test_cases2.cpp", build_should_pass = is_cross()})
 end)
