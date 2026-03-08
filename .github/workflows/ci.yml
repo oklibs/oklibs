@@ -6,18 +6,19 @@ on:
     branches: [main, dev]
     paths-ignore: [.gitignore, LICENSE, README.md]
 
-permissions:
-  contents: read
+permissions: {}
 
 concurrency:
-  group: ${{ github.repository }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    timeout-minutes: 30
-    runs-on: ${{ matrix.os }}
     name: ${{ join(matrix.*, ', ') }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    permissions:
+      contents: read # Only needed for private repos.
     strategy:
       fail-fast: false
       matrix:
@@ -55,10 +56,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Setup xmake
-        uses: xmake-io/github-action-setup-xmake@v1
+        uses: xmake-io/github-action-setup-xmake@cc0f56c35b75d0975ed5d9e29005fae707721cd5 # v1
         with:
           xmake-version: 3.0.7
           actions-cache-folder: .xmake-cache
@@ -69,12 +72,13 @@ jobs:
 
       - name: Setup Cpp
         if: matrix.compiler
-        uses: aminya/setup-cpp@v1
+        uses: aminya/setup-cpp@1f17f92d6a52bfcb1a25348e2c526c2e5cbb1134 # v1
         with:
           compiler: ${{ matrix.compiler }}
 
       - name: Config and dependencies
-        run: xmake f -vy -p ${{ matrix.plat }} -a ${{ matrix.arch }} --toolchain=${{ matrix.toolchain }} -m ${{ matrix.mode }} ${{ matrix.args }}
+        run: | # zizmor: ignore[template-injection] Matrix is static.
+          xmake f -vy -p ${{ matrix.plat }} -a ${{ matrix.arch }} --toolchain=${{ matrix.toolchain }} -m ${{ matrix.mode }} ${{ matrix.args }}
 
       - name: Build and run tests
         run: xmake test -v
