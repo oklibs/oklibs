@@ -1,0 +1,32 @@
+name: zizmor
+
+on:
+  pull_request:
+  push:
+    branches: [main, dev]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  zizmor:
+    name: Run zizmor
+    runs-on: ubuntu-latest
+    permissions:
+      # security-events: write
+      contents: read # Only needed for private repos.
+      actions: read # Only needed for private repos.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@0dce2577a4760a2749d8cfb7a84b7d5585ebcb7d # v0.5.0
+        with:
+          # ToDo?: Enable advanced-security once repo is public.
+          advanced-security: false
