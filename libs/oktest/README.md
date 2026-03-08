@@ -1,9 +1,9 @@
 # oktest
 
-**oktest** is a modern, header-only C++20 testing framework designed with first-class support for compile-time testing
-(`constexpr` and `consteval`).
+A C++20 testing framework designed with first-class support for compile-time testing (`constexpr` and
+`consteval`).
 
-## Early Development / Experimental
+## Experimental / Early Development
 
 The library is currently in an **early stage of development**. The API, macro definitions, and internal implementation
 details are considered experimental and are subject to breaking changes.
@@ -20,6 +20,11 @@ fixtures, complex matchers, and runtime reporting of compile-time checks) are st
 * **Section-Based Testing:** Supports branching sections (`SECTION`) where test cases are re-run for each path.
 * **Templated Tests:** Easily test types and type lists.
 * **Fmt Integration:** Uses `{fmt}` for formatting output messages.
+* Works without exceptions*
+* High customizability
+* Supports nested test cases (see [Limitations](#nested-test-cases))
+
+\* `REQUIRE` checks will abort the entire run.
 
 ## Dependencies
 
@@ -59,17 +64,20 @@ CONSTEXPR_TEST_CASE("Compile-time and runtime test") {
 };
 ```
 
-## Detailed Usage
+## Documentation
+
+See [test.hpp](include/oktest/test.hpp) and [examples.cpp](tests/examples.hpp) for more detailed docs and usage
+examples.
 
 ### 1. Test Cases
 
-`oktest` provides three tiers of test cases depending on when you want the logic verified.
+`oktest` provides three types of test cases depending on when you want the logic verified.
 
-| Macro                       | Execution Time    | Usage                                       |
-|:----------------------------|:------------------|:--------------------------------------------|
-| `TEST_CASE(name)`           | Runtime           | Standard logic, I/O.                        |
-| `CONSTEXPR_TEST_CASE(name)` | Compile & Runtime | Algorithms that must work in both contexts. |
-| `CONSTEVAL_TEST_CASE(name)` | Compile-time Only | Meta-programming, static guarantees.        |
+| Macro                       | Execution Time    |
+|:----------------------------|:------------------|
+| `TEST_CASE(name)`           | Runtime only      |
+| `CONSTEXPR_TEST_CASE(name)` | Compile & runtime |
+| `CONSTEVAL_TEST_CASE(name)` | Compile-time only |
 
 **Templated Tests:**
 You can instantiate tests for multiple types using `_TEMPLATE` or `_TEMPLATE_LIST` variants.
@@ -90,32 +98,26 @@ TEST_CASE_TEMPLATE_LIST("List types", Okl::Test::TypeList<int, float>) {
 
 ### 2. Assertions
 
+| Macro                                       | Behaviour                                                 |
+|:--------------------------------------------|:----------------------------------------------------------|
+| `CHECK(expr)`                               | Fail test but continue execution                          |
+| `REQUIRE(expr)`                             | Fail and abort the current test case                      |
+| `CHECK_/REQUIRE_NOT(expr)`                  | Allows decomposition for negative checks                  |
+| `CONSTEXPR_CHECK/_REQUIRE(expr)`            | Execute assert for compile & runtime                      |
+| `CONSTEVAL_CHECK/_REQUIRE(expr)`            | Execute assert for compile compile-time only              |
+| `CHECK_/REQUIRE_THROWS(expr)`               | Assert the expression throws an exception                 |
+| `CHECK_/REQUIRE_THROWS_AS(exception, expr)` | Assert the expression throws the specified exception      |
+| `CHECK_/REQUIRE_NOTHROW(expr)`              | Assert the expression does not throw                      |
+| `CONSTEXPR_CHECK_/REQUIRE_NOTHROW(expr)`    | Assert the expression does not throw at compile & runtime |
+| `CONSTEVAL_CHECK_/REQUIRE_NOTHROW(expr)`    | Assert the expression does not throw at compile-time only |
+
 Assertions support streaming messages using `<<`.
 
-* **`CHECK(expr)`**: Reports failure but continues execution.
-* **`REQUIRE(expr)`**: Reports failure and aborts the current test case.
-* **`CHECK_NOT(expr)`** / **`REQUIRE_NOT(expr)`**: Verifies the expression is false.
-
-#### Compile-Time Assertions
-
-When using `CONSTEXPR` or `CONSTEVAL` macros, these assertions currently translate to `static_assert` under the hood.
-
 ```cpp
-CONSTEXPR_CHECK(1 + 1 == 2); // Runtime + static_asserts at compile time.
+CHECK(x == 42) << "x is not 42";
 ```
 
-#### Exception Assertions
-
-*Note: Exception assertions are generally runtime-only.*
-
-* `CHECK_THROWS(expr)`
-* `CHECK_THROWS_AS(ExceptionType, expr)`
-* `CHECK_NOTHROW(expr)`
-* (And corresponding `REQUIRE` variants)
-
 ### 3. Sections and Scopes
-
-`oktest` manages the execution loop to allow for nested test paths.
 
 * **`SECTION(name)`**: A branching point. The test case effectively re-runs from the start to enter this section.
   Variables declared outside the section are reset for every run.
@@ -131,15 +133,15 @@ CONSTEXPR_TEST_CASE("Vector") {
     };
 
     SECTION("Empty") {
-        CHECK(values.empty()); // values is empty here, unaffected by "Pushing".
+        CHECK(values.empty()); // `values` is empty here, unaffected by "Pushing".
     };
 };
 ```
 
 ## Short Macros
 
-The library provides namespaced macros (prefixed with `OKL_`) by default to avoid collisions. However, if you include
-`<oktest/short_test.hpp>` (as seen in the examples), you can use the shorthand versions:
+The library provides namespaced macros (prefixed with `OKL_`) in `<oktest/test.hpp>` by default to avoid collisions.
+However, if you include `<oktest/short_test.hpp>` (as seen in the examples), you can use the shorthand versions:
 
 * `TEST_CASE` instead of `OKL_TEST_CASE`
 * `CHECK` instead of `OKL_CHECK`
