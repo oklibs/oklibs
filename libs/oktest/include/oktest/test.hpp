@@ -420,10 +420,6 @@ OKTEST_EXPORT int main([[maybe_unused]] const int argc, [[maybe_unused]] char* a
 	#define OKL_CONSTEVAL_CHECK_NOTHROW(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(check, nothrow, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
 #endif
 
-// ToDo?:
-// OKL_TEST_CASE_METHOD (Test fixture, access to protected functions)
-// OKL_FAIL_REQUIRE/CHECK (just fail the test)
-
 
 #define OKTEST_PRIVATE_CHECK(assertType, assertModifier, assertMode, expectedValue, extraSuccess, ...) \
 	if (const ::Okl::Test::Detail::Expression OKL_CHECK_IMPL_expression{::Okl::Test::Detail::ExpressionExtractor<expectedValue>{} <=> __VA_ARGS__}; /* NOLINT(bugprone-chained-comparison) */ \

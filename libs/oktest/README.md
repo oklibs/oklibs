@@ -11,6 +11,8 @@ details are considered experimental and are subject to breaking changes.
 While the core functionality for runtime and compile-time testing is operational, advanced features (such as test
 fixtures, complex matchers, and runtime reporting of compile-time checks) are still being planned or implemented.
 
+See [Limitations](#limitations) and [ToDos](#todos).
+
 ## Features
 
 * **Three Execution Modes:**
@@ -147,3 +149,76 @@ However, if you include `<oktest/short_test.hpp>` (as seen in the examples), you
 * `CHECK` instead of `OKL_CHECK`
 * `SECTION` instead of `OKL_SECTION`
 * etc.
+
+## Limitations
+
+### Compile-time tests
+
+Currently, failures in compile-time tests and asserts fill result in a compile-time error. This limits the amount of
+information available, like decomposed expressions. If constexpr test cases are used by default, and since most runtime
+failures will also fail at compile-time, the reported information will be limited.
+
+It might be possible to report these at runtime for both test cases and asserts instead. Additionally, the compile-time
+errors can also be further improved by reducing noise.
+
+### Nested test cases
+
+In theory with the current setup, it would be possible to arbitrarily nest test cases of any type. However, it does not
+seem possible to make runtime test cases constexpr compatible without the compiler optimizing them away.
+This results in constexpr test cases not being able to be nested (only consteval test cases, sections, and scopes can be
+used).
+
+```cpp
+TEST_CASE("")
+{
+    TEST_CASE("") {};           // This works.
+    CONSTEXPR_TEST_CASE("") {}; // This works.
+    CONSTEVAL_TEST_CASE("") {}; // This works.
+};
+
+CONSTEXPR_TEST_CASE("")
+{
+    TEST_CASE("") {};           // This does not work (intended?).
+    CONSTEXPR_TEST_CASE("") {}; // This does not work (intended?).
+    CONSTEVAL_TEST_CASE("") {}; // This works.
+};
+
+CONSTEVAL_TEST_CASE("")
+{
+    TEST_CASE("") {};           // This does not work (intended?).
+    CONSTEXPR_TEST_CASE("") {}; // This does not work (intended).
+    CONSTEVAL_TEST_CASE("") {}; // This works.
+};
+```
+
+Template test cases can be made to work nested as well (with the above limitations), but would require the user to
+specify the name for the template parameter explicitly. While currently not provided, the macros can be easily modified
+to support this.
+
+### Multithreading
+
+With the libraries threading guarantees it is not (easily) possible to run test cases in parallel.
+It is possible to implement a custom runner to run test cases in parallel and to not make use of the library's
+threading guarantees. This might be implemented as an optional feature in the future.
+
+### IDE Integrations
+
+There are no IDE integrations for this library, and since it works differently from other testing frameworks, other
+integrations will most likely not work with it. Unfortunately, JetBrain's constexpr debugger does not detect constexpr
+expressions in macros; otherwise constexpr and consteval tests could be made to work with it.
+
+## ToDos
+
+Not all of these will be guaranteed to be implemented, this is more of a list of ideas.
+
+- [ ] add a library option to define `main` function (no need for `OKTEST_DEFINE_MAIN`)
+- [ ] improve compile-time error reporting
+- [ ] allow runtime error reporting for compile-time asserts
+- [ ] allow runtime error reporting for compile-time test cases
+- [ ] add `TEST_CASE_METHOD` (test fixture and access to protected functions)
+- [ ] add `FAIL_CHECK/_REQUIRE` (fail test case)
+- [ ] support sharding
+- [ ] add an option to disable heap allocations (currently only large decomposed expressions allocate)
+- [ ] allow heap allocated test cases
+- [ ] add more tests
+- [ ] provide more utility for customizing runner/reporter/logger
