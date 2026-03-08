@@ -30,3 +30,4 @@ jobs:
         with:
           # ToDo?: Enable advanced-security once repo is public.
           advanced-security: false
+          persona: pedantic
