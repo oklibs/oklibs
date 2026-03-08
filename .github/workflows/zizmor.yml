@@ -16,7 +16,7 @@ jobs:
     name: Run zizmor
     runs-on: ubuntu-latest
     permissions:
-      # security-events: write
+      # security-events: write # Only needed for advanced-security.
       contents: read # Only needed for private repos.
       actions: read # Only needed for private repos.
     steps:
