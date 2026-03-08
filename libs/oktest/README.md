@@ -156,6 +156,63 @@ CONSTEXPR_TEST_CASE("Vector") {
 };
 ```
 
+### 4. Customization
+
+```cpp
+template<>
+struct Okl::Test::Config<Okl::Test::CustomRunner> {
+    static inline constinit RegistryRunner<Reporter<Logger>> runner{{
+        .theme = Okl::Test::Themes::no_color,
+        .max_filename_display_size = 128,
+    }};
+};
+```
+
+The library runners provide 2 customization points:
+
+- reporter – Responsible for counting tests, determining test case failures, and calling the logger.
+- logger – responsible for outputting testing results.
+
+```cpp
+#include <oktest/core_types.hpp>
+
+struct MyCustomReporter {
+	~Reporter() noexcept(false);
+	void before_test_node(const Okl::Test::TestNodeData&);
+	void after_test_node(const Okl::Test::TestNodeData&);
+	void after_passed_assert(const Okl::Test::AssertData&) noexcept;
+	void after_failed_assert(const Okl::Test::AssertData&);
+};
+
+struct MyCustomLogger {
+	void before_test_node(const Okl::Test::TestNodeData&);
+	void after_runtime_test_node(const Okl::Test::TestNodeData&, bool success) noexcept;
+	void after_compile_time_test_node(const Okl::Test::TestNodeData&, bool success) noexcept;
+	void after_passed_assert(const Okl::Test::AssertData&) const noexcept;
+	void after_failed_assert(const Okl::Test::AssertData&) const;
+	void before_shutdown(const Okl::Test::RunData&) const;
+};
+```
+
+The runner can also be completely customized. Note that the runner is also responsible for `SECTION` and `REQUIRE`
+handling. See [registry_runner.hpp](include/oktest/registry_runner.hpp) and [runner.hpp](include/oktest/runner.hpp) for
+example implementations.
+
+```cpp
+#include <oktest/core_types.hpp>
+
+struct MyCustomRunner {
+    void run_tests();
+    constexpr void before_test_node(const Okl::Test::TestNodeData&);
+    constexpr void after_test_node(const Okl::Test::TestNodeData&);
+    constexpr void after_passed_assert(const Okl::Test::AssertData&);
+    void after_failed_assert(const Okl::Test::AssertData&);
+    constexpr void on_test_case(const Okl::Test::TestCaseData&);
+};
+
+template<> struct Okl::Test::Config<Okl::Test::CustomRunner> { static inline constinit MyCustomRunner runner; };
+```
+
 ## Short Macros
 
 The library provides namespaced macros (prefixed with `OKL_`) in `<oktest/test.hpp>` by default to avoid collisions.
