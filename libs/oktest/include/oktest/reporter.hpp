@@ -3,6 +3,7 @@
 #ifndef OKTEST_REPORTER_HPP
 #define OKTEST_REPORTER_HPP
 
+#include "oktest/config.hpp"
 #include "oktest/core_types.hpp"
 #include "oktest/test_context.hpp"
 #include "okutils/types.hpp"
@@ -36,7 +37,7 @@ public:
 	void after_failed_assert(const AssertData&);
 
 protected:
-	static constexpr size_t max_depth{8};
+	static constexpr size_t max_depth{OKTEST_MAX_NESTED_NODES};
 	RunData m_summary{};
 	std::array<size_t, max_depth> m_asserts_failed{};
 	size_t m_current_assert{0};

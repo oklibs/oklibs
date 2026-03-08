@@ -3,9 +3,22 @@
 set_version("0.1.0")
 
 ----------------------------------------------------------------------------------------------------
+--- Library options
+
+option("max_nested", {description = "Maximum nesting level for test cases and sections.", default = 8})
+option("with_exceptions", {description = "Allow exception usage.", default = true})
+
+----------------------------------------------------------------------------------------------------
 --- Build settings
 
 set_languages("c++20")
+
+if has_config("max_nested") then
+    add_defines("OKTEST_MAX_NESTED_NODES=8")
+end
+if has_config("with_exceptions") then
+    add_defines("OKTEST_WITH_EXCEPTIONS=1")
+end
 
 ----------------------------------------------------------------------------------------------------
 --- Dependencies

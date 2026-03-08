@@ -66,6 +66,22 @@ CONSTEXPR_TEST_CASE("Compile-time and runtime test") {
 };
 ```
 
+## Configuration
+
+The library can be configured via `xmake` options:
+
+| Option            | Description                                        | Default |
+|:------------------|:---------------------------------------------------|:--------|
+| `max_nested`      | Maximum nesting level for test cases and sections. | `8`     |
+| `with_exceptions` | Allow exception usage.                             | `true`  |
+
+Alternatively, you can define the following macros before including the library headers:
+
+| Macro                     | Description                                        | Default |
+|:--------------------------|:---------------------------------------------------|:--------|
+| `OKTEST_MAX_NESTED_NODES` | Maximum nesting level for test cases and sections. | `8`     |
+| `OKTEST_WITH_EXCEPTIONS`  | Enable/disable exception usage (0 or 1).           | `1`     |
+
 ## Documentation
 
 See [test.hpp](include/oktest/test.hpp) and [examples.cpp](tests/examples.hpp) for more detailed docs and usage
