@@ -87,11 +87,11 @@
 	#define OKL_DISABLE_WARNING_APPLE_CLANG(warningName, ...) OKL_DISABLE_WARNING(, warningName)
 #elif OKL_COMPILER_CLANG_AVAILABLE
 	#if defined(OKL_USE_MODULES)
-		#if (OKL_COMPILER_CLANG_VERSION < OKL_ENCODE_VERSION(18, 0, 0))
-			#error "okutils: Modules require Clang version 18.0.0 or later."
+		#if (OKL_COMPILER_CLANG_VERSION < OKL_ENCODE_VERSION(21, 0, 0))
+			#error "okutils: Modules require Clang version 21.0.0 or later."
 		#endif
-	#elif OKL_COMPILER_CLANG_VERSION < OKL_ENCODE_VERSION(16, 0, 0)
-		#error "okutils: Requires Clang version 16.0.0 or later."
+	#elif OKL_COMPILER_CLANG_VERSION < OKL_ENCODE_VERSION(19, 0, 0)
+		#error "okutils: Requires Clang version 19.0.0 or later."
 	#endif
 	#define OKL_COMPILER_CLANG 1
 	#define OKL_DISABLE_WARNING_CLANG(warningName, ...) OKL_DISABLE_WARNING(, warningName)

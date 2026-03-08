@@ -1,7 +1,7 @@
 -- Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
 set_project("oklibs")
-set_xmakever("3.0.3")
+set_xmakever("3.0.7")
 set_license("BSL-1.0")
 set_version("0.1.0")
 
@@ -97,7 +97,12 @@ if has_config("dev") then
 end
 
 if has_config("setup_toolchains") then
-    if is_plat("android") then
+    if type(get_config("setup_toolchains")) == "string" then
+        local setup_toolchains = get_config("setup_toolchains")
+        local package_name = setup_toolchains:split(" ", {plain = true})[1] or ""
+        add_requires(setup_toolchains)
+        set_toolchains(get_config("toolchain") .. "@" .. package_name)
+    elseif is_plat("android") then
         if not has_config("toolchain") or is_config("toolchain", "ndk") then
             add_requires("ndk >=26.0")
             set_toolchains("ndk@ndk")

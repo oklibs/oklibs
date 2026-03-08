@@ -24,12 +24,12 @@ jobs:
         include:
 #          - { plat: android, os: ubuntu-latest, arch: armeabi-v7a, toolchain: ndk, mode: debug }
 #          - { plat: android, os: ubuntu-latest, arch: armeabi-v7a, toolchain: ndk, mode: releasedbg }
-          - { plat: android, os: ubuntu-latest, arch: arm64-v8a, toolchain: ndk, mode: debug }
+          - { plat: android, os: ubuntu-latest, arch: arm64-v8a, toolchain: ndk, mode: debug, args: --setup_toolchains="ndk 28.0" }
 #          - { plat: android, os: ubuntu-latest, arch: arm64-v8a, toolchain: ndk, mode: releasedbg }
 
-          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: debug }
-          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg }
-          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: release, args: --dev=n }
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: debug, compiler: llvm-19 }
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg, compiler: llvm-19 }
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: release, compiler: llvm-19, args: --dev=n }
 
 #          - { plat: wasm, os: ubuntu-latest, arch: wasm32, toolchain: emcc, mode: debug }
 #          - { plat: wasm, os: ubuntu-latest, arch: wasm32, toolchain: emcc, mode: releasedbg }
@@ -50,7 +50,8 @@ jobs:
 #          - { plat: windows, os: windows-latest, arch: x86, toolchain: msvc, mode: debug }
 #          - { plat: windows, os: windows-latest, arch: x86, toolchain: msvc, mode: releasedbg }
 
-          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg, args: --use_modules=y }
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg, compiler: llvm-21, args: --use_modules=y }
+#         - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg, compiler: llvm-21, args: --use_modules=y  --use_std_module=y }
 
     steps:
       - name: Checkout
@@ -59,15 +60,21 @@ jobs:
       - name: Setup xmake
         uses: xmake-io/github-action-setup-xmake@v1
         with:
-          xmake-version: 3.0.3
+          xmake-version: 3.0.7
           actions-cache-folder: .xmake-cache
           package-cache: true
           package-cache-key: ${{ matrix.plat }}_${{ matrix.arch }}_${{ matrix.toolchain }}_${{ matrix.mode }}
           build-cache: true
           build-cache-key: ${{ matrix.plat }}_${{ matrix.arch }}_${{ matrix.toolchain }}_${{ matrix.mode }}
 
+      - name: Setup Cpp
+        if: matrix.compiler
+        uses: aminya/setup-cpp@v1
+        with:
+          compiler: ${{ matrix.compiler }}
+
       - name: Config and dependencies
         run: xmake f -vy -p ${{ matrix.plat }} -a ${{ matrix.arch }} --toolchain=${{ matrix.toolchain }} -m ${{ matrix.mode }} ${{ matrix.args }}
 
       - name: Build and run tests
-        run: xmake test
+        run: xmake test -v

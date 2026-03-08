@@ -26,7 +26,13 @@ target("okbitflag", function()
         add_extrafiles("source/okl.bitflag.ixx")
     end
 
-    add_extrafiles("*|xmake.lua", "templates/**", "tests/**")
+    add_extrafiles("*|xmake.lua", "templates/**")
+end)
 
+target("okbitflag_tests", function()
+    set_kind("phony")
+    set_group("okbitflag")
+    add_deps("okbitflag", "oktest")
+    add_extrafiles("tests/**")
     add_tests("tests", {kind = "binary", files = "tests/**.cpp", build_should_pass = is_cross()})
 end)

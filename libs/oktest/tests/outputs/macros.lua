@@ -1,0 +1,5 @@
+macros_ouput = [[
+
+==========================================
+success: all tests passed (15 test cases (+7 at compile-time), 46 assertions)
+]]

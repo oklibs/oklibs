@@ -1,0 +1,27 @@
+sections_output = [[
+root
+1
+1.1
+root
+2
+2.1
+root
+2
+2.2
+2.2.1
+2.2.1.1
+root
+2
+2.2
+2.2.1
+2.2.1.2
+root
+2
+2.3
+root
+2
+2.4
+
+==========================================
+success: all tests passed (1 test cases (+0 at compile-time), 0 assertions)
+]]
