@@ -1,4 +1,3 @@
-sections_output = [[
 root
 1
 1.1
@@ -24,4 +23,3 @@ root
 
 ==========================================
 success: all tests passed (1 test cases (+0 at compile-time), 0 assertions)
-]]
