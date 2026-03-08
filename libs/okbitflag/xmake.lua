@@ -21,9 +21,9 @@ target("okbitflag", function()
     add_includedirs("include", "$(builddir)/.configs/okbitflag/include", {public = true})
     add_headerfiles("include/(**.hpp)", "$(builddir)/.configs/okbitflag/include/(okbitflag/**.hpp)")
     if has_config("use_modules") then
-        add_files("source/okl.bitflag.ixx")
+        add_files("source/okl.bitflag.cppm")
     else
-        add_extrafiles("source/okl.bitflag.ixx")
+        add_extrafiles("source/okl.bitflag.cppm")
     end
 
     add_extrafiles("*|xmake.lua", "templates/**")

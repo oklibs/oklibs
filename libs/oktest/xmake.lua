@@ -28,10 +28,10 @@ target("oktest", function()
     add_headerfiles("include/(**.hpp)", "$(builddir)/.configs/oktest/include/(oktest/**.hpp)")
     if has_config("use_modules") then
         add_extrafiles("source/**.cpp")
-        add_files("source/okl.test.ixx")
+        add_files("source/okl.test.cppm")
     else
         add_files("source/**.cpp")
-        add_extrafiles("source/okl.test.ixx")
+        add_extrafiles("source/okl.test.cppm")
     end
 
     add_extrafiles("*|xmake.lua", "templates/**", "tests/**")
