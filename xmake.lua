@@ -96,7 +96,12 @@ if has_config("dev") then
     -- attributes that are incompatible with strict conformance mode.
     add_defines("SAL_NO_ATTRIBUTE_DECLARATIONS=1", {tools = {"cl"}})
 
-    add_cxflags("-Wno-c++98-compat-pedantic", "-Wno-c++20-compat", "-Wno-padded", {tools = {"clang", "clangxx", "clang_cl", "emcc", "emxx"}})
+    add_cxflags(
+        "-Wno-c++98-compat-pedantic",
+        "-Wno-c++20-compat",
+         "-Wno-c2y-extensions",
+        "-Wno-padded",
+        {tools = {"clang", "clangxx", "clang_cl", "emcc", "emxx"}})
     add_cxflags("-pedantic-errors", "-fsafe-buffer-usage-suggestions", {tools = {"clang", "clangxx", "emcc", "emxx"}})
 end
 
