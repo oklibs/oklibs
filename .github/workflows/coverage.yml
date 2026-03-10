@@ -1,0 +1,58 @@
+name: Code Coverage
+
+on:
+  pull_request:
+  push:
+    branches: [main, dev]
+    paths-ignore: [.gitignore, LICENSE, README.md]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  coverage:
+    name: llvm-cov
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Setup xmake
+        uses: xmake-io/github-action-setup-xmake@cc0f56c35b75d0975ed5d9e29005fae707721cd5 # v1
+        with:
+          xmake-version: 3.0.7
+          actions-cache-folder: .xmake-cache
+          package-cache: true
+          package-cache-key: coverage_linux_x86_64_llvm
+          build-cache: true
+          build-cache-key: coverage_linux_x86_64_llvm
+
+      - name: Setup Cpp
+        uses: aminya/setup-cpp@1f17f92d6a52bfcb1a25348e2c526c2e5cbb1134 # v1
+        with:
+          compiler: llvm-21.1.8
+
+      - name: Config and dependencies
+        run: xmake f -vy --toolchain=llvm -m debug --ccache=n --coverage=y
+
+      - name: Build and run tests
+        run: xmake test -v
+
+      - name: Generate coverage report
+        run: xmake coverage -f lcov,html
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: coverage-report
+          path: |
+            build/coverage/lcov.info
+            build/coverage/html/
