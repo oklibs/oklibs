@@ -19,6 +19,7 @@ module;
 
 #include <algorithm>
 #include <array>
+#include <climits>
 #include <concepts>
 #include <cstdint>
 #include <cstdio>
