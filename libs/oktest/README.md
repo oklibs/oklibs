@@ -26,7 +26,7 @@ See [Limitations](#limitations) and [ToDos](#todos).
 * High customizability
 * Supports nested test cases (see [Limitations](#nested-test-cases))
 
-\* `REQUIRE` checks will abort the entire run.
+\* Without exceptions `REQUIRE` checks will abort the entire run.
 
 ## Dependencies
 
