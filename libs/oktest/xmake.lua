@@ -48,7 +48,7 @@ target("oktest", function()
 
     add_extrafiles("*|xmake.lua", "templates/**", "tests/**")
 
-    add_tests("example", {kind = "binary", files = "tests/examples.cpp", build_should_pass = is_cross()})
+    add_tests("examples", {kind = "binary", files = "tests/examples.cpp", build_should_pass = is_cross()})
     add_tests("fail_compile_time_assert", { kind = "binary", files = "tests/fail_compile_time_assert.cpp", build_should_fail = true})
     add_tests("fail_compile_time_test", { kind = "binary", files = "tests/fail_compile_time_test.cpp", build_should_fail = true})
     add_tests("macros", {kind = "binary", files = "tests/macros.cpp", plain = true, pass_output_files = "tests/outputs/macros.txt", build_should_pass = is_cross()})

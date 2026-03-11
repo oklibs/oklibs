@@ -10,7 +10,9 @@ module;
 
 // Compilers seem to only properly handle mixed includes and imports for std headers.
 #define OKBITFLAG_BITFLAG_HPP
+#include "okbitflag/bitflag.hpp"
 #define OKUTILS_TYPES_HPP
+#include "okutils/types.hpp"
 
 #include <fmt/base.h>
 #include <fmt/color.h>
@@ -19,6 +21,7 @@ module;
 
 #include <algorithm>
 #include <array>
+#include <climits>
 #include <concepts>
 #include <cstdint>
 #include <cstdio>

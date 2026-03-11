@@ -5,6 +5,8 @@ set_xmakever("3.0.7")
 set_license("BSL-1.0")
 set_version("0.1.0")
 
+add_plugindirs("xmake/plugins")
+includes("xmake/rules/**.lua")
 includes("libs/*/xmake.lua")
 
 ----------------------------------------------------------------------------------------------------
@@ -12,7 +14,9 @@ includes("libs/*/xmake.lua")
 
 option("use_modules", {description = "Build libraries as c++ modules.", default = false})
 option("use_std_module", {description = "Use std module instead of includes.", default = false})
+
 option("dev", {description = "Enable developer mode.", default = true})
+option("coverage", {description = "Enable code coverage data generation.", default = false})
 
 -- Not all toolchain packages can detect system installations.
 option("setup_toolchains", {description = "Install toolchains as packages if not found.", default = false})
@@ -92,8 +96,17 @@ if has_config("dev") then
     -- attributes that are incompatible with strict conformance mode.
     add_defines("SAL_NO_ATTRIBUTE_DECLARATIONS=1", {tools = {"cl"}})
 
-    add_cxflags("-Wno-c++98-compat-pedantic", "-Wno-c++20-compat", "-Wno-padded", {tools = {"clang", "clangxx", "clang_cl", "emcc", "emxx"}})
+    add_cxflags(
+        "-Wno-c++98-compat-pedantic",
+        "-Wno-c++20-compat",
+         "-Wno-c2y-extensions",
+        "-Wno-padded",
+        {tools = {"clang", "clangxx", "clang_cl", "emcc", "emxx"}})
     add_cxflags("-pedantic-errors", "-fsafe-buffer-usage-suggestions", {tools = {"clang", "clangxx", "emcc", "emxx"}})
+end
+
+if has_config("coverage") and not is_plat("windows") then
+    add_rules("ok.coverage")
 end
 
 if has_config("setup_toolchains") then

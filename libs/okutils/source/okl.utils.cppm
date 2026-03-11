@@ -20,4 +20,6 @@ export module okl.utils;
 import std;
 #endif
 
-#include "okutils/okutils.hpp"
+#include "okutils/concepts.hpp"
+#include "okutils/types.hpp"
+#include "okutils/utils.hpp"

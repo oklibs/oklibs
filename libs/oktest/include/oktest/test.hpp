@@ -14,14 +14,15 @@
 #include "okutils/defines.hpp"
 
 #include <fmt/format.h>
+#if defined(OKTEST_DEFINE_MAIN)
+	#include <cstdlib>
+#endif
 
 #if defined(OKL_USE_MODULES)
 import okl.test;
 #endif
 
 #if defined(OKTEST_DEFINE_MAIN)
-	#include <cstdlib>
-
 OKTEST_EXPORT int main([[maybe_unused]] const int argc, [[maybe_unused]] char* argv[])
 {
 	Okl::Test::run_tests();
