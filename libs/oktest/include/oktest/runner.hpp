@@ -3,6 +3,7 @@
 #ifndef OKTEST_RUNNER_HPP
 #define OKTEST_RUNNER_HPP
 
+#include "oktest/cli.hpp"
 #include "oktest/config.hpp"
 #include "oktest/core_types.hpp"
 #include "oktest/test_context.hpp"

@@ -27,6 +27,8 @@ module;
 #include <cstdio>
 #include <cstdlib>
 #include <exception>
+#include <iostream>
+#include <optional>
 #include <ranges>
 #include <source_location>
 #include <string_view>
@@ -41,6 +43,7 @@ import std;
 #endif
 
 #include "oktest/assert_handler.hpp"
+#include "oktest/cli.hpp"
 #include "oktest/core_types.hpp"
 #include "oktest/expression.hpp"
 #include "oktest/get_runner.hpp"

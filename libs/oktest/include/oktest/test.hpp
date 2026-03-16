@@ -23,9 +23,9 @@ import okl.test;
 #endif
 
 #if defined(OKTEST_DEFINE_MAIN)
-OKTEST_EXPORT int main([[maybe_unused]] const int argc, [[maybe_unused]] char* argv[])
+OKTEST_EXPORT int main(const int argc, char* argv[])
 {
-	Okl::Test::run_tests();
+	Okl::Test::run_tests(argc, argv);
 	return EXIT_SUCCESS;
 }
 #endif

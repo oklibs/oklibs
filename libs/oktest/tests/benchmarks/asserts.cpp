@@ -2,7 +2,7 @@
 
 #include <oktest/short_test.hpp>
 
-int main()
+int main(const int argc, char* argv[])
 {
 	CONSTEXPR_TEST_CASE("assertions")
 	{
@@ -38,5 +38,5 @@ int main()
 		}
 	};
 
-	Okl::Test::run_tests();
+	Okl::Test::run_tests(argc, argv);
 }

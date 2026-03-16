@@ -20,12 +20,12 @@ CONSTEXPR_TEST_CASE("passes without output")
 	CHECK(1 == 1);
 };
 
-int main()
+int main(const int argc, char* argv[])
 {
 	constexpr int value{1};
 	CHECK(value == 1) << "value is not 1";
 	CHECK(1 == 1);
 
-	Okl::Test::run_tests();
+	Okl::Test::run_tests(argc, argv);
 	return EXIT_SUCCESS;
 }

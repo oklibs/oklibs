@@ -2,7 +2,7 @@
 
 #include <oktest/short_test.hpp>
 
-int main()
+int main(const int argc, char* argv[])
 {
 	CONSTEXPR_TEST_CASE("1"){};
 	CONSTEXPR_TEST_CASE("2"){};
@@ -1005,5 +1005,5 @@ int main()
 	CONSTEXPR_TEST_CASE("999"){};
 	CONSTEXPR_TEST_CASE("1000"){};
 
-	Okl::Test::run_tests();
+	Okl::Test::run_tests(argc, argv);
 }
