@@ -295,3 +295,5 @@ Not all of these will be guaranteed to be implemented, this is more of a list of
 - [ ] allow heap allocated test cases
 - [ ] add more tests
 - [ ] provide more utility for customizing runner/reporter/logger
+- [ ] improve cli handling
+- [ ] add support for custom cli args
