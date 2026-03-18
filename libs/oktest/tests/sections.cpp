@@ -41,8 +41,8 @@ TEST_CASE("sections")
 	}
 };
 
-int main()
+int main(const int argc, char* argv[])
 {
-	Okl::Test::run_tests();
+	Okl::Test::run_tests(argc, argv);
 	return EXIT_SUCCESS;
 }

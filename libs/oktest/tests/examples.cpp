@@ -144,7 +144,7 @@ TEST_CASE("BooleanType")
 	TEST_CASE("false") { CHECK_NOT(BooleanType{false}); };
 };
 
-int main()
+int main(const int argc, char* argv[])
 {
 	CHECK(true) << "check in main()";
 	REQUIRE(true) << "require in main()";
@@ -163,6 +163,6 @@ int main()
 	CONSTEVAL_TEST_CASE_TEMPLATE("consteval template test case in main()", int, float){};
 	CONSTEVAL_TEST_CASE_TEMPLATE_LIST("consteval template list test case in main()", Okl::Test::TypeList<int, float>){};
 
-	Okl::Test::run_tests();
+	Okl::Test::run_tests(argc, argv);
 	return EXIT_SUCCESS;
 }

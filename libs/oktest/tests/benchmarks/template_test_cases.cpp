@@ -2,7 +2,7 @@
 
 #include <oktest/short_test.hpp>
 
-int main()
+int main(const int argc, char* argv[])
 {
 	CONSTEXPR_TEST_CASE_TEMPLATE("1", int, float){};
 	CONSTEXPR_TEST_CASE_TEMPLATE("2", int, float){};
@@ -505,5 +505,5 @@ int main()
 	CONSTEXPR_TEST_CASE_TEMPLATE("499", int, float){};
 	CONSTEXPR_TEST_CASE_TEMPLATE("500", int, float){};
 
-	Okl::Test::run_tests();
+	Okl::Test::run_tests(argc, argv);
 }

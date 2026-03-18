@@ -2,6 +2,7 @@
 
 #include "oktest/logger.hpp"
 
+#include "oktest/cli.hpp"
 #include "oktest/core_types.hpp"
 #include "oktest/test_context.hpp"
 #include "okutils/defines.hpp"
@@ -17,6 +18,24 @@
 
 namespace Okl::Test
 {
+void Logger::update_configs(const Detail::CliArgs& cli_args)
+{
+	const auto theme_arg{cli_args.get("theme")};
+	if (theme_arg.has_value()) {
+		const auto value{theme_arg.value()};
+		if (value == "auto") {}
+		else if (value == "no_color") {
+			m_config.theme = Themes::no_color;
+		}
+		else if (value == "default" || value == "default_theme" || value == "default-theme") {
+			m_config.theme = Themes::default_theme;
+		}
+		else {
+			Detail::report_error(fmt::format("Unknown value '{}' for argument 'theme'", value));
+		}
+	}
+}
+
 void Logger::before_test_node(const TestNodeData& test_node) { m_test_nodes.at(m_test_nodes_size++) = test_node; }
 void Logger::after_runtime_test_node(const TestNodeData&, const bool) noexcept { --m_test_nodes_size; }
 void Logger::after_compile_time_test_node(const TestNodeData&, const bool) noexcept {}
