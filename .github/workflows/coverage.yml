@@ -36,7 +36,7 @@ jobs:
           build-cache-key: coverage_linux_x86_64_llvm
 
       - name: Setup Cpp
-        uses: aminya/setup-cpp@1f17f92d6a52bfcb1a25348e2c526c2e5cbb1134 # v1
+        uses: aminya/setup-cpp@1f17f92d6a52bfcb1a25348e2c526c2e5cbb1134 # v1.8.0
         with:
           compiler: llvm-21.1.8
 
