@@ -82,6 +82,16 @@ Alternatively, you can define the following macros before including the library 
 | `OKTEST_MAX_NESTED_NODES` | Maximum nesting level for test cases and sections. | `8`     |
 | `OKTEST_WITH_EXCEPTIONS`  | Enable/disable exception usage (0 or 1).           | `1`     |
 
+### Command-line options
+
+Some options can also be configured via command-line arguments.
+
+The following options are supported:
+
+* `-h|--help` - Show command-line help.
+* `--theme=` - Set the theme for the output.
+* `test_regex` - Regular expression to filter tests by name.
+
 ## Documentation
 
 See [test.hpp](include/oktest/test.hpp) and [examples.cpp](tests/examples.hpp) for more detailed docs and usage
@@ -178,6 +188,7 @@ The library runners provide 2 customization points:
 
 struct MyCustomReporter {
 	~Reporter() noexcept(false);
+	void update_configs(const Detail::CliArgs&);
 	void before_test_node(const Okl::Test::TestNodeData&);
 	void after_test_node(const Okl::Test::TestNodeData&);
 	void after_passed_assert(const Okl::Test::AssertData&) noexcept;
@@ -185,6 +196,7 @@ struct MyCustomReporter {
 };
 
 struct MyCustomLogger {
+    void update_configs(const Detail::CliArgs&);
 	void before_test_node(const Okl::Test::TestNodeData&);
 	void after_runtime_test_node(const Okl::Test::TestNodeData&, bool success) noexcept;
 	void after_compile_time_test_node(const Okl::Test::TestNodeData&, bool success) noexcept;
