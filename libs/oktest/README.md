@@ -37,6 +37,15 @@ See [Limitations](#limitations) and [ToDos](#todos).
 
 ### 1. Integration
 
+#### xmake:
+
+```lua
+add_repositories("okl-repo https://github.com/oklibs/xmake-repo")
+add_requires("oktest")
+```
+
+#### cmake:
+
 ToDo
 
 ### 2. Basic Usage
