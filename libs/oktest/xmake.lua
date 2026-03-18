@@ -56,6 +56,7 @@ target("oktest", function()
     add_tests("sections", {kind = "binary", files = "tests/sections.cpp", plain = true, pass_output_files = "tests/outputs/sections.txt", build_should_pass = is_cross()})
     add_tests("success", {kind = "binary", files = "tests/success.cpp", plain = true, pass_output_files = "tests/outputs/success.txt", build_should_pass = is_cross()})
     add_tests("cli", {kind = "binary", files = "tests/cli.cpp", build_should_pass = is_cross()})
+    add_tests("cli_help", {kind = "binary", files = "tests/benchmarks/include.cpp", runargs = {"--help"}, build_should_pass = is_cross()})
 
     add_tests("bench_asserts", {kind = "binary", group = "bench", files = "tests/benchmarks/asserts.cpp", build_should_pass = is_cross()})
     add_tests("bench_include", {kind = "binary", group = "bench", files = "tests/benchmarks/include.cpp", build_should_pass = is_cross()})
