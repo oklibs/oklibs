@@ -61,7 +61,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup xmake
-        uses: xmake-io/github-action-setup-xmake@cc0f56c35b75d0975ed5d9e29005fae707721cd5 # v1
+        uses: xmake-io/github-action-setup-xmake@3a1a5dddfc7fa625d9a698738334bf55655a861a # v1.2.5
         with:
           xmake-version: 3.0.7
           actions-cache-folder: .xmake-cache
