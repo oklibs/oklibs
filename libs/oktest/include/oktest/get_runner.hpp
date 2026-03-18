@@ -29,7 +29,13 @@ template<class... Ts>
 void run_tests(const int argc, char* const argv[])
 {
 	const Detail::CliArgs cli_args{argc, argv};
-	Detail::get_runner<Ts...>().run_tests();
+
+	if (cli_args.get("help").has_value()) {
+		Detail::print_help();
+	}
+	else {
+		Detail::get_runner<Ts...>().run_tests(cli_args);
+	}
 }
 
 namespace Detail

@@ -41,10 +41,7 @@ struct CliArgDefine {
 
 // clang-format off
 inline constexpr std::array cli_arg_defines{std::to_array<CliArgDefine>(
-    {{"theme", {}, {}, "auto", "Color theme to use.",
-      [](const std::string_view value) {
-	      return value == "y" || value == "n" || value == "yes" || value == "no" || value == "auto";
-      }},
+    {{"theme", {}, {}, "auto", "Color theme to use."},
      {"help", 'h', ECliArgType::flag, {}, "Print help."},
      {{}, {}, {}, {}, "Regex to filter tests with."}})};
 // clang-format on

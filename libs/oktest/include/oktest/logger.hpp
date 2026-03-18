@@ -3,6 +3,7 @@
 #ifndef OKTEST_LOGGER_HPP
 #define OKTEST_LOGGER_HPP
 
+#include "oktest/cli.hpp"
 #include "oktest/config.hpp"
 #include "oktest/test_context.hpp"
 #include "oktest/theme.hpp"
@@ -23,6 +24,8 @@ public:
 
 	Logger() = default;
 	explicit constexpr Logger(const LoggerConfig&) noexcept;
+
+	void update_configs(const Detail::CliArgs&);
 
 	void before_test_node(const TestNodeData&);
 	void after_runtime_test_node(const TestNodeData&, bool success) noexcept;

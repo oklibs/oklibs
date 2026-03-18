@@ -3,6 +3,7 @@
 #ifndef OKTEST_REPORTER_HPP
 #define OKTEST_REPORTER_HPP
 
+#include "oktest/cli.hpp"
 #include "oktest/config.hpp"
 #include "oktest/core_types.hpp"
 #include "oktest/test_context.hpp"
@@ -31,6 +32,8 @@ public:
 	Reporter(const Reporter&) = delete;
 	Reporter& operator=(const Reporter&) = delete;
 
+	void update_configs(const Detail::CliArgs&);
+
 	void before_test_node(const TestNodeData&);
 	void after_test_node(const TestNodeData&);
 	void after_passed_assert(const AssertData&) noexcept;
@@ -58,6 +61,12 @@ Reporter<LoggerT, ConfigT>::~Reporter() noexcept(false)
 		// ToDo? Move this to main function.
 		std::exit(1); // NOLINT(concurrency-mt-unsafe)
 	}
+}
+
+template<class LoggerT, class ConfigT>
+void Reporter<LoggerT, ConfigT>::update_configs(const Detail::CliArgs& cli_args)
+{
+	m_logger.update_configs(cli_args);
 }
 
 template<class LoggerT, class ConfigT>
