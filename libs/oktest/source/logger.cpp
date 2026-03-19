@@ -24,7 +24,7 @@ void Logger::update_configs(const Detail::CliArgs& cli_args)
 	if (theme_arg.has_value()) {
 		const auto value{theme_arg.value()};
 		if (value == "auto") {}
-		else if (value == "no_color") {
+		else if (value == "no_color" || value == "no-color") {
 			m_config.theme = Themes::no_color;
 		}
 		else if (value == "default" || value == "default_theme" || value == "default-theme") {

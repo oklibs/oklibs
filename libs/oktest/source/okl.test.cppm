@@ -48,6 +48,7 @@ import std;
 #include "oktest/expression.hpp"
 #include "oktest/get_runner.hpp"
 #include "oktest/logger.hpp"
+#include "oktest/main.hpp"
 #include "oktest/registry_runner.hpp"
 #include "oktest/reporter.hpp"
 #include "oktest/runner.hpp"
@@ -58,3 +59,4 @@ import std;
 module :private;
 
 #include "logger.cpp"
+#include "main.cpp"

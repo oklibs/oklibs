@@ -79,17 +79,11 @@ CONSTEXPR_TEST_CASE("Compile-time and runtime test") {
 
 The library can be configured via `xmake` options:
 
-| Option            | Description                                        | Default |
-|:------------------|:---------------------------------------------------|:--------|
-| `max_nested`      | Maximum nesting level for test cases and sections. | `8`     |
-| `with_exceptions` | Allow exception usage.                             | `true`  |
-
-Alternatively, you can define the following macros before including the library headers:
-
-| Macro                     | Description                                        | Default |
-|:--------------------------|:---------------------------------------------------|:--------|
-| `OKTEST_MAX_NESTED_NODES` | Maximum nesting level for test cases and sections. | `8`     |
-| `OKTEST_WITH_EXCEPTIONS`  | Enable/disable exception usage (0 or 1).           | `1`     |
+| Option            | Description                                                                                                          | Default |
+|:------------------|:---------------------------------------------------------------------------------------------------------------------|:--------|
+| `max_nested`      | Maximum nesting level for test cases and sections.                                                                   | `8`     |
+| `with_exceptions` | Allow exception usage.                                                                                               | `true`  |
+| `link_main`       | Provide a main function in a separate source file. When used with modules this requires a C++26 compatible compiler. | `true`  |
 
 ### Command-line options
 
@@ -177,6 +171,8 @@ CONSTEXPR_TEST_CASE("Vector") {
 
 ### 4. Customization
 
+Custom runners need to be defined in the same translation unit as the main function.
+
 ```cpp
 template<>
 struct Okl::Test::Config<Okl::Test::CustomRunner> {
@@ -196,22 +192,22 @@ The library runners provide 2 customization points:
 #include <oktest/core_types.hpp>
 
 struct MyCustomReporter {
-	~Reporter() noexcept(false);
-	void update_configs(const Detail::CliArgs&);
-	void before_test_node(const Okl::Test::TestNodeData&);
-	void after_test_node(const Okl::Test::TestNodeData&);
-	void after_passed_assert(const Okl::Test::AssertData&) noexcept;
-	void after_failed_assert(const Okl::Test::AssertData&);
+    ~Reporter() noexcept(false);
+    void update_configs(const Detail::CliArgs&);
+    void before_test_node(const Okl::Test::TestNodeData&);
+    void after_test_node(const Okl::Test::TestNodeData&);
+    void after_passed_assert(const Okl::Test::AssertData&) noexcept;
+    void after_failed_assert(const Okl::Test::AssertData&);
 };
 
 struct MyCustomLogger {
     void update_configs(const Detail::CliArgs&);
-	void before_test_node(const Okl::Test::TestNodeData&);
-	void after_runtime_test_node(const Okl::Test::TestNodeData&, bool success) noexcept;
-	void after_compile_time_test_node(const Okl::Test::TestNodeData&, bool success) noexcept;
-	void after_passed_assert(const Okl::Test::AssertData&) const noexcept;
-	void after_failed_assert(const Okl::Test::AssertData&) const;
-	void before_shutdown(const Okl::Test::RunData&) const;
+    void before_test_node(const Okl::Test::TestNodeData&);
+    void after_runtime_test_node(const Okl::Test::TestNodeData&, bool success) noexcept;
+    void after_compile_time_test_node(const Okl::Test::TestNodeData&, bool success) noexcept;
+    void after_passed_assert(const Okl::Test::AssertData&) const noexcept;
+    void after_failed_assert(const Okl::Test::AssertData&) const;
+    void before_shutdown(const Okl::Test::RunData&) const;
 };
 ```
 
@@ -305,7 +301,7 @@ expressions in macros; otherwise constexpr and consteval tests could be made to 
 
 Not all of these will be guaranteed to be implemented, this is more of a list of ideas.
 
-- [ ] add a library option to define `main` function (no need for `OKTEST_DEFINE_MAIN`)
+- [x] add a library option to define `main` function (no need for `OKTEST_DEFINE_MAIN`)
 - [ ] improve compile-time error reporting
 - [ ] allow runtime error reporting for compile-time asserts
 - [ ] allow runtime error reporting for compile-time test cases

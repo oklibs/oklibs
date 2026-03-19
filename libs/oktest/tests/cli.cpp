@@ -1,6 +1,5 @@
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#define OKTEST_DEFINE_MAIN
 #if !defined(OKL_USE_MODULES)
 	#include <oktest/cli.hpp>
 #endif
