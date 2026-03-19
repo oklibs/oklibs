@@ -52,13 +52,15 @@ target("oktest", function()
 
     add_extrafiles("*|xmake.lua", "templates/**", "tests/**")
 
-    add_tests("examples", {kind = "binary", files = "tests/examples.cpp", remove_files = "source/main.cpp", build_should_pass = is_cross()})
+    if not has_config("use_modules") then
+        add_tests("examples", {kind = "binary", files = "tests/examples.cpp", remove_files = "source/main.cpp", build_should_pass = is_cross()})
+        add_tests("success", {kind = "binary", files = "tests/success.cpp", remove_files = "source/main.cpp", plain = true, pass_output_files = "tests/outputs/success.txt", build_should_pass = is_cross()})
+    end
     add_tests("fail_compile_time_assert", { kind = "binary", files = "tests/fail_compile_time_assert.cpp", build_should_fail = true})
     add_tests("fail_compile_time_test", { kind = "binary", files = "tests/fail_compile_time_test.cpp", build_should_fail = true})
     add_tests("macros", {kind = "binary", files = "tests/macros.cpp", runargs = {"--theme", "no_color"}, plain = true, pass_output_files = "tests/outputs/macros.txt", build_should_pass = is_cross()})
     add_tests("short_macros", {kind = "binary", files = "tests/short_macros.cpp", runargs = {"--theme", "no_color"}, plain = true, pass_output_files = "tests/outputs/macros.txt", build_should_pass = is_cross()})
     add_tests("sections", {kind = "binary", files = "tests/sections.cpp", runargs = {"--theme", "no_color"}, plain = true, pass_output_files = "tests/outputs/sections.txt", build_should_pass = is_cross()})
-    add_tests("success", {kind = "binary", files = "tests/success.cpp", remove_files = "source/main.cpp", plain = true, pass_output_files = "tests/outputs/success.txt", build_should_pass = is_cross()})
     add_tests("cli", {kind = "binary", files = "tests/cli.cpp", build_should_pass = is_cross()})
     add_tests("cli_help", {kind = "binary", files = "tests/benchmarks/include.cpp", runargs = {"--help"}, build_should_pass = is_cross()})
 
