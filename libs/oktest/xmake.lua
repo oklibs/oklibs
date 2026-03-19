@@ -7,6 +7,7 @@ set_version("0.1.0")
 
 option("max_nested", {description = "Maximum nesting level for test cases and sections.", default = 8})
 option("with_exceptions", {description = "Allow exception usage.", default = true})
+option("link_main", {description = "Provide a main function in a separate source file.", default = true})
 
 ----------------------------------------------------------------------------------------------------
 --- Build settings
@@ -18,6 +19,9 @@ if has_config("max_nested") then
 end
 if has_config("with_exceptions") then
     add_defines("OKTEST_WITH_EXCEPTIONS=1")
+end
+if has_config("with_exceptions") then
+    add_defines("OKTEST_LINK_MAIN=1")
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -48,13 +52,13 @@ target("oktest", function()
 
     add_extrafiles("*|xmake.lua", "templates/**", "tests/**")
 
-    add_tests("examples", {kind = "binary", files = "tests/examples.cpp", build_should_pass = is_cross()})
+    add_tests("examples", {kind = "binary", files = "tests/examples.cpp", remove_files = "source/main.cpp", build_should_pass = is_cross()})
     add_tests("fail_compile_time_assert", { kind = "binary", files = "tests/fail_compile_time_assert.cpp", build_should_fail = true})
     add_tests("fail_compile_time_test", { kind = "binary", files = "tests/fail_compile_time_test.cpp", build_should_fail = true})
-    add_tests("macros", {kind = "binary", files = "tests/macros.cpp", plain = true, pass_output_files = "tests/outputs/macros.txt", build_should_pass = is_cross()})
-    add_tests("short_macros", {kind = "binary", files = "tests/short_macros.cpp", plain = true, pass_output_files = "tests/outputs/macros.txt", build_should_pass = is_cross()})
-    add_tests("sections", {kind = "binary", files = "tests/sections.cpp", plain = true, pass_output_files = "tests/outputs/sections.txt", build_should_pass = is_cross()})
-    add_tests("success", {kind = "binary", files = "tests/success.cpp", plain = true, pass_output_files = "tests/outputs/success.txt", build_should_pass = is_cross()})
+    add_tests("macros", {kind = "binary", files = "tests/macros.cpp", runargs = {"--theme", "no_color"}, plain = true, pass_output_files = "tests/outputs/macros.txt", build_should_pass = is_cross()})
+    add_tests("short_macros", {kind = "binary", files = "tests/short_macros.cpp", runargs = {"--theme", "no_color"}, plain = true, pass_output_files = "tests/outputs/macros.txt", build_should_pass = is_cross()})
+    add_tests("sections", {kind = "binary", files = "tests/sections.cpp", runargs = {"--theme", "no_color"}, plain = true, pass_output_files = "tests/outputs/sections.txt", build_should_pass = is_cross()})
+    add_tests("success", {kind = "binary", files = "tests/success.cpp", remove_files = "source/main.cpp", plain = true, pass_output_files = "tests/outputs/success.txt", build_should_pass = is_cross()})
     add_tests("cli", {kind = "binary", files = "tests/cli.cpp", build_should_pass = is_cross()})
     add_tests("cli_help", {kind = "binary", files = "tests/benchmarks/include.cpp", runargs = {"--help"}, build_should_pass = is_cross()})
 
