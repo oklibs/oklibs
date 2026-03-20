@@ -6,19 +6,19 @@
 #include "okutils/core_defines.hpp"
 
 #if !defined(OKTEST_MAX_NESTED_NODES)
-	#define OKTEST_MAX_NESTED_NODES 8
+	#define OKTEST_MAX_NESTED_NODES ${MAX_NESTED}
 #endif
 
 #if !defined(OKTEST_WITH_EXCEPTIONS)
-	#if defined(__cpp_exceptions) && __cpp_exceptions > 0
-		#define OKTEST_WITH_EXCEPTIONS 1
-	#else
+	#if !defined(__cpp_exceptions) || __cpp_exceptions == 0
 		#define OKTEST_WITH_EXCEPTIONS 0
+	#else
+		#define OKTEST_WITH_EXCEPTIONS ${WITH_EXCEPTIONS}
 	#endif
 #endif
 
 #if !defined(OKTEST_LINK_MAIN)
-	#define OKTEST_LINK_MAIN 0
+	#define OKTEST_LINK_MAIN ${LINK_MAIN}
 #endif
 
 #define OKTEST_VERSION_MAJOR ${VERSION_MAJOR}

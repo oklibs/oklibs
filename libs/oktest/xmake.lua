@@ -14,16 +14,6 @@ option("link_main", {description = "Provide a main function in a separate source
 
 set_languages("c++20")
 
-if has_config("max_nested") then
-    add_defines("OKTEST_MAX_NESTED_NODES=8")
-end
-if has_config("with_exceptions") then
-    add_defines("OKTEST_WITH_EXCEPTIONS=1")
-end
-if has_config("with_exceptions") then
-    add_defines("OKTEST_LINK_MAIN=1")
-end
-
 ----------------------------------------------------------------------------------------------------
 --- Dependencies
 
@@ -38,7 +28,11 @@ target("oktest", function()
     add_packages("fmt", {public = true})
 
     set_configdir("$(builddir)/.configs/oktest")
-    add_configfiles("templates/include/**.in", {prefixdir = "include/oktest"})
+    add_configfiles("templates/include/**.in", {prefixdir = "include/oktest", variables = {
+        MAX_NESTED = get_config("max_nested"),
+        WITH_EXCEPTIONS = has_config("with_exceptions") and 1 or 0,
+        LINK_MAIN = has_config("link_main") and 1 or 0
+    }})
 
     add_includedirs("include", "$(builddir)/.configs/oktest/include", {public = true})
     add_headerfiles("include/(**.hpp)", "$(builddir)/.configs/oktest/include/(oktest/**.hpp)")
