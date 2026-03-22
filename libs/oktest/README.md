@@ -6,10 +6,9 @@ A C++20 testing framework designed with first-class support for compile-time tes
 ## Experimental / Early Development
 
 The library is currently in an **early stage of development**. The API, macro definitions, and internal implementation
-details are considered experimental and are subject to breaking changes.
-
-While the core functionality for runtime and compile-time testing is operational, advanced features (such as test
-fixtures, complex matchers, and runtime reporting of compile-time checks) are still being planned or implemented.
+details are considered experimental and are subject to breaking changes. While the core functionality for runtime and
+compile-time testing is operational, advanced features are still being
+planned or implemented.
 
 See [Limitations](#limitations) and [ToDos](#todos).
 
@@ -30,21 +29,19 @@ See [Limitations](#limitations) and [ToDos](#todos).
 
 ## Dependencies
 
-* **C++20 Compiler** (Clang, GCC, MSVC)
-* **[fmt](https://github.com/fmtlib/fmt)**
+* **C++20 compatible Compiler** (Clang, GCC, MSVC, ...)
+* **[fmt](https://github.com/fmtlib/fmt)** 12.0.0 or above
 
-## Quick Start
+## Integration
 
-### 1. Integration
-
-#### xmake:
+### xmake:
 
 ```lua
 add_repositories("okl-repo https://github.com/oklibs/xmake-repo")
 add_requires("oktest")
 ```
 
-#### cmake:
+### cmake:
 
 **Using `FetchContent`:**
 
@@ -66,14 +63,14 @@ find_package(oktest REQUIRED)
 target_link_libraries(your_target PRIVATE oklibs::oktest)
 ```
 
-**Using `add_subdirectory`** (e.g. via git submodules or vendoring):
+**Using `add_subdirectory`**:
 
 ```cmake
 add_subdirectory(path/to/oklibs)
 target_link_libraries(your_target PRIVATE oklibs::oktest)
 ```
 
-### 2. Basic Usage
+## Basic Usage
 
 ```cpp
 #define OKTEST_DEFINE_MAIN
@@ -114,10 +111,10 @@ The library can be configured via `xmake` options:
 
 Some options can also be configured via command-line arguments.
 
-The following options are supported:
+The following options are currently supported:
 
 * `-h|--help` - Show command-line help.
-* `--theme=` - Set the theme for the output.
+* `--theme=` - Set the theme for the output, e.g. `--theme=no_color`.
 * `test_regex` - Regular expression to filter tests by name.
 
 ## Documentation
@@ -167,7 +164,7 @@ TEST_CASE_TEMPLATE_LIST("List types", Okl::Test::TypeList<int, float>) {
 | `CONSTEXPR_CHECK_/REQUIRE_NOTHROW(expr)`    | Assert the expression does not throw at compile & runtime |
 | `CONSTEVAL_CHECK_/REQUIRE_NOTHROW(expr)`    | Assert the expression does not throw at compile-time only |
 
-Assertions support streaming messages using `<<`.
+Assertions support streaming messages using `<<`, these will only be evaluated if the assert fails.
 
 ```cpp
 CHECK(x == 42) << "x is not 42";
@@ -269,7 +266,7 @@ However, if you include `<oktest/short_test.hpp>` (as seen in the examples), you
 
 ### Compile-time tests
 
-Currently, failures in compile-time tests and asserts fill result in a compile-time error. This limits the amount of
+Currently, failures in compile-time tests and asserts will result in a compile-time error. This limits the amount of
 information available, like decomposed expressions. If constexpr test cases are used by default, and since most runtime
 failures will also fail at compile-time, the reported information will be limited.
 
@@ -312,7 +309,8 @@ to support this.
 
 ### Multithreading
 
-With the libraries threading guarantees it is not (easily) possible to run test cases in parallel.
+With the libraries threading guarantees (assertions being allowed to run in different threads) it is not (easily)
+possible to run test cases in parallel.
 It is possible to implement a custom runner to run test cases in parallel and to not make use of the library's
 threading guarantees. This might be implemented as an optional feature in the future.
 
