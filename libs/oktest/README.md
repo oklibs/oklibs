@@ -46,7 +46,32 @@ add_requires("oktest")
 
 #### cmake:
 
-ToDo
+**Using `FetchContent`:**
+
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+    oklibs
+    GIT_REPOSITORY https://github.com/oklibs/oklibs.git
+    GIT_TAG        main
+)
+FetchContent_MakeAvailable(oklibs)
+target_link_libraries(your_target PRIVATE oklibs::oktest)
+```
+
+**Using `find_package`** (after installing oklibs):
+
+```cmake
+find_package(oktest REQUIRED)
+target_link_libraries(your_target PRIVATE oklibs::oktest)
+```
+
+**Using `add_subdirectory`** (e.g. via git submodules or vendoring):
+
+```cmake
+add_subdirectory(path/to/oklibs)
+target_link_libraries(your_target PRIVATE oklibs::oktest)
+```
 
 ### 2. Basic Usage
 

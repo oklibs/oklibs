@@ -26,7 +26,7 @@ target("okbitflag", function()
         add_extrafiles("source/okl.bitflag.cppm")
     end
 
-    add_extrafiles("*|xmake.lua", "templates/**")
+    add_extrafiles("*|xmake.lua", "templates/**", "cmake/**")
 end)
 
 target("okbitflag_tests", function()

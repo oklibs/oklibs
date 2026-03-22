@@ -1,0 +1,39 @@
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
+
+#ifndef OKUTILS_CONFIG_HPP
+#define OKUTILS_CONFIG_HPP
+
+#include "okutils/core_defines.hpp"
+
+#define OKUTILS_VERSION_MAJOR @PROJECT_VERSION_MAJOR@
+#define OKUTILS_VERSION_MINOR @PROJECT_VERSION_MINOR@
+#define OKUTILS_VERSION_PATCH @PROJECT_VERSION_PATCH@
+
+/**
+ * Encoded version of okutils as 'MajorMinorPatch'.
+ * @see OKL_ENCODE_VERSION
+ */
+#define OKUTILS_VERSION OKL_ENCODE_VERSION(OKUTILS_VERSION_MAJOR, OKUTILS_VERSION_MINOR, OKUTILS_VERSION_PATCH)
+
+#if defined(OKL_BUILD_DEBUG) && OKL_BUILD_DEBUG
+#elif defined(OKL_BUILD_RELEASEDBG) && OKL_BUILD_RELEASEDBG
+#elif defined(OKL_BUILD_RELEASE) && OKL_BUILD_RELEASE
+#else
+	#define OKL_BUILD_RELEASEDBG 1
+#endif
+#if !defined(OKL_BUILD_DEBUG)
+	#define OKL_BUILD_DEBUG 0
+#endif
+#if !defined(OKL_BUILD_RELEASEDBG)
+	#define OKL_BUILD_RELEASEDBG 0
+#endif
+#if !defined(OKL_BUILD_RELEASE)
+	#define OKL_BUILD_RELEASE 0
+#endif
+#if OKL_BUILD_DEBUG + OKL_BUILD_RELEASEDBG + OKL_BUILD_RELEASE != 1
+	#error "okutils: Exactly one build define should be defined to 1!"
+#endif
+
+#define OKUTILS_EXPORT
+
+#endif
