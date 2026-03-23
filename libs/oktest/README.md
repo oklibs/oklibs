@@ -75,7 +75,6 @@ target_link_libraries(your_target PRIVATE oklibs::oktest)
 ## Basic Usage
 
 ```cpp
-#define OKTEST_DEFINE_MAIN
 #include <oktest/short_test.hpp>
 
 TEST_CASE("Runtime test") {
@@ -101,7 +100,7 @@ CONSTEXPR_TEST_CASE("Compile-time and runtime test") {
 
 ## Configuration
 
-The library can be configured via `xmake` options:
+The library offers the following configuration options:
 
 | Option            | Description                                                                                                          | Default |
 |:------------------|:---------------------------------------------------------------------------------------------------------------------|:--------|
