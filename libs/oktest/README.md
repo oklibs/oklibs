@@ -43,6 +43,8 @@ add_requires("oktest")
 
 ### cmake:
 
+**Note:** Ensure that **[fmt](https://github.com/fmtlib/fmt)** is installed on your system.
+
 **Using `FetchContent`:**
 
 ```cmake
