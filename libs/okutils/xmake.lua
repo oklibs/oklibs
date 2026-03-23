@@ -25,7 +25,7 @@ target("okutils", function()
         add_extrafiles("source/okl.utils.cppm")
     end
 
-    add_extrafiles("*|xmake.lua", "templates/**")
+    add_extrafiles("*|xmake.lua", "templates/**", "cmake/**")
 end)
 
 target("okutils_tests", function()

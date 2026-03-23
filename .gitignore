@@ -2,13 +2,14 @@
 .xmake/
 
 build/
-cmake-build-*/
+cmake-build*/
+cmake_build*/
 
 # Generated files
 .cache/
 vs*/
 vsxmake*/
-CMakeLists.txt
+# CMakeLists.txt
 compile_commands.json
 makefile
 

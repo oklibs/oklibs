@@ -44,7 +44,7 @@ target("oktest", function()
         add_extrafiles("source/okl.test.cppm")
     end
 
-    add_extrafiles("*|xmake.lua", "templates/**", "tests/**")
+    add_extrafiles("*|xmake.lua", "templates/**", "tests/**", "cmake/**")
 
     if not has_config("use_modules") then
         add_tests("examples", {kind = "binary", files = "tests/examples.cpp", remove_files = "source/main.cpp", build_should_pass = is_cross()})
