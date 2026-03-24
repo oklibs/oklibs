@@ -18,7 +18,7 @@
 
 namespace Okl::Test
 {
-void Logger::update_configs(const Detail::CliArgs& cli_args)
+void Logger::update_configs(const CliArgs& cli_args)
 {
 	const auto theme_arg{cli_args.get("theme")};
 	if (theme_arg.has_value()) {
@@ -31,7 +31,7 @@ void Logger::update_configs(const Detail::CliArgs& cli_args)
 			m_config.theme = Themes::default_theme;
 		}
 		else {
-			Detail::report_error(fmt::format("Unknown value '{}' for argument 'theme'", value));
+			report_error(fmt::format("Unknown value '{}' for argument 'theme'", value));
 		}
 	}
 }

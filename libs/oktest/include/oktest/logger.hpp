@@ -25,7 +25,7 @@ public:
 	Logger() = default;
 	explicit constexpr Logger(const LoggerConfig&) noexcept;
 
-	void update_configs(const Detail::CliArgs&);
+	void update_configs(const CliArgs&);
 
 	void before_test_node(const TestNodeData&);
 	void after_runtime_test_node(const TestNodeData&, bool success) noexcept;

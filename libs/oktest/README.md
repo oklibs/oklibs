@@ -216,7 +216,7 @@ The library runners provide 2 customization points:
 
 struct MyCustomReporter {
     ~Reporter() noexcept(false);
-    void update_configs(const Detail::CliArgs&);
+    void update_configs(const Okl::Test::CliArgs&);
     void before_test_node(const Okl::Test::TestNodeData&);
     void after_test_node(const Okl::Test::TestNodeData&);
     void after_passed_assert(const Okl::Test::AssertData&) noexcept;
@@ -224,7 +224,7 @@ struct MyCustomReporter {
 };
 
 struct MyCustomLogger {
-    void update_configs(const Detail::CliArgs&);
+    void update_configs(const Okl::Test::CliArgs&);
     void before_test_node(const Okl::Test::TestNodeData&);
     void after_runtime_test_node(const Okl::Test::TestNodeData&, bool success) noexcept;
     void after_compile_time_test_node(const Okl::Test::TestNodeData&, bool success) noexcept;

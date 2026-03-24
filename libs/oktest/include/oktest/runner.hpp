@@ -28,7 +28,7 @@ public:
 	Runner(const Runner&) = delete;
 	Runner& operator=(const Runner&) = delete;
 
-	void run_tests(const Detail::CliArgs&);
+	void run_tests(const CliArgs&);
 
 	constexpr void before_test_node(const TestNodeData&);
 	constexpr void after_test_node(const TestNodeData&);
@@ -46,7 +46,7 @@ constexpr Runner<ReporterT, ConfigT>::Runner(const ConfigT& config) noexcept
     : m_reporter{config}
 {}
 
-template<class ReporterT, class ConfigT> void Runner<ReporterT, ConfigT>::run_tests(const Detail::CliArgs&) {}
+template<class ReporterT, class ConfigT> void Runner<ReporterT, ConfigT>::run_tests(const CliArgs&) {}
 
 template<class ReporterT, class ConfigT>
 constexpr void Runner<ReporterT, ConfigT>::before_test_node(const TestNodeData& node_data)

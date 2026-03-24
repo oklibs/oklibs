@@ -14,122 +14,114 @@
 import std;
 #endif
 
-TEST_CASE("cli_args_parsing")
+
+using namespace Okl::Test;
+
+TEST_CASE("cli.no_args")
 {
-	using namespace Okl::Test;
+	OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
+	static constexpr char* argv[]{const_cast<char*>("test")};
+	static constexpr int argc{sizeof(argv) / sizeof(char*)};
+	const CliArgs cli_args{argc, argv};
 
-	SECTION("no_args")
-	{
-		OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
-		static constexpr char* argv[]{const_cast<char*>("test")};
-		static constexpr int argc{sizeof(argv) / sizeof(char*)};
-		const Detail::CliArgs cli_args{argc, argv};
+	CHECK(cli_args.get("theme") == "auto");
+	CHECK(!cli_args.get("help").has_value());
+	CHECK(!cli_args.get("").has_value());
+};
 
-		CHECK(cli_args.args_size == 0u);
-		CHECK(cli_args.get("theme") == "auto");
-		CHECK(!cli_args.get("help").has_value());
-		CHECK(!cli_args.get("").has_value());
-	}
+TEST_CASE("cli.long_key_value")
+{
+	OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
+	static constexpr char* argv[]{
+	    const_cast<char*>("test"), const_cast<char*>("--theme"), const_cast<char*>("default_theme")};
+	static constexpr int argc{sizeof(argv) / sizeof(char*)};
+	const CliArgs cli_args{argc, argv};
 
-	SECTION("long_key_value")
-	{
-		OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
-		static constexpr char* argv[]{
-		    const_cast<char*>("test"), const_cast<char*>("--theme"), const_cast<char*>("default_theme")};
-		static constexpr int argc{sizeof(argv) / sizeof(char*)};
-		const Detail::CliArgs cli_args{argc, argv};
+	CHECK(cli_args.get("theme") == "default_theme");
+	CHECK(!cli_args.get("help").has_value());
+	CHECK(!cli_args.get("").has_value());
+};
 
-		CHECK(cli_args.args_size == 1u);
-		CHECK(cli_args.get("theme") == "default_theme");
-		CHECK(!cli_args.get("help").has_value());
-		CHECK(!cli_args.get("").has_value());
-	}
+TEST_CASE("cli.long_flag")
+{
+	OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
+	static constexpr char* argv[]{const_cast<char*>("test"), const_cast<char*>("--help")};
+	static constexpr int argc{sizeof(argv) / sizeof(char*)};
+	const CliArgs cli_args{argc, argv};
 
-	SECTION("long_flag")
-	{
-		OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
-		static constexpr char* argv[]{const_cast<char*>("test"), const_cast<char*>("--help")};
-		static constexpr int argc{sizeof(argv) / sizeof(char*)};
-		const Detail::CliArgs cli_args{argc, argv};
+	CHECK(cli_args.get("theme") == "auto");
+	CHECK(cli_args.get("help").has_value());
+	CHECK(!cli_args.get("").has_value());
+};
 
-		CHECK(cli_args.args_size == 1u);
-		CHECK(cli_args.get("theme") == "auto");
-		CHECK(cli_args.get("help").has_value());
-		CHECK(!cli_args.get("").has_value());
-	}
+TEST_CASE("cli.short_flag")
+{
+	OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
+	static constexpr char* argv[]{const_cast<char*>("test"), const_cast<char*>("-h")};
+	static constexpr int argc{sizeof(argv) / sizeof(char*)};
+	const CliArgs cli_args{argc, argv};
 
-	SECTION("short_flag")
-	{
-		OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
-		static constexpr char* argv[]{const_cast<char*>("test"), const_cast<char*>("-h")};
-		static constexpr int argc{sizeof(argv) / sizeof(char*)};
-		const Detail::CliArgs cli_args{argc, argv};
+	CHECK(cli_args.get("theme") == "auto");
+	CHECK(cli_args.get("help").has_value());
+	CHECK(!cli_args.get("").has_value());
+};
 
-		CHECK(cli_args.args_size == 1u);
-		CHECK(cli_args.get("theme") == "auto");
-		CHECK(cli_args.get("help").has_value());
-		CHECK(!cli_args.get("").has_value());
-	}
+TEST_CASE("cli.positional")
+{
+	OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
+	static constexpr char* argv[]{const_cast<char*>("test"), const_cast<char*>("abc")};
+	static constexpr int argc{sizeof(argv) / sizeof(char*)};
+	const CliArgs cli_args{argc, argv};
 
-	SECTION("positional")
-	{
-		OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
-		static constexpr char* argv[]{const_cast<char*>("test"), const_cast<char*>("abc")};
-		static constexpr int argc{sizeof(argv) / sizeof(char*)};
-		const Detail::CliArgs cli_args{argc, argv};
+	CHECK(cli_args.get("theme") == "auto");
+	CHECK(!cli_args.get("help").has_value());
+	CHECK(cli_args.get("") == "abc");
+};
 
-		CHECK(cli_args.args_size == 1u);
-		CHECK(cli_args.get("theme") == "auto");
-		CHECK(!cli_args.get("help").has_value());
-		CHECK(cli_args.get("") == "abc");
-	}
+TEST_CASE("cli.multi-positional")
+{
+	OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
+	static constexpr char* argv[]{const_cast<char*>("test"), const_cast<char*>("abc"), const_cast<char*>("def")};
+	static constexpr int argc{sizeof(argv) / sizeof(char*)};
+	const CliArgs cli_args{argc, argv};
 
-	SECTION("multi-positional")
-	{
-		OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
-		static constexpr char* argv[]{const_cast<char*>("test"), const_cast<char*>("abc"), const_cast<char*>("def")};
-		static constexpr int argc{sizeof(argv) / sizeof(char*)};
-		const Detail::CliArgs cli_args{argc, argv};
+	std::array<std::string_view, 2> args;
+	size_t args_size{0};
+	cli_args.gather_all_of("", [&](const std::string_view value) {
+		REQUIRE(args_size < 2u);
+		args.at(args_size++) = value;
+	});
 
-		std::array<std::string_view, Detail::max_cli_args> args;
-		size_t args_size{0};
-		cli_args.gather_all_of("", [&](const std::string_view value) {
-			args.at(args_size++) = value;
-		});
+	REQUIRE(args_size == 2u);
+	CHECK(cli_args.get("theme") == "auto");
+	CHECK(!cli_args.get("help").has_value());
+	CHECK(cli_args.get("") == "abc");
+	CHECK(args.at(0) == "abc");
+	CHECK(args.at(1) == "def");
+};
 
-		CHECK(cli_args.args_size == 2u);
-		CHECK(cli_args.get("theme") == "auto");
-		CHECK(!cli_args.get("help").has_value());
-		CHECK(cli_args.get("") == "abc");
-		CHECK(args.at(0) == "abc");
-		CHECK(args.at(1) == "def");
-	}
+TEST_CASE("cli.mixed_args")
+{
+	OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
+	static constexpr char* argv[]{
+	    const_cast<char*>("test"), const_cast<char*>("-h"), const_cast<char*>("--theme"),
+	    const_cast<char*>("default_theme"), const_cast<char*>("123")};
+	static constexpr int argc{sizeof(argv) / sizeof(char*)};
+	const CliArgs cli_args{argc, argv};
 
-	SECTION("mixed_args")
-	{
-		OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
-		static constexpr char* argv[]{
-		    const_cast<char*>("test"), const_cast<char*>("-h"), const_cast<char*>("--theme"),
-		    const_cast<char*>("default_theme"), const_cast<char*>("123")};
-		static constexpr int argc{sizeof(argv) / sizeof(char*)};
-		const Detail::CliArgs cli_args{argc, argv};
+	CHECK(cli_args.get("theme") == "default_theme");
+	CHECK(cli_args.get("help").has_value());
+	CHECK(cli_args.get("") == "123");
+};
 
-		CHECK(cli_args.args_size == 3u);
-		CHECK(cli_args.get("theme") == "default_theme");
-		CHECK(cli_args.get("help").has_value());
-		CHECK(cli_args.get("") == "123");
-	}
+TEST_CASE("cli.key_value_with_equal")
+{
+	OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
+	static constexpr char* argv[]{
+	    const_cast<char*>("test"), const_cast<char*>("--theme=no-color"), const_cast<char*>("-h")};
+	static constexpr int argc{sizeof(argv) / sizeof(char*)};
+	const CliArgs cli_args{argc, argv};
 
-	SECTION("key_value_with_equal")
-	{
-		OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
-		static constexpr char* argv[]{
-		    const_cast<char*>("test"), const_cast<char*>("--theme=no-color"), const_cast<char*>("-h")};
-		static constexpr int argc{sizeof(argv) / sizeof(char*)};
-		const Detail::CliArgs cli_args{argc, argv};
-
-		CHECK(cli_args.args_size == 2u);
-		CHECK(cli_args.get("theme") == "no-color");
-		CHECK(cli_args.get("help").has_value());
-	}
+	CHECK(cli_args.get("theme") == "no-color");
+	CHECK(cli_args.get("help").has_value());
 };

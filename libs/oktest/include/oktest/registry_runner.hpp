@@ -17,7 +17,7 @@ public:
 	using Runner<ReporterT, ConfigT>::Runner;
 	using Runner<ReporterT, ConfigT>::operator=;
 
-	void run_tests(const Detail::CliArgs&);
+	void run_tests(const CliArgs&);
 
 	using Runner<ReporterT, ConfigT>::before_test_node;
 	using Runner<ReporterT, ConfigT>::after_test_node;
@@ -34,11 +34,11 @@ protected:
 };
 
 template<class ReporterT, size_t MaxTestCases, class ConfigT>
-void RegistryRunner<ReporterT, MaxTestCases, ConfigT>::run_tests(const Detail::CliArgs& cli_args)
+void RegistryRunner<ReporterT, MaxTestCases, ConfigT>::run_tests(const CliArgs& cli_args)
 {
 	this->m_reporter.update_configs(cli_args);
 
-	std::array<std::string_view, Detail::max_cli_args> args;
+	std::array<std::string_view, max_cli_args> args;
 	size_t args_size{0};
 	cli_args.gather_all_of("", [&](const std::string_view value) {
 		args.at(args_size++) = value;
@@ -100,7 +100,7 @@ constexpr bool RegistryRunner<ReporterT, MaxTestCases, ConfigT>::
 	size_t js{0};
 	for (size_t jr{0}; jr < regex_size; ++jr, ++js) {
 		bool escaped{false};
-		if (test_regex[jr] == '\\') {
+		if (test_regex.at(jr) == '\\') {
 			// Escaped character, look ahead ignoring special characters.
 			++jr;
 			if (jr >= regex_size) {
@@ -111,7 +111,7 @@ constexpr bool RegistryRunner<ReporterT, MaxTestCases, ConfigT>::
 			escaped = true;
 		}
 
-		if (!escaped && test_regex[jr] == '*') {
+		if (!escaped && test_regex.at(jr) == '*') {
 			// Wildcard is found; if this is the last character of the regex
 			// then any further content will be a match; early exit.
 			if (jr == regex_size - 1) {
@@ -138,7 +138,7 @@ constexpr bool RegistryRunner<ReporterT, MaxTestCases, ConfigT>::
 
 			return false;
 		}
-		else if (js >= string_size || test_regex[jr] != test_name[js]) {
+		else if (js >= string_size || test_regex.at(jr) != test_name.at(js)) {
 			// Regular character is found; not a match if not an exact match in the string.
 			return false;
 		}

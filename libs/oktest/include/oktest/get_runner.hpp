@@ -28,7 +28,7 @@ OKL_EXPORT_END
 template<class... Ts>
 void run_tests(const int argc, char* const argv[])
 {
-	const Detail::CliArgs cli_args{argc, argv};
+	const CliArgs cli_args{argc, argv};
 
 	if (cli_args.get("help").has_value()) {
 		Detail::print_help();

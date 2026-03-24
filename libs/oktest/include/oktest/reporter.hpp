@@ -32,7 +32,7 @@ public:
 	Reporter(const Reporter&) = delete;
 	Reporter& operator=(const Reporter&) = delete;
 
-	void update_configs(const Detail::CliArgs&);
+	void update_configs(const CliArgs&);
 
 	void before_test_node(const TestNodeData&);
 	void after_test_node(const TestNodeData&);
@@ -64,7 +64,7 @@ Reporter<LoggerT, ConfigT>::~Reporter() noexcept(false)
 }
 
 template<class LoggerT, class ConfigT>
-void Reporter<LoggerT, ConfigT>::update_configs(const Detail::CliArgs& cli_args)
+void Reporter<LoggerT, ConfigT>::update_configs(const CliArgs& cli_args)
 {
 	m_logger.update_configs(cli_args);
 }

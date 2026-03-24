@@ -58,5 +58,6 @@ import std;
 
 module :private;
 
+#include "cli.cpp"
 #include "logger.cpp"
 #include "main.cpp"
