@@ -11,6 +11,7 @@
 #include <fmt/format.h>
 
 #include <array>
+#include <concepts>
 #include <iostream>
 #include <optional>
 #include <string_view>
@@ -38,6 +39,8 @@ struct CliArgDefine {
 	std::string_view description{};
 	FunctionPtr<bool, std::string_view> validator{};
 };
+
+inline constexpr size_t max_cli_args{256};
 
 // clang-format off
 inline constexpr std::array cli_arg_defines{std::to_array<CliArgDefine>(
@@ -80,7 +83,7 @@ inline void print_help()
 
 class CliArgs {
 public:
-	std::array<CliArg, cli_arg_defines.size()> args;
+	std::array<CliArg, max_cli_args> args;
 	size_t args_size{0};
 
 	CliArgs(const int argc, char* const argv[])
@@ -157,6 +160,28 @@ public:
 		}
 
 		return {};
+	}
+
+	template<std::invocable<std::string_view> Callable>
+	void gather_all_of(const std::string_view name, Callable&& callback) const
+	{
+		bool found{false};
+		for (size_t i{0}; i < args_size; ++i) {
+			const CliArg& arg{args.at(i)};
+			if (name == arg.name) {
+				std::forward<Callable>(callback)(arg.value);
+				found = true;
+			}
+		}
+		if (found) {
+			return;
+		}
+
+		for (const CliArgDefine& define : cli_arg_defines) {
+			if (name == define.name && !define.default_value.empty()) {
+				callback(define.default_value);
+			}
+		}
 	}
 };
 } // namespace Detail
