@@ -25,7 +25,7 @@ TEST_CASE("cli_args_parsing")
 		static constexpr int argc{sizeof(argv) / sizeof(char*)};
 		const Detail::CliArgs cli_args{argc, argv};
 
-		CHECK(cli_args.args_size == 0);
+		CHECK(cli_args.args_size == 0u);
 		CHECK(cli_args.get("theme") == "auto");
 		CHECK(!cli_args.get("help").has_value());
 		CHECK(!cli_args.get("").has_value());
@@ -39,7 +39,7 @@ TEST_CASE("cli_args_parsing")
 		static constexpr int argc{sizeof(argv) / sizeof(char*)};
 		const Detail::CliArgs cli_args{argc, argv};
 
-		CHECK(cli_args.args_size == 1);
+		CHECK(cli_args.args_size == 1u);
 		CHECK(cli_args.get("theme") == "default_theme");
 		CHECK(!cli_args.get("help").has_value());
 		CHECK(!cli_args.get("").has_value());
@@ -52,7 +52,7 @@ TEST_CASE("cli_args_parsing")
 		static constexpr int argc{sizeof(argv) / sizeof(char*)};
 		const Detail::CliArgs cli_args{argc, argv};
 
-		CHECK(cli_args.args_size == 1);
+		CHECK(cli_args.args_size == 1u);
 		CHECK(cli_args.get("theme") == "auto");
 		CHECK(cli_args.get("help").has_value());
 		CHECK(!cli_args.get("").has_value());
@@ -65,7 +65,7 @@ TEST_CASE("cli_args_parsing")
 		static constexpr int argc{sizeof(argv) / sizeof(char*)};
 		const Detail::CliArgs cli_args{argc, argv};
 
-		CHECK(cli_args.args_size == 1);
+		CHECK(cli_args.args_size == 1u);
 		CHECK(cli_args.get("theme") == "auto");
 		CHECK(cli_args.get("help").has_value());
 		CHECK(!cli_args.get("").has_value());
@@ -78,10 +78,31 @@ TEST_CASE("cli_args_parsing")
 		static constexpr int argc{sizeof(argv) / sizeof(char*)};
 		const Detail::CliArgs cli_args{argc, argv};
 
-		CHECK(cli_args.args_size == 1);
+		CHECK(cli_args.args_size == 1u);
 		CHECK(cli_args.get("theme") == "auto");
 		CHECK(!cli_args.get("help").has_value());
 		CHECK(cli_args.get("") == "abc");
+	}
+
+	SECTION("multi-positional")
+	{
+		OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
+		static constexpr char* argv[]{const_cast<char*>("test"), const_cast<char*>("abc"), const_cast<char*>("def")};
+		static constexpr int argc{sizeof(argv) / sizeof(char*)};
+		const Detail::CliArgs cli_args{argc, argv};
+
+		std::array<std::string_view, Detail::max_cli_args> args;
+		size_t args_size{0};
+		cli_args.gather_all_of("", [&](const std::string_view value) {
+			args.at(args_size++) = value;
+		});
+
+		CHECK(cli_args.args_size == 2u);
+		CHECK(cli_args.get("theme") == "auto");
+		CHECK(!cli_args.get("help").has_value());
+		CHECK(cli_args.get("") == "abc");
+		CHECK(args.at(0) == "abc");
+		CHECK(args.at(1) == "def");
 	}
 
 	SECTION("mixed_args")
@@ -93,7 +114,7 @@ TEST_CASE("cli_args_parsing")
 		static constexpr int argc{sizeof(argv) / sizeof(char*)};
 		const Detail::CliArgs cli_args{argc, argv};
 
-		CHECK(cli_args.args_size == 3);
+		CHECK(cli_args.args_size == 3u);
 		CHECK(cli_args.get("theme") == "default_theme");
 		CHECK(cli_args.get("help").has_value());
 		CHECK(cli_args.get("") == "123");
