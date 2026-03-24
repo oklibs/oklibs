@@ -93,7 +93,14 @@ public:
 
 			if (token.starts_with('-')) {
 				const bool is_short_name{!token.starts_with("--")};
-				const std::string_view name{is_short_name ? token.substr(1) : token.substr(2)};
+				std::string_view name{is_short_name ? token.substr(1) : token.substr(2)};
+				std::string_view value_from_token{};
+
+				if (const size_t equal_pos{name.find('=')}; equal_pos != std::string_view::npos) {
+					value_from_token = name.substr(equal_pos + 1);
+					name = name.substr(0, equal_pos);
+				}
+
 				bool found{false};
 
 				for (const CliArgDefine& define : cli_arg_defines) {
@@ -104,11 +111,17 @@ public:
 							break;
 						}
 
-						if (argi + 1 >= argc) {
-							report_error(fmt::format("Argument '{}' is missing a value", name));
+						std::string_view value;
+						if (!value_from_token.empty()) {
+							value = value_from_token;
+						}
+						else {
+							if (argi + 1 >= argc) {
+								report_error(fmt::format("Argument '{}' is missing a value", name));
+							}
+							value = argv[++argi];
 						}
 
-						const std::string_view value{argv[++argi]};
 						if (define.validator && !define.validator(value)) {
 							report_error(fmt::format("Invalid value '{}' for argument '{}'", value, name));
 						}

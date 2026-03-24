@@ -119,4 +119,17 @@ TEST_CASE("cli_args_parsing")
 		CHECK(cli_args.get("help").has_value());
 		CHECK(cli_args.get("") == "123");
 	}
+
+	SECTION("key_value_with_equal")
+	{
+		OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
+		static constexpr char* argv[]{
+		    const_cast<char*>("test"), const_cast<char*>("--theme=no-color"), const_cast<char*>("-h")};
+		static constexpr int argc{sizeof(argv) / sizeof(char*)};
+		const Detail::CliArgs cli_args{argc, argv};
+
+		CHECK(cli_args.args_size == 2u);
+		CHECK(cli_args.get("theme") == "no-color");
+		CHECK(cli_args.get("help").has_value());
+	}
 };
