@@ -40,9 +40,7 @@ void RegistryRunner<ReporterT, MaxTestCases, ConfigT>::run_tests(const CliArgs& 
 
 	std::array<std::string_view, max_cli_args> args;
 	size_t args_size{0};
-	cli_args.gather_all_of("", [&](const std::string_view value) {
-		args.at(args_size++) = value;
-	});
+	cli_args.gather_all_of("", [&](const std::string_view value) { args.at(args_size++) = value; });
 
 	if (args_size > 0) {
 		m_running = true;

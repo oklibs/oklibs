@@ -14,7 +14,6 @@
 import std;
 #endif
 
-
 using namespace Okl::Test;
 
 TEST_CASE("cli.no_args")

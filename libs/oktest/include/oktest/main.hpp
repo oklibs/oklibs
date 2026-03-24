@@ -12,6 +12,6 @@ namespace Okl::Test
 OKL_EXPORT_BEGIN
 OKTEST_EXPORT int main(int argc, char* argv[]);
 OKL_EXPORT_END
-} // namespace Okl
+} // namespace Okl::Test
 
 #endif
