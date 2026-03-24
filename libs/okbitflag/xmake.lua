@@ -34,5 +34,7 @@ target("okbitflag_tests", function()
     set_group("okbitflag")
     add_deps("okutils", "okbitflag", "oktest")
     add_extrafiles("tests/**")
+
+    set_values("windows.subsystem", "console")
     add_tests("tests", {kind = "binary", files = "tests/**.cpp", build_should_pass = is_cross()})
 end)

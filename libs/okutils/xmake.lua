@@ -33,5 +33,7 @@ target("okutils_tests", function()
     set_group("okutils")
     add_deps("okutils", "oktest")
     add_extrafiles("tests/**")
+
+    set_values("windows.subsystem", "console")
     add_tests("tests", {kind = "binary", files = "tests/**.cpp", build_should_pass = is_cross()})
 end)
