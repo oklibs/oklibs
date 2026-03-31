@@ -101,7 +101,7 @@ if has_config("dev") then
     add_cxflags(
         "-Wno-c++98-compat-pedantic",
         "-Wno-c++20-compat",
-         "-Wno-c2y-extensions",
+        "-Wno-c2y-extensions",
         "-Wno-padded",
         {tools = {"clang", "clangxx", "clang_cl", "emcc", "emxx"}})
     add_cxflags("-pedantic-errors", "-fsafe-buffer-usage-suggestions", {tools = {"clang", "clangxx", "emcc", "emxx"}})
