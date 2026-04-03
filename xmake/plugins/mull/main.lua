@@ -35,6 +35,8 @@ function _get_tests()
             local target_new = target:clone()
             local scriptdir = target:scriptdir()
             target_new:name_set(target:name() .. "_" .. name .. "_mull")
+            project.target_add(target_new)
+
             for _, file in ipairs(extra.files) do
                 local file_path = path.relative(path.absolute(file, scriptdir), os.projectdir())
                 target_new:add("files", file_path, {
@@ -45,7 +47,6 @@ function _get_tests()
                     undefines = extra.undefines,
                     languages = extra.languages
                 })
-                project.target_add(target_new)
             end
             for _, file in ipairs(extra.remove_files) do
                 local file_path = path.relative(path.absolute(file, scriptdir), os.projectdir())
@@ -54,18 +55,12 @@ function _get_tests()
             if extra.kind then
                 target_new:set("kind", extra.kind)
             end
-            if extra.frameworks then
-                target_new:add("frameworks", extra.frameworks)
+            for _, key in ipairs({"frameworks", "links", "syslinks", "packages"}) do
+                if extra[key] then
+                    target_new:add(key, extra[key])
+                end
             end
-            if extra.links then
-                target_new:add("links", extra.links)
-            end
-            if extra.syslinks then
-                target_new:add("syslinks", extra.syslinks)
-            end
-            if extra.packages then
-                target_new:add("packages", extra.packages)
-            end
+
             target_utils.config_target(target_new)
             testinfo.target = target_new
 
@@ -105,16 +100,20 @@ function _build_tests(tests, clang_version)
     for _, test in pairs(tests) do
         local target = test.target
         local scriptdir = target:scriptdir()
-        target_names[scriptdir] = target_names[scriptdir] or {}
 
         target:add("cxflags", plugin_flag, "-g", "-grecord-command-line")
+
+        target_names[scriptdir] = target_names[scriptdir] or {}
         table.insert(target_names[scriptdir], target:fullname())
     end
+
+    local old_mull_config = os.getenv("MULL_CONFIG")
     for scriptdir, names in pairs(target_names) do
         local mull_config = path.join(scriptdir, "mull.yml")
-        os.addenvs({MULL_CONFIG = os.isfile(mull_config) and mull_config or ""})
+        os.setenv("MULL_CONFIG", os.isfile(mull_config) and mull_config or "")
         build_action.build_targets(names)
     end
+    os.setenv("MULL_CONFIG", old_mull_config)
 end
 
 function _get_clang_version(tests)
@@ -168,16 +167,11 @@ function _process_output_files(test, files)
     return nil
 end
 
-function main()
-    if remote_build_action.enabled() then
-        return remote_build_action()
+function _run_tests(tests)
+    if table.empty(tests) then
+        print("nothing to test")
+        return
     end
-
-    task.run("config", {}, {disable_dump = false, loadonly = true})
-    project.lock()
-
-    local tests = _get_tests()
-    local oldir = os.cd(project.directory())
 
     local clang_version = assert(_get_clang_version(tests), "could not determine clang version!")
     local mull_runner = assert(_get_mull_runner(clang_version), "could not find mull-runner for clang version %s!", clang_version:rawstr())
@@ -186,7 +180,7 @@ function main()
     print()
 
     local report_dir = path.absolute(option.get("output") or project.tmpdir())
-    local report_name = "mull" .. "_" .. hash.rand128():gsub("[/\\>=<|%*]", "_")
+    local report_name = "mull" .. "_" .. hash.rand128()
 
     for _, test in pairs(tests) do
         local target = test.target
@@ -214,15 +208,15 @@ function main()
         -- Mull's output capture seems to interfere with xmake's and can cause it to get stuck (not looked into it further, just an assumption).
         local runargs = {
             targetfile,
-            "--workers", option.get("jobs"),
+            "--allow-surviving", -- Handled by mull-reporter.
+            -- "--debug",
             -- "--include-not-covered",
             -- "--ld-search-path",
+            "--no-output",
             "--reporters", "SQLite",
             "--report-dir", report_dir,
             "--report-name", report_name,
-            -- "--debug",
-            "--allow-surviving", -- Handled by mull-reporter.
-            "--no-output",
+            "--workers", option.get("jobs"),
             "--test-program=xmake", "l", "./xmake/scripts/mull/test_runner.lua", targetfile, test_opts
         }
         table.join2(runargs, table.wrap(test.runargs or target:get("runargs")))
@@ -235,11 +229,24 @@ function main()
         "--mutation-score-threshold", option.get("mutation_score_threshold")
     }
     local ok, syserrors = os.execv(mull_reporter.program, runargs, {try = true})
-
-    os.cd(oldir)
-    project.unlock()
-
     if ok ~= 0 then
         raise(syserrors)
     end
+end
+
+function main()
+    if remote_build_action.enabled() then
+        return remote_build_action()
+    end
+
+    task.run("config", {}, {disable_dump = false, loadonly = true})
+    project.lock()
+
+    local tests = _get_tests()
+    local oldir = os.cd(project.directory())
+
+    _run_tests(tests)
+
+    os.cd(oldir)
+    project.unlock()
 end
