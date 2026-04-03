@@ -103,11 +103,17 @@ function _build_tests(tests, clang_version)
     local plugin_flag = "-fpass-plugin=/usr/lib/mull-ir-frontend-" .. clang_version:major()
     local target_names = {}
     for _, test in pairs(tests) do
-        test.target:add("cxflags", plugin_flag, "-g", "-grecord-command-line")
-        table.insert(target_names, test.target:fullname())
+        local target = test.target
+        local scriptdir = target:scriptdir()
+        target_names[scriptdir] = target_names[scriptdir] or {}
+
+        target:add("cxflags", plugin_flag, "-g", "-grecord-command-line")
+        table.insert(target_names[scriptdir], target:fullname())
     end
-    if #target_names > 0 then
-        build_action.build_targets(target_names)
+    for scriptdir, names in pairs(target_names) do
+        local mull_config = path.join(scriptdir, "mull.yml")
+        os.addenvs({MULL_CONFIG = os.isfile(mull_config) and mull_config or ""})
+        build_action.build_targets(names)
     end
 end
 
