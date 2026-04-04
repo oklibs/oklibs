@@ -4,6 +4,7 @@ import("core.base.option")
 import("core.base.semver")
 import("core.base.task")
 import("core.project.project")
+import("lib.detect.find_file")
 import("lib.detect.find_tool")
 import("actions.build.main", {rootdir = os.programdir(), alias = "build_action"})
 import("private.action.run.runenvs", {rootdir = os.programdir()})
@@ -95,7 +96,8 @@ function _get_tests()
 end
 
 function _build_tests(tests, clang_version)
-    local plugin_flag = "-fpass-plugin=/usr/lib/mull-ir-frontend-" .. clang_version:major()
+    local plugin_file = assert(_get_mull_ir_frontend(clang_version), "could not find mull-ir-frontend for clang version %s!", clang_version:rawstr())
+    local plugin_flag = "-fpass-plugin=" .. plugin_file
     local target_names = {}
     for _, test in pairs(tests) do
         local target = test.target
@@ -127,6 +129,13 @@ function _get_clang_version(tests)
         end
     end
     return nil
+end
+
+function _get_mull_ir_frontend(clang_version)
+    local frontend_paths = table.wrap(option.get("frontend"))
+    table.insert(frontend_paths, "/usr/lib")
+    table.insert(frontend_paths, "/usr/local/lib")
+    return find_file("mull-ir-frontend-" .. clang_version:major(), frontend_paths)
 end
 
 function _get_mull_runner(clang_version)
