@@ -111,8 +111,12 @@ function _build_tests(tests, clang_version)
 
     local old_mull_config = os.getenv("MULL_CONFIG")
     for scriptdir, names in pairs(target_names) do
-        local mull_config = path.join(scriptdir, "mull.yml")
-        os.setenv("MULL_CONFIG", os.isfile(mull_config) and mull_config or "")
+        if not old_mull_config then
+            local mull_config = path.join(scriptdir, "mull.yml")
+            if os.isfile(mull_config) then
+                os.setenv("MULL_CONFIG", mull_config)
+            end
+        end
         build_action.build_targets(names)
     end
     os.setenv("MULL_CONFIG", old_mull_config)
@@ -191,6 +195,7 @@ function _run_tests(tests)
     local report_dir = path.absolute(option.get("output") or project.tmpdir())
     local report_name = "mull" .. "_" .. hash.rand128()
 
+    local old_mull_config = os.getenv("MULL_CONFIG")
     for _, test in pairs(tests) do
         local target = test.target
 
@@ -230,17 +235,21 @@ function _run_tests(tests)
         }
         table.join2(runargs, table.wrap(test.runargs or target:get("runargs")))
 
+        if not old_mull_config then
+            local mull_config = path.join(target:scriptdir(), "mull.yml")
+            if os.isfile(mull_config) then
+                os.setenv("MULL_CONFIG", mull_config)
+            end
+        end
         os.execv(mull_runner.program, runargs)
     end
+    os.setenv("MULL_CONFIG", old_mull_config)
 
     local runargs = {
         path.join(report_dir, report_name .. ".sqlite"),
         "--mutation-score-threshold", option.get("mutation_score_threshold")
     }
-    local ok, syserrors = os.execv(mull_reporter.program, runargs, {try = true})
-    if ok ~= 0 then
-        raise(syserrors)
-    end
+    return os.execv(mull_reporter.program, runargs, {try = true})
 end
 
 function main()
@@ -254,8 +263,12 @@ function main()
     local tests = _get_tests()
     local oldir = os.cd(project.directory())
 
-    _run_tests(tests)
+    local ok, syserrors = _run_tests(tests)
 
     os.cd(oldir)
     project.unlock()
+
+    if ok ~= 0 then
+        raise(syserrors)
+    end
 end
