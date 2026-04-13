@@ -51,7 +51,7 @@ function main()
     local output_dir = option.get("output") or path.join(config.builddir(), "coverage")
     local profdata = path.join(output_dir, "profiles.profdata")
 
-    print("Merging profdata ...")
+    print("Merging profdata to '%s' ...", profdata)
     local manifest_file = path.join(output_dir, "profiles.manifest")
     local manifest = io.open(manifest_file, "w")
     if manifest then
@@ -59,6 +59,8 @@ function main()
             manifest:write(file .. "\n")
         end
         manifest:close()
+    else
+        raise("failed to create manifest file!")
     end
     os.execv(llvm_profdata, {"merge", "-sparse", "-f", manifest_file, "-o", profdata})
     os.rm(manifest_file)
