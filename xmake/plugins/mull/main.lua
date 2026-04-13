@@ -194,6 +194,7 @@ function _run_tests(tests)
 
     local report_dir = path.absolute(option.get("output") or project.tmpdir())
     local report_name = "mull" .. "_" .. hash.rand128()
+    local runner_file = os.scriptdir() .. "/scripts/mull/test_runner.lua"
 
     local old_mull_config = os.getenv("MULL_CONFIG")
     for _, test in pairs(tests) do
@@ -231,7 +232,7 @@ function _run_tests(tests)
             "--report-dir", report_dir,
             "--report-name", report_name,
             "--workers", option.get("jobs"),
-            "--test-program=xmake", "l", "./xmake/scripts/mull/test_runner.lua", targetfile, test_opts
+            "--test-program=xmake", "l", runner_file, targetfile, test_opts
         }
         table.join2(runargs, table.wrap(test.runargs or target:get("runargs")))
 
