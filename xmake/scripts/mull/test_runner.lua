@@ -1,5 +1,7 @@
 -- Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
+-- Minimal version of xmake `action/tests/main.lua`.
+
 function _load_output_files(files)
     local outputs = {}
 
@@ -14,8 +16,6 @@ function _load_output_files(files)
 end
 
 function main(program, opts, ...)
-    -- Minimal version of xmake `action/tests/main.lua`.
-
     opts = string.deserialize(opts)
 
     local outfile = os.tmpfile()
