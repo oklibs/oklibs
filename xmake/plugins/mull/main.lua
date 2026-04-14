@@ -15,7 +15,17 @@ function _get_tests()
     local tests = {}
 
     local group_pattern = option.get("group")
+    local group_exclude
     if group_pattern then
+        group_exclude = group_pattern:match("|.*$")
+        if group_exclude then
+            group_exclude = group_exclude:sub(2)
+            group_pattern = group_pattern:gsub("|.*$", "")
+            if not group_pattern then
+                group_pattern = "*"
+            end
+        end
+
         group_pattern = "^" .. path.pattern(group_pattern) .. "$"
     end
 
@@ -70,7 +80,7 @@ function _get_tests()
             end
 
             local group = testinfo.group
-            if not group_pattern or (group and group:match(group_pattern)) then
+            if not (group_pattern and group) or (group:match(group_pattern) and (not group_exclude or not group:match(group_exclude))) then
                 tests[testname] = testinfo
             end
 
