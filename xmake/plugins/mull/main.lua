@@ -190,14 +190,13 @@ function _run_tests(tests)
     local mull_runner = assert(_get_mull_runner(clang_version), "could not find mull-runner for clang version %s!", clang_version:rawstr())
     local mull_reporter = assert(_get_mull_reporter(clang_version), "could not find mull-reporter for clang version %s!", clang_version:rawstr())
     _build_tests(tests, clang_version)
-    print()
 
     local report_dir = path.absolute(option.get("output") or project.tmpdir())
     local report_name = "mull" .. "_" .. hash.rand128()
     local runner_file = os.scriptdir() .. "/scripts/mull/test_runner.lua"
 
     local old_mull_config = os.getenv("MULL_CONFIG")
-    for _, test in pairs(tests) do
+    for test_name, test in pairs(tests) do
         local target = test.target
 
         local envs = test.runenvs
@@ -242,7 +241,12 @@ function _run_tests(tests)
                 os.setenv("MULL_CONFIG", mull_config)
             end
         end
-        os.execv(mull_runner.program, runargs)
+        if option.get("verbose") then
+            os.execv(mull_runner.program, runargs)
+        else
+            print("Running mull for test(%s) ...", test_name)
+            os.runv(mull_runner.program, runargs)
+        end
     end
     os.setenv("MULL_CONFIG", old_mull_config)
 
@@ -250,6 +254,7 @@ function _run_tests(tests)
         path.join(report_dir, report_name .. ".sqlite"),
         "--mutation-score-threshold", option.get("mutation_score_threshold")
     }
+    print()
     return os.execv(mull_reporter.program, runargs, {try = true})
 end
 
