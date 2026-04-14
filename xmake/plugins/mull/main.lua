@@ -255,7 +255,10 @@ function _run_tests(tests)
         end
 
         if option.get("verbose") then
-            os.execv(mull_runner.program, runargs)
+            local ok, syserrors = os.execv(mull_runner.program, runargs)
+            if ok ~= 0 then
+                return ok, syserrors
+            end
         else
             print("Running mull for test(%s) ...", test_name)
             os.runv(mull_runner.program, runargs)
