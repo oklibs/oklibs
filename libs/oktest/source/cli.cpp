@@ -35,6 +35,7 @@ struct CliArgDefine {
 inline constexpr std::array cli_arg_defines{std::to_array<CliArgDefine>(
 	{{"theme", {}, {}, "auto", "Color theme to use."},
 	 {"help", 'h', ECliArgType::flag, {}, "Print help."},
+	 {"exit-zero", {}, ECliArgType::flag, {}, "Return exit code 0 even when tests fail."},
 	 {{}, {}, {}, {}, "Regex to filter tests with."}})};
 // clang-format on
 
