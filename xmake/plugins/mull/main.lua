@@ -205,6 +205,8 @@ function _run_tests(tests)
     local report_name = "mull" .. "_" .. hash.rand128()
     local runner_file = os.scriptdir() .. "/scripts/mull/test_runner.lua"
 
+    os.mkdir(path.join(os.tmpdir(), "mull"))
+
     local old_mull_config = os.getenv("MULL_CONFIG")
     for test_name, test in pairs(tests) do
         local target = test.target
@@ -251,12 +253,15 @@ function _run_tests(tests)
                 os.setenv("MULL_CONFIG", mull_config)
             end
         end
+
         if option.get("verbose") then
             os.execv(mull_runner.program, runargs)
         else
             print("Running mull for test(%s) ...", test_name)
             os.runv(mull_runner.program, runargs)
         end
+
+        os.rm(path.join(os.tmpdir(), "mull/*"))
     end
     os.setenv("MULL_CONFIG", old_mull_config)
 

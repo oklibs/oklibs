@@ -18,11 +18,16 @@ end
 function main(program, opts, ...)
     opts = string.deserialize(opts)
 
-    local outfile = os.tmpfile()
+    local outfile = path.join(os.tmpdir(), "mull", "_" .. hash.rand128())
+    os.tryrm(outfile)
+
     local run_timeout = opts.run_timeout
     local ok, _ = os.execv(program, {...}, {try = true, timeout = run_timeout, curdir = opts.rundir, envs = opts.runenvs, stdout = outfile})
-    local outdata = (outfile and os.isfile(outfile)) and io.readfile(outfile) or ""
-    os.rm(outfile)
+    local outdata = ""
+    if outfile and os.isfile(outfile) then
+        outdata = io.readfile(outfile)
+        os.tryrm(outfile)
+    end
 
     if opts.trim_output and outdata then
         outdata = outdata:trim()
