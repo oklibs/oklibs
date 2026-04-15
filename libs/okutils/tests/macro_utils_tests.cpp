@@ -122,14 +122,9 @@ CONSTEXPR_TEST_CASE("va_comma")
 
 CONSTEXPR_TEST_CASE("is_empty")
 {
-	constexpr bool empty{OKL_IS_EMPTY()};
-	CHECK(empty == 1);
-
-	constexpr bool not_empty{OKL_IS_EMPTY(1)};
-	CHECK(not_empty == 0);
-
-	constexpr bool not_empty_comma{OKL_IS_EMPTY(1, 2)};
-	CHECK(not_empty_comma == 0);
+	CHECK(OKL_IS_EMPTY() == 1);
+	CHECK(OKL_IS_EMPTY(1) == 0);
+	CHECK(OKL_IS_EMPTY(1, 2) == 0);
 };
 
 CONSTEXPR_TEST_CASE("if")
