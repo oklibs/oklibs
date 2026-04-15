@@ -127,8 +127,7 @@ constexpr auto Bitflag<T>::num_valid_flags() noexcept -> int
 template<CUnsignedEnum T>
 constexpr auto Bitflag<T>::num_flags() const noexcept -> int
 {
-	return std::popcount(static_cast<UnderlyingType>(static_cast<UnderlyingType>(m_flags) &
-	                                                 static_cast<UnderlyingType>(valid_flags)));
+	return std::popcount((*this & valid_flags).underlying());
 }
 
 /** Returns a new bitflag created from its underlying type. */
@@ -273,84 +272,84 @@ constexpr auto Bitflag<T>::clear_flags() noexcept -> Bitflag&
 template<CUnsignedEnum T>
 constexpr auto Bitflag<T>::operator&(const Bitflag rhs) const noexcept -> Bitflag
 {
-	return Bitflag{static_cast<T>(static_cast<UnderlyingType>(m_flags) & static_cast<UnderlyingType>(rhs.m_flags))};
+	return Bitflag{static_cast<T>(underlying() & rhs.underlying())};
 }
 
 template<CUnsignedEnum T>
 constexpr auto Bitflag<T>::operator&(const T rhs) const noexcept -> Bitflag
 {
-	return Bitflag{static_cast<T>(static_cast<UnderlyingType>(m_flags) & static_cast<UnderlyingType>(rhs))};
+	return Bitflag{static_cast<T>(underlying() & static_cast<UnderlyingType>(rhs))};
 }
 
 template<CUnsignedEnum T>
 constexpr auto Bitflag<T>::operator|(const Bitflag rhs) const noexcept -> Bitflag
 {
-	return Bitflag{static_cast<T>(static_cast<UnderlyingType>(m_flags) | static_cast<UnderlyingType>(rhs.m_flags))};
+	return Bitflag{static_cast<T>(underlying() | rhs.underlying())};
 }
 
 template<CUnsignedEnum T>
 constexpr auto Bitflag<T>::operator|(const T rhs) const noexcept -> Bitflag
 {
-	return Bitflag{static_cast<T>(static_cast<UnderlyingType>(m_flags) | static_cast<UnderlyingType>(rhs))};
+	return Bitflag{static_cast<T>(underlying() | static_cast<UnderlyingType>(rhs))};
 }
 
 template<CUnsignedEnum T>
 constexpr auto Bitflag<T>::operator^(const Bitflag rhs) const noexcept -> Bitflag
 {
-	return Bitflag{static_cast<T>(static_cast<UnderlyingType>(m_flags) ^ static_cast<UnderlyingType>(rhs.m_flags))};
+	return Bitflag{static_cast<T>(underlying() ^ rhs.underlying())};
 }
 
 template<CUnsignedEnum T>
 constexpr auto Bitflag<T>::operator^(const T rhs) const noexcept -> Bitflag
 {
-	return Bitflag{static_cast<T>(static_cast<UnderlyingType>(m_flags) ^ static_cast<UnderlyingType>(rhs))};
+	return Bitflag{static_cast<T>(underlying() ^ static_cast<UnderlyingType>(rhs))};
 }
 
 template<CUnsignedEnum T>
 constexpr auto Bitflag<T>::operator~() const noexcept -> Bitflag
 {
-	return Bitflag{static_cast<T>(~static_cast<UnderlyingType>(m_flags))};
+	return Bitflag{static_cast<T>(~underlying())};
 }
 
 template<CUnsignedEnum T>
 constexpr auto Bitflag<T>::operator&=(const Bitflag rhs) noexcept -> Bitflag&
 {
-	m_flags = static_cast<T>(static_cast<UnderlyingType>(m_flags) & static_cast<UnderlyingType>(rhs.m_flags));
+	m_flags = static_cast<T>(underlying() & rhs.underlying());
 	return *this;
 }
 
 template<CUnsignedEnum T>
 constexpr auto Bitflag<T>::operator&=(const T rhs) noexcept -> Bitflag&
 {
-	m_flags = static_cast<T>(static_cast<UnderlyingType>(m_flags) & static_cast<UnderlyingType>(rhs));
+	m_flags = static_cast<T>(underlying() & static_cast<UnderlyingType>(rhs));
 	return *this;
 }
 
 template<CUnsignedEnum T>
 constexpr auto Bitflag<T>::operator|=(const Bitflag rhs) noexcept -> Bitflag&
 {
-	m_flags = static_cast<T>(static_cast<UnderlyingType>(m_flags) | static_cast<UnderlyingType>(rhs.m_flags));
+	m_flags = static_cast<T>(underlying() | rhs.underlying());
 	return *this;
 }
 
 template<CUnsignedEnum T>
 constexpr auto Bitflag<T>::operator|=(const T rhs) noexcept -> Bitflag&
 {
-	m_flags = static_cast<T>(static_cast<UnderlyingType>(m_flags) | static_cast<UnderlyingType>(rhs));
+	m_flags = static_cast<T>(underlying() | static_cast<UnderlyingType>(rhs));
 	return *this;
 }
 
 template<CUnsignedEnum T>
 constexpr auto Bitflag<T>::operator^=(const Bitflag rhs) noexcept -> Bitflag&
 {
-	m_flags = static_cast<T>(static_cast<UnderlyingType>(m_flags) ^ static_cast<UnderlyingType>(rhs.m_flags));
+	m_flags = static_cast<T>(underlying() ^ rhs.underlying());
 	return *this;
 }
 
 template<CUnsignedEnum T>
 constexpr auto Bitflag<T>::operator^=(const T rhs) noexcept -> Bitflag&
 {
-	m_flags = static_cast<T>(static_cast<UnderlyingType>(m_flags) ^ static_cast<UnderlyingType>(rhs));
+	m_flags = static_cast<T>(underlying() ^ static_cast<UnderlyingType>(rhs));
 	return *this;
 }
 
