@@ -6,7 +6,10 @@
 #include "okutils/defines.hpp"
 #include "okutils/types.hpp"
 
+#include <array>
+#include <cassert>
 #include <climits>
+#include <ranges>
 
 namespace Okl
 {
@@ -14,6 +17,21 @@ OKL_EXPORT_BEGIN
 consteval auto as_constant(auto value) noexcept;
 template<class T> [[nodiscard]] constexpr size_t bit_size_of() noexcept;
 template<class T> [[nodiscard]] constexpr size_t size_of_n(size_t count) noexcept;
+
+template<std::ranges::range RangeT>
+[[nodiscard]] constexpr decltype(auto) at(RangeT&&, std::ranges::range_size_t<RangeT> index);
+
+template<size_t Index, class T, size_t Size> requires(Index < Size)
+[[nodiscard]] constexpr T& at(RawArray<T, Size>&) noexcept;
+
+template<size_t Index, class T, size_t Size> requires(Index < Size)
+[[nodiscard]] constexpr const T& at(const RawArray<T, Size>&) noexcept;
+
+template<size_t Index, class T, size_t Size> requires(Index < Size)
+[[nodiscard]] constexpr T& at(std::array<T, Size>&) noexcept;
+
+template<size_t Index, class T, size_t Size> requires(Index < Size)
+[[nodiscard]] constexpr const T& at(const std::array<T, Size>&) noexcept;
 OKL_EXPORT_END
 
 
@@ -45,6 +63,61 @@ template<class T>
 constexpr auto size_of_n(const size_t count) noexcept -> size_t
 {
 	return sizeof(T) * count;
+}
+
+template<std::ranges::range RangeT>
+constexpr decltype(auto) at(RangeT&& range, const std::ranges::range_size_t<RangeT> index)
+{
+	assert(index >= 0 && index < std::ranges::size(range));
+
+	// OKL_SUPPRESS_GSL(bounds.1) // This is our `at()` implementation.
+	// OKL_SUPPRESS_GSL(bounds.2) // ^^^
+	OKL_SUPPRESS_GSL(bounds.4, "Prefer to use gsl::at()") // ^^^
+	return std::forward<RangeT>(range)[index];
+}
+
+template<size_t Index, class T, size_t Size> requires(Index < Size)
+constexpr T& at(RawArray<T, Size>& array) noexcept
+{
+#if OKL_COMPILER_CLANG_AVAILABLE
+	#pragma clang unsafe_buffer_usage begin // Compile time index.
+#endif
+
+	OKL_SUPPRESS_GSL(bounds.4) // This is our `at()` implementation.
+	return array[Index];
+
+#if OKL_COMPILER_CLANG_AVAILABLE
+	#pragma clang unsafe_buffer_usage end
+#endif
+}
+
+template<size_t Index, class T, size_t Size> requires(Index < Size)
+constexpr const T& at(const RawArray<T, Size>& array) noexcept
+{
+#if OKL_COMPILER_CLANG_AVAILABLE
+	#pragma clang unsafe_buffer_usage begin // Compile time index.
+#endif
+
+	OKL_SUPPRESS_GSL(bounds.4) // This is our `at()` implementation.
+	return array[Index];
+
+#if OKL_COMPILER_CLANG_AVAILABLE
+	#pragma clang unsafe_buffer_usage end
+#endif
+}
+
+template<size_t Index, class T, size_t Size> requires(Index < Size)
+constexpr T& at(std::array<T, Size>& array) noexcept
+{
+	OKL_SUPPRESS_GSL(bounds.4) // This is our `at()` implementation.
+	return array[Index];
+}
+
+template<size_t Index, class T, size_t Size> requires(Index < Size)
+constexpr const T& at(const std::array<T, Size>& array) noexcept
+{
+	OKL_SUPPRESS_GSL(bounds.4) // This is our `at()` implementation.
+	return array[Index];
 }
 } // namespace Okl
 
