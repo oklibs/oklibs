@@ -66,7 +66,7 @@ constexpr auto size_of_n(const size_t count) noexcept -> size_t
 }
 
 template<std::ranges::range RangeT>
-constexpr decltype(auto) at(RangeT&& range, const std::ranges::range_size_t<RangeT> index)
+constexpr auto at(RangeT&& range, const std::ranges::range_size_t<RangeT> index) -> decltype(auto)
 {
 	assert(index >= 0 && index < std::ranges::size(range));
 
@@ -76,7 +76,7 @@ constexpr decltype(auto) at(RangeT&& range, const std::ranges::range_size_t<Rang
 }
 
 template<size_t Index, class T, size_t Size> requires(Index < Size)
-constexpr const T& at(const RawArray<T, Size>& array) noexcept
+constexpr auto at(const RawArray<T, Size>& array) noexcept -> const T&
 {
 #if OKL_COMPILER_CLANG_AVAILABLE
 	#pragma clang unsafe_buffer_usage begin // Compile time index.
@@ -91,7 +91,7 @@ constexpr const T& at(const RawArray<T, Size>& array) noexcept
 }
 
 template<size_t Index, class T, size_t Size> requires(Index < Size)
-constexpr T& at(RawArray<T, Size>& array) noexcept
+constexpr auto at(RawArray<T, Size>& array) noexcept -> T&
 {
 #if OKL_COMPILER_CLANG_AVAILABLE
 	#pragma clang unsafe_buffer_usage begin // Compile time index.
@@ -106,14 +106,14 @@ constexpr T& at(RawArray<T, Size>& array) noexcept
 }
 
 template<size_t Index, class T, size_t Size> requires(Index < Size)
-constexpr const T& at(const std::array<T, Size>& array) noexcept
+constexpr auto at(const std::array<T, Size>& array) noexcept -> const T&
 {
 	OKL_SUPPRESS_GSL(bounds.4, "Prefer to use gsl::at()")
 	return array[Index];
 }
 
 template<size_t Index, class T, size_t Size> requires(Index < Size)
-constexpr T& at(std::array<T, Size>& array) noexcept
+constexpr auto at(std::array<T, Size>& array) noexcept -> T&
 {
 	OKL_SUPPRESS_GSL(bounds.4, "Prefer to use gsl::at()")
 	return array[Index];
