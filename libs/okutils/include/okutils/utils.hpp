@@ -22,16 +22,16 @@ template<std::ranges::range RangeT>
 [[nodiscard]] constexpr decltype(auto) at(RangeT&&, std::ranges::range_size_t<RangeT> index);
 
 template<size_t Index, class T, size_t Size> requires(Index < Size)
-[[nodiscard]] constexpr T& at(RawArray<T, Size>&) noexcept;
-
-template<size_t Index, class T, size_t Size> requires(Index < Size)
 [[nodiscard]] constexpr const T& at(const RawArray<T, Size>&) noexcept;
 
 template<size_t Index, class T, size_t Size> requires(Index < Size)
-[[nodiscard]] constexpr T& at(std::array<T, Size>&) noexcept;
+[[nodiscard]] constexpr T& at(RawArray<T, Size>&) noexcept;
 
 template<size_t Index, class T, size_t Size> requires(Index < Size)
 [[nodiscard]] constexpr const T& at(const std::array<T, Size>&) noexcept;
+
+template<size_t Index, class T, size_t Size> requires(Index < Size)
+[[nodiscard]] constexpr T& at(std::array<T, Size>&) noexcept;
 OKL_EXPORT_END
 
 
@@ -76,21 +76,6 @@ constexpr decltype(auto) at(RangeT&& range, const std::ranges::range_size_t<Rang
 }
 
 template<size_t Index, class T, size_t Size> requires(Index < Size)
-constexpr T& at(RawArray<T, Size>& array) noexcept
-{
-#if OKL_COMPILER_CLANG_AVAILABLE
-	#pragma clang unsafe_buffer_usage begin // Compile time index.
-#endif
-
-	OKL_SUPPRESS_GSL(bounds.4, "Prefer to use gsl::at()")
-	return array[Index];
-
-#if OKL_COMPILER_CLANG_AVAILABLE
-	#pragma clang unsafe_buffer_usage end
-#endif
-}
-
-template<size_t Index, class T, size_t Size> requires(Index < Size)
 constexpr const T& at(const RawArray<T, Size>& array) noexcept
 {
 #if OKL_COMPILER_CLANG_AVAILABLE
@@ -106,14 +91,29 @@ constexpr const T& at(const RawArray<T, Size>& array) noexcept
 }
 
 template<size_t Index, class T, size_t Size> requires(Index < Size)
-constexpr T& at(std::array<T, Size>& array) noexcept
+constexpr T& at(RawArray<T, Size>& array) noexcept
+{
+#if OKL_COMPILER_CLANG_AVAILABLE
+	#pragma clang unsafe_buffer_usage begin // Compile time index.
+#endif
+
+	OKL_SUPPRESS_GSL(bounds.4, "Prefer to use gsl::at()")
+	return array[Index];
+
+#if OKL_COMPILER_CLANG_AVAILABLE
+	#pragma clang unsafe_buffer_usage end
+#endif
+}
+
+template<size_t Index, class T, size_t Size> requires(Index < Size)
+constexpr const T& at(const std::array<T, Size>& array) noexcept
 {
 	OKL_SUPPRESS_GSL(bounds.4, "Prefer to use gsl::at()")
 	return array[Index];
 }
 
 template<size_t Index, class T, size_t Size> requires(Index < Size)
-constexpr const T& at(const std::array<T, Size>& array) noexcept
+constexpr T& at(std::array<T, Size>& array) noexcept
 {
 	OKL_SUPPRESS_GSL(bounds.4, "Prefer to use gsl::at()")
 	return array[Index];
