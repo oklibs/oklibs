@@ -8,9 +8,12 @@ module;
 // We need to put all used headers into the global module fragment.
 #include "okutils/defines.hpp"
 
+#include <array>
+#include <cassert>
 #include <climits>
 #include <concepts>
 #include <cstdint>
+#include <ranges>
 #include <string_view>
 #include <type_traits>
 #include <utility>
