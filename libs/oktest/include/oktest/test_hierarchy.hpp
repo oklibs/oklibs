@@ -31,12 +31,17 @@ namespace Detail
 template<Mode TestMode, class... Ts>
 struct TestCase {
 	std::string_view m_name{};
+	const char* m_file_name{};
+	std::uint_least32_t m_line{};
 
 	TestCase() = default;
-	explicit constexpr TestCase(std::string_view name) noexcept;
+	explicit constexpr TestCase(std::string_view name,
+	                            const std::source_location& = std::source_location::current()) noexcept;
 
 	template<template<class...> class TypeListT>
-	constexpr TestCase(std::string_view name, Detail::TestCaseTypeList<TestMode, TypeListT<Ts...>>) noexcept;
+	constexpr TestCase(std::string_view name,
+	                   Detail::TestCaseTypeList<TestMode, TypeListT<Ts...>>,
+	                   const std::source_location& = std::source_location::current()) noexcept;
 
 	TestCase& operator=(auto test_case);
 };
@@ -46,12 +51,17 @@ TestCase(std::string_view, Detail::TestCaseTypeList<TestMode, TypeListT<Ts...>>)
 template<class... Ts>
 struct TestCase<consteval_mode, Ts...> {
 	std::string_view m_name{};
+	const char* m_file_name{};
+	std::uint_least32_t m_line{};
 
 	TestCase() = default;
-	explicit constexpr TestCase(std::string_view name) noexcept;
+	explicit constexpr TestCase(std::string_view name,
+	                            const std::source_location& = std::source_location::current()) noexcept;
 
 	template<template<class...> class TypeListT>
-	constexpr TestCase(std::string_view name, Detail::TestCaseTypeList<consteval_mode, TypeListT<Ts...>>) noexcept;
+	constexpr TestCase(std::string_view name,
+	                   Detail::TestCaseTypeList<consteval_mode, TypeListT<Ts...>>,
+	                   const std::source_location& = std::source_location::current()) noexcept;
 
 	constexpr TestCase& operator=(auto test_case);
 };
@@ -150,30 +160,31 @@ constexpr TestCaseData::TestFunctionPtr as_test_function(const FunctorT&) noexce
 
 
 template<Mode TestMode, class... Ts>
-constexpr TestCase<TestMode, Ts...>::TestCase(const std::string_view name) noexcept
-    : m_name{name}
+constexpr TestCase<TestMode,
+                   Ts...>::TestCase(const std::string_view name, const std::source_location& source_location) noexcept
+    : m_name{name}, m_file_name{source_location.file_name()}, m_line{source_location.line()}
 {}
 
 template<Mode TestMode, class... Ts>
 template<template<class...> class TypeListT>
-constexpr TestCase<TestMode,
-                   Ts...>::TestCase(const std::string_view name, TestCaseTypeList<TestMode, TypeListT<Ts...>>) noexcept
-    : m_name{name}
+constexpr TestCase<TestMode, Ts...>::TestCase(
+    const std::string_view name,
+    TestCaseTypeList<TestMode, TypeListT<Ts...>>,
+    const std::source_location& source_location) noexcept
+    : m_name{name}, m_file_name{source_location.file_name()}, m_line{source_location.line()}
 {}
 
 template<Mode TestMode, class... Ts>
 auto TestCase<TestMode, Ts...>::operator=(auto test_case) -> TestCase&
 {
-	const auto& source_location{std::source_location::current()};
-
 	if constexpr (sizeof...(Ts) == 0) {
 		get_runner<Ts...>().on_test_case(TestCaseData{
 		    .test_case = test_case,
 		    .node = TestNodeData{
 		        .name = m_name,
 		        .type_name = {},
-		        .file_name = source_location.file_name(),
-		        .line = source_location.line(),
+		        .file_name = m_file_name,
+		        .line = m_line,
 		        .type = ETestNodeType::test_case,
 		        .mode = TestMode}});
 	}
@@ -184,8 +195,8 @@ auto TestCase<TestMode, Ts...>::operator=(auto test_case) -> TestCase&
 		         TestNodeData{
 		             .name = m_name,
 		             .type_name = type_name<Ts>,
-		             .file_name = source_location.file_name(),
-		             .line = source_location.line(),
+		             .file_name = m_file_name,
+		             .line = m_line,
 		             .type = ETestNodeType::test_case,
 		             .mode = TestMode}}),
 		 ...);
@@ -195,30 +206,31 @@ auto TestCase<TestMode, Ts...>::operator=(auto test_case) -> TestCase&
 }
 
 template<class... Ts>
-constexpr TestCase<consteval_mode, Ts...>::TestCase(const std::string_view name) noexcept
-    : m_name{name}
+constexpr TestCase<consteval_mode,
+                   Ts...>::TestCase(const std::string_view name, const std::source_location& source_location) noexcept
+    : m_name{name}, m_file_name{source_location.file_name()}, m_line{source_location.line()}
 {}
 
 template<class... Ts>
 template<template<class...> class TypeListT>
-constexpr TestCase<consteval_mode, Ts...>::TestCase(const std::string_view name,
-                                                    TestCaseTypeList<consteval_mode, TypeListT<Ts...>>) noexcept
-    : m_name{name}
+constexpr TestCase<consteval_mode, Ts...>::TestCase(
+    const std::string_view name,
+    TestCaseTypeList<consteval_mode, TypeListT<Ts...>>,
+    const std::source_location& source_location) noexcept
+    : m_name{name}, m_file_name{source_location.file_name()}, m_line{source_location.line()}
 {}
 
 template<class... Ts>
 constexpr auto TestCase<consteval_mode, Ts...>::operator=(auto test_case) -> TestCase&
 {
-	const auto& source_location{std::source_location::current()};
-
 	if constexpr (sizeof...(Ts) == 0) {
 		get_runner<Ts...>().on_test_case(TestCaseData{
 		    .test_case = test_case,
 		    .node = TestNodeData{
 		        .name = m_name,
 		        .type_name = {},
-		        .file_name = source_location.file_name(),
-		        .line = source_location.line(),
+		        .file_name = m_file_name,
+		        .line = m_line,
 		        .type = ETestNodeType::test_case,
 		        .mode = consteval_mode}});
 	}
@@ -229,8 +241,8 @@ constexpr auto TestCase<consteval_mode, Ts...>::operator=(auto test_case) -> Tes
 		         TestNodeData{
 		             .name = m_name,
 		             .type_name = type_name<Ts>,
-		             .file_name = source_location.file_name(),
-		             .line = source_location.line(),
+		             .file_name = m_file_name,
+		             .line = m_line,
 		             .type = ETestNodeType::test_case,
 		             .mode = consteval_mode}}),
 		 ...);
