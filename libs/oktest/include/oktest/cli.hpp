@@ -32,8 +32,8 @@ public:
 	static std::optional<std::string_view> get_default(std::string_view name) noexcept;
 
 protected:
-	std::array<CliArg, max_cli_args> args;
-	size_t args_size{0};
+	std::array<CliArg, max_cli_args> m_args;
+	size_t m_args_size{0};
 };
 
 namespace Detail { void print_help(); } // namespace Detail
@@ -43,8 +43,8 @@ OKL_EXPORT_END
 void CliArgs::gather_all_of(const std::string_view name, std::invocable<std::string_view> auto&& callback) const
 {
 	bool found{false};
-	for (size_t i{0}; i < args_size; ++i) {
-		const CliArg& arg{args.at(i)};
+	for (size_t i{0}; i < m_args_size; ++i) {
+		const CliArg& arg{m_args.at(i)};
 		if (name == arg.name) {
 			std::forward<decltype(callback)>(callback)(arg.value);
 			found = true;

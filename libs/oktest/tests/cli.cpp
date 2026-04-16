@@ -32,7 +32,7 @@ TEST_CASE("cli.long_key_value")
 {
 	OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
 	static constexpr char* argv[]{
-	    const_cast<char*>("test"), const_cast<char*>("--theme"), const_cast<char*>("default_theme")};
+	    const_cast<char*>("test"), const_cast<char*>("--theme=default_theme")};
 	static constexpr int argc{sizeof(argv) / sizeof(char*)};
 	const CliArgs cli_args{argc, argv};
 
@@ -103,24 +103,11 @@ TEST_CASE("cli.mixed_args")
 {
 	OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
 	static constexpr char* argv[]{
-	    const_cast<char*>("test"), const_cast<char*>("-h"), const_cast<char*>("--theme"),
-	    const_cast<char*>("default_theme"), const_cast<char*>("123")};
+	    const_cast<char*>("test"), const_cast<char*>("-h"), const_cast<char*>("--theme=default_theme"), const_cast<char*>("123")};
 	static constexpr int argc{sizeof(argv) / sizeof(char*)};
 	const CliArgs cli_args{argc, argv};
 
 	CHECK(cli_args.get("theme") == "default_theme");
 	CHECK(cli_args.get("help").has_value());
 	CHECK(cli_args.get("") == "123");
-};
-
-TEST_CASE("cli.key_value_with_equal")
-{
-	OKL_SUPPRESS_GSL(type.3, "Don't use const_cast")
-	static constexpr char* argv[]{
-	    const_cast<char*>("test"), const_cast<char*>("--theme=no-color"), const_cast<char*>("-h")};
-	static constexpr int argc{sizeof(argv) / sizeof(char*)};
-	const CliArgs cli_args{argc, argv};
-
-	CHECK(cli_args.get("theme") == "no-color");
-	CHECK(cli_args.get("help").has_value());
 };

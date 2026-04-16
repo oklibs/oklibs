@@ -13,6 +13,8 @@ module;
 #include "okbitflag/bitflag.hpp"
 #define OKUTILS_TYPES_HPP
 #include "okutils/types.hpp"
+#define OKUTILS_UTILS_HPP
+#include "okutils/utils.hpp"
 
 #include <fmt/base.h>
 #include <fmt/color.h>

@@ -5,14 +5,15 @@
 #include "okbitflag/bitflag.hpp"
 #include "okutils/defines.hpp"
 #include "okutils/types.hpp"
+#include "okutils/utils.hpp"
 
 #include <fmt/base.h>
 #include <fmt/format.h>
 
 #include <array>
-#include <concepts>
 #include <iostream>
 #include <optional>
+#include <ranges>
 #include <string_view>
 
 namespace Okl::Test
@@ -28,7 +29,6 @@ struct CliArgDefine {
 	CliArgType type{};
 	std::string_view default_value{};
 	std::string_view description{};
-	FunctionPtr<bool, std::string_view> validator{};
 };
 
 // clang-format off
@@ -46,63 +46,64 @@ inline constexpr std::array cli_arg_defines{std::to_array<CliArgDefine>(
 
 CliArgs::CliArgs(const int argc, char* const argv[])
 {
-	for (int argi{1}; argi < argc; ++argi) {
-		const std::string_view token{argv[argi]};
+	const std::span args{argv, static_cast<size_t>(argc)};
+	bool expects_value{false};
+	for (const char* const arg : args | std::views::drop(1)) {
+		const std::string_view token{arg};
 
-		if (token.starts_with('-')) {
-			const bool is_short_name{!token.starts_with("--")};
-			std::string_view name{is_short_name ? token.substr(1) : token.substr(2)};
-			std::string_view value_from_token{};
-
-			if (const size_t equal_pos{name.find('=')}; equal_pos != std::string_view::npos) {
-				value_from_token = name.substr(equal_pos + 1);
-				name = name.substr(0, equal_pos);
+		if (token.starts_with("--")) {
+			if (expects_value) {
+				report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size).name));
 			}
 
-			bool found{false};
+			const std::string_view name_and_value{token.substr(2)};
+			const size_t split_index{name_and_value.find('=')};
 
+			const std::string_view name{name_and_value.substr(0, split_index)};
+			const std::string_view value{name_and_value.substr(name.size() + (split_index != std::string_view::npos))};
 			for (const CliArgDefine& define : cli_arg_defines) {
-				if (is_short_name ? std::string_view{&define.short_name, 1} == name : define.name == name) {
+				if (name == define.name) {
 					if (define.type.has_flags(ECliArgType::flag)) {
-						args.at(args_size++) = CliArg{define.name};
-						found = true;
+						if (not value.empty()) {
+							report_error(fmt::format("Argument '{}' does not take a value", define.name));
+						}
+
+						at(m_args, m_args_size++) = CliArg{define.name};
 						break;
 					}
 
-					std::string_view value;
-					if (!value_from_token.empty()) {
-						value = value_from_token;
+					if (value.empty()) {
+						report_error(fmt::format("Argument '{}' is missing a value", define.name));
 					}
-					else {
-						if (argi + 1 >= argc) {
-							report_error(fmt::format("Argument '{}' is missing a value", name));
-						}
-						value = argv[++argi];
-					}
-
-					if (define.validator && !define.validator(value)) {
-						report_error(fmt::format("Invalid value '{}' for argument '{}'", value, name));
-					}
-
-					args.at(args_size++) = CliArg{define.name, value};
-					found = true;
+					at(m_args, m_args_size++) = CliArg{define.name, value};
 					break;
 				}
 			}
-
-			if (!found) {
-				report_error(fmt::format("Unknown argument: '{}'", name));
+		}
+		else if (token.starts_with('-')) {
+			if (expects_value) {
+				report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size).name));
 			}
+
+			const std::string_view name{token.substr(1)};
+			for (const CliArgDefine& define : cli_arg_defines) {
+				if (name == std::string_view{&define.short_name, 1}) {
+					at(m_args, m_args_size++) = CliArg{define.name};
+					expects_value = not define.type.has_flags(ECliArgType::flag);
+					break;
+				}
+			}
+		}
+		else if (expects_value) {
+			at(m_args, m_args_size).value = token;
+			expects_value = false;
 		}
 		else {
 			bool handled_pos_arg{false};
 			for (const CliArgDefine& define : cli_arg_defines) {
 				if (define.name.empty()) {
-					if (define.validator && !define.validator(token)) {
-						report_error(fmt::format("Invalid value '{}' for positional argument", token));
-					}
 
-					args.at(args_size++) = CliArg{define.name, token};
+					at(m_args, m_args_size++) = CliArg{define.name, token};
 					handled_pos_arg = true;
 					break;
 				}
@@ -113,12 +114,15 @@ CliArgs::CliArgs(const int argc, char* const argv[])
 			}
 		}
 	}
+	if (expects_value) {
+		report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size).name));
+	}
 }
 
 std::optional<std::string_view> CliArgs::get(const std::string_view name) const
 {
-	for (size_t i{0}; i < args_size; ++i) {
-		const CliArg& arg{args.at(i)};
+	for (size_t i{0}; i < m_args_size; ++i) {
+		const CliArg& arg{m_args.at(i)};
 		if (name == arg.name) {
 			return arg.value;
 		}
