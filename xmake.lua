@@ -88,6 +88,7 @@ if has_config("dev") then
         "/wd4868", -- "compiler may not enforce left-to-right evaluation order in braced initializer list".
         "/wd5027", -- "move assignment operator was implicitly defined as deleted".
         "/wd26485", -- Doesn't play well with many third-party apis - "No array to pointer decay".
+        "/wd26821", -- We currently don't want a dependency on gsl - "consider using gsl::span instead of std::span".
 
         "/wd5045", -- "Compiler will insert Spectre mitigation".
         {tools = {"cl"}})
