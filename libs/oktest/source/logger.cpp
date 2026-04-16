@@ -64,6 +64,29 @@ void Logger::after_failed_assert(const AssertData& assert) const
 	//fmt::print("\n");
 }
 
+void Logger::after_uncaught_exception(const TestNodeData& test_node, const std::string_view exception_message) const
+{
+	print_assert_separator();
+
+	fmt::print(m_config.theme.error, "[FAIL]");
+	if (m_test_nodes_size > 0) {
+		fmt::print(" ");
+		print_node(0);
+	}
+	fmt::print("\n");
+
+	for (size_t i{1}; i < m_test_nodes_size; ++i) {
+		print_branch_indent(i);
+		print_node(i);
+		fmt::print("\n");
+	}
+
+	print_source_location(test_node.file_name, test_node.line);
+	print_indent(m_test_nodes_size);
+	fmt::print(m_config.theme.highlight, "uncaught exception: ");
+	fmt::print("{}\n", exception_message);
+}
+
 void Logger::before_shutdown(const RunData& summary) const
 {
 	const size_t num_runtime_test_cases{summary.passed_test_cases + summary.failed_test_cases};

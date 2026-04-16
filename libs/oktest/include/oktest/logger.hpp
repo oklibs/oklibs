@@ -33,6 +33,7 @@ public:
 
 	void after_passed_assert(const AssertData&) const noexcept;
 	void after_failed_assert(const AssertData&) const;
+	void after_uncaught_exception(const TestNodeData&, std::string_view exception_message) const;
 
 	void before_shutdown(const RunData&) const;
 

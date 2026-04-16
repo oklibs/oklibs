@@ -8,7 +8,9 @@
 #include "oktest/core_types.hpp"
 #include "oktest/test_context.hpp"
 
-#if !OKTEST_WITH_EXCEPTIONS
+#if OKTEST_WITH_EXCEPTIONS
+	#include <exception>
+#else
 	#include <cstdlib>
 #endif
 
@@ -97,6 +99,14 @@ constexpr void Runner<ReporterT, ConfigT>::on_test_case(const TestCaseData& test
 			test_case_data.test_case(test_context);
 		}
 		catch (AssertFailureException) {
+		}
+		catch (const std::exception& exception) {
+			m_reporter.after_uncaught_exception(test_case_data.node, exception.what());
+			break;
+		}
+		catch (...) {
+			m_reporter.after_uncaught_exception(test_case_data.node, "unknown exception");
+			break;
 		}
 #else
 		test_case_data.test_case(test_context);

@@ -38,6 +38,7 @@ public:
 	void after_test_node(const TestNodeData&);
 	void after_passed_assert(const AssertData&) noexcept;
 	void after_failed_assert(const AssertData&);
+	void after_uncaught_exception(const TestNodeData&, std::string_view exception_message);
 
 protected:
 	static constexpr size_t max_depth{OKTEST_MAX_NESTED_NODES};
@@ -118,6 +119,14 @@ void Reporter<LoggerT, ConfigT>::after_failed_assert(const AssertData& assert)
 {
 	++m_summary.failed_asserts;
 	m_logger.after_failed_assert(assert);
+}
+
+template<class LoggerT, class ConfigT>
+void Reporter<LoggerT, ConfigT>::after_uncaught_exception(const TestNodeData& test_node,
+                                                          const std::string_view exception_message)
+{
+	++m_summary.failed_asserts;
+	m_logger.after_uncaught_exception(test_node, exception_message);
 }
 } // namespace Okl::Test
 
