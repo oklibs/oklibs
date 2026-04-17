@@ -128,8 +128,8 @@ function _build_tests(tests, clang_version)
             end
         end
         build_action.build_targets(names)
+        os.setenv("MULL_CONFIG", old_mull_config)
     end
-    os.setenv("MULL_CONFIG", old_mull_config)
 end
 
 function _get_clang_version(tests)
@@ -265,9 +265,9 @@ function _run_tests(tests)
             os.runv(mull_runner.program, runargs)
         end
 
+        os.setenv("MULL_CONFIG", old_mull_config)
         os.rm(path.join(os.tmpdir(), "mull/*"))
     end
-    os.setenv("MULL_CONFIG", old_mull_config)
 
     if not os.isfile(outfile) then
         print("no mutants found")
