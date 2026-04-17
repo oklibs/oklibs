@@ -204,7 +204,9 @@ function _run_tests(tests)
     local report_dir = path.absolute(option.get("output") or project.tmpdir())
     local report_name = "mull" .. "_" .. hash.rand128()
     local runner_file = os.scriptdir() .. "/scripts/mull/test_runner.lua"
+    local outfile = path.join(report_dir, report_name .. ".sqlite"),
 
+    os.tryrm(outfile)
     os.mkdir(path.join(os.tmpdir(), "mull"))
 
     local old_mull_config = os.getenv("MULL_CONFIG")
@@ -267,8 +269,13 @@ function _run_tests(tests)
     end
     os.setenv("MULL_CONFIG", old_mull_config)
 
+    if not os.isfile(outfile) then
+        print("no mutants found")
+        return 0, nil
+    end
+
     local runargs = {
-        path.join(report_dir, report_name .. ".sqlite"),
+        outfile,
         "--mutation-score-threshold", option.get("mutation_score_threshold")
     }
     if option.get("allow_surviving") then
