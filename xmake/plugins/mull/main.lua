@@ -272,6 +272,9 @@ function _run_tests(tests)
         path.join(report_dir, report_name .. ".sqlite"),
         "--mutation-score-threshold", option.get("mutation_score_threshold")
     }
+    if option.get("allow_surviving") then
+        table.insert(runargs, "--allow-surviving")
+    end
 
     local reporters = option.get("reporters"):split(",", {plain = true})
     for _, reporter in ipairs(reporters) do

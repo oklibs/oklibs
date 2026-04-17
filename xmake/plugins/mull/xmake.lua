@@ -6,6 +6,7 @@ task("mull", function()
         usage = "xmake mull [options] [tests]",
         description = "Build and run tests with mull's mutation testing.",
         options = {
+            {nil, "allow_surviving", "k", nil, "Do not treat surviving mutants as an error."},
             {nil, "frontend", "kv", nil, "Path(s) to the mull-ir-frontend plugin (without the mull-ir-frontend file)."},
             {'g', "group", "kv", nil, "Run all tests of the given group. Supports pattern matching.",
                 "e.g.",
