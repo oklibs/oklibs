@@ -51,7 +51,7 @@ jobs:
 
       - name: Config and dependencies
         run: | # zizmor: ignore[template-injection] Matrix is static.
-          xmake f -vy --ccache=n -p ${{ matrix.plat }} -a ${{ matrix.arch }} --toolchain=${{ matrix.toolchain }} -m ${{ matrix.mode }} ${{ matrix.args }}
+          xmake f -vy --ccache=n --dev=n -p ${{ matrix.plat }} -a ${{ matrix.arch }} --toolchain=${{ matrix.toolchain }} -m ${{ matrix.mode }} ${{ matrix.args }}
 
       - name: Run mull
         run: xmake mull --group="*|bench" --mutation_score_threshold=50
