@@ -47,7 +47,11 @@ inline constexpr std::array cli_arg_defines{std::to_array<CliArgDefine>(
 
 CliArgs::CliArgs(const int argc, char* const argv[])
 {
+	OKL_WARNING_PUSH()
+	OKL_DISABLE_WARNING_CLANG("-Wunsafe-buffer-usage-in-container") // We want the params to be the same as main.
 	const std::span args{argv, static_cast<size_t>(argc)};
+	OKL_WARNING_POP()
+
 	bool expects_value{false};
 	for (const char* const arg : args | std::views::drop(1)) {
 		const std::string_view token{arg};

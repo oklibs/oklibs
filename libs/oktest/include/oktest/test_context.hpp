@@ -13,6 +13,7 @@
 #include <array>
 #include <cstdint>
 #include <exception>
+#include <span>
 #include <string_view>
 
 namespace Okl::Test
@@ -138,8 +139,8 @@ constexpr bool TestContext<MaxDepth>::next_section()
 			current_visit_counts.front() = 0;
 
 			OKL_SUPPRESS_GSL(type.1, "Don't use a static_cast for arithmetic conversions.")
-			const auto offset{static_cast<std::ptrdiff_t>(depth_index + 1)};
-			std::fill(node_counts.begin() + offset, node_counts.end(), 0);
+			const size_t offset{depth_index + 1};
+			std::ranges::fill(std::span{node_counts}.first(offset), 0);
 
 			return true;
 		}
