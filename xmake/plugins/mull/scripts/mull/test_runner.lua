@@ -1,6 +1,6 @@
 -- Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
--- Minimal version of xmake `action/tests/main.lua`.
+-- Minimal version of xmake's `action/tests/main.lua`.
 
 function _load_output_files(files)
     local outputs = {}
