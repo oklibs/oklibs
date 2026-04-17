@@ -2,3 +2,5 @@ mutators: [cxx_all]
 includePaths:
   - '.*[\\/]oktest[\\/]include[\\/].*'
   - '.*[\\/]oktest[\\/]source[\\/].*'
+gitDiffRef: "origin/dev"
+gitProjectRoot: "."
