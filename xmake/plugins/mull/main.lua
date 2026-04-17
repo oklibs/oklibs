@@ -272,6 +272,13 @@ function _run_tests(tests)
         path.join(report_dir, report_name .. ".sqlite"),
         "--mutation-score-threshold", option.get("mutation_score_threshold")
     }
+
+    local reporters = option.get("reporters"):split(",", {plain = true})
+    for _, reporter in ipairs(reporters) do
+        table.insert(runargs, "--reporters")
+        table.insert(runargs, reporter)
+    end
+
     print()
     return os.execv(mull_reporter.program, runargs, {try = true})
 end
