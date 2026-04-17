@@ -259,6 +259,8 @@ function _run_tests(tests)
             if ok ~= 0 then
                 return ok, syserrors
             end
+
+            print()
         else
             print("Running mull for test(%s) ...", test_name)
             os.runv(mull_runner.program, runargs)
