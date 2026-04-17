@@ -38,8 +38,6 @@ jobs:
           actions-cache-folder: .xmake-cache
           package-cache: true
           package-cache-key: ${{ matrix.plat }}_${{ matrix.arch }}_${{ matrix.toolchain }}_${{ matrix.mode }}
-          build-cache: true
-          build-cache-key: ${{ matrix.plat }}_${{ matrix.arch }}_${{ matrix.toolchain }}_${{ matrix.mode }}
 
       - name: Setup Cpp
         uses: aminya/setup-cpp@1f17f92d6a52bfcb1a25348e2c526c2e5cbb1134 # v1.8.0
