@@ -235,9 +235,6 @@ function _run_tests(tests)
         local runargs = {
             targetfile,
             "--allow-surviving", -- Handled by mull-reporter.
-            -- "--debug",
-            -- "--include-not-covered",
-            -- "--ld-search-path",
             "--no-output",
             "--reporters", "SQLite",
             "--report-dir", report_dir,
