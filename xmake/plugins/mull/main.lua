@@ -190,7 +190,7 @@ function _run_tests(tests)
     local report_dir = path.absolute(option.get("output") or project.tmpdir())
     local report_name = "mull" .. "_" .. hash.rand128()
     local runner_file = os.scriptdir() .. "/scripts/mull/test_runner.lua"
-    local outfile = path.join(report_dir, report_name .. ".sqlite"),
+    local outfile = path.join(report_dir, report_name .. ".sqlite")
 
     os.tryrm(outfile)
     os.mkdir(path.join(os.tmpdir(), "mull"))
