@@ -53,3 +53,5 @@ jobs:
 
       - name: Run mull
         run: xmake mull -v --group="*|bench" --mutation_score_threshold=50
+        env:
+          MULL_CONFIG: mull-ci.yml
