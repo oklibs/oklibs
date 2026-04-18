@@ -2,9 +2,6 @@ name: Mutation Testing
 
 on:
   pull_request:
-  push:
-    branches: [main, dev]
-    paths-ignore: [.gitignore, LICENSE, README.md]
 
 permissions: {}
 
