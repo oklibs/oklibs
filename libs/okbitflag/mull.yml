@@ -1,6 +1,0 @@
-mutators: [cxx_all]
-includePaths: 
-  - '.*[\\/]okbitflag[\\/]include[\\/].*'
-  - '.*[\\/]okbitflag[\\/]source[\\/].*'
-gitDiffRef: "origin/dev"
-gitProjectRoot: "."

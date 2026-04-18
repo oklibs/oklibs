@@ -111,25 +111,11 @@ function _build_tests(tests, clang_version)
     local target_names = {}
     for _, test in pairs(tests) do
         local target = test.target
-        local scriptdir = target:scriptdir()
-
         target:add("cxflags", plugin_flag, "-g", "-grecord-command-line")
-
-        target_names[scriptdir] = target_names[scriptdir] or {}
-        table.insert(target_names[scriptdir], target:fullname())
+        table.insert(target_names, target:fullname())
     end
 
-    local old_mull_config = os.getenv("MULL_CONFIG")
-    for scriptdir, names in pairs(target_names) do
-        if not old_mull_config then
-            local mull_config = path.join(scriptdir, "mull.yml")
-            if os.isfile(mull_config) then
-                os.setenv("MULL_CONFIG", mull_config)
-            end
-        end
-        build_action.build_targets(names)
-        os.setenv("MULL_CONFIG", old_mull_config)
-    end
+    build_action.build_targets(target_names)
 end
 
 function _get_clang_version(tests)
@@ -209,7 +195,6 @@ function _run_tests(tests)
     os.tryrm(outfile)
     os.mkdir(path.join(os.tmpdir(), "mull"))
 
-    local old_mull_config = os.getenv("MULL_CONFIG")
     for test_name, test in pairs(tests) do
         local target = test.target
 
@@ -246,13 +231,6 @@ function _run_tests(tests)
         }
         table.join2(runargs, table.wrap(test.runargs or target:get("runargs")))
 
-        if not old_mull_config then
-            local mull_config = path.join(target:scriptdir(), "mull.yml")
-            if os.isfile(mull_config) then
-                os.setenv("MULL_CONFIG", mull_config)
-            end
-        end
-
         if option.get("verbose") then
             local ok, syserrors = os.execv(mull_runner.program, runargs)
             if ok ~= 0 then
@@ -265,7 +243,6 @@ function _run_tests(tests)
             os.runv(mull_runner.program, runargs)
         end
 
-        os.setenv("MULL_CONFIG", old_mull_config)
         os.rm(path.join(os.tmpdir(), "mull/*"))
     end
 
