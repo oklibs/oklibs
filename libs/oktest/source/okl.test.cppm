@@ -33,6 +33,7 @@ module;
 #include <optional>
 #include <ranges>
 #include <source_location>
+#include <span>
 #include <string_view>
 #include <type_traits>
 #include <utility>

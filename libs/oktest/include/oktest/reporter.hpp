@@ -45,6 +45,7 @@ protected:
 	RunData m_summary{};
 	std::array<size_t, max_depth> m_asserts_failed{};
 	size_t m_current_assert{0};
+	bool m_exit_zero{false};
 	LoggerT m_logger{};
 };
 
@@ -60,7 +61,7 @@ Reporter<LoggerT, ConfigT>::~Reporter() noexcept(false)
 	m_logger.before_shutdown(m_summary);
 	if (m_summary.failed_asserts != 0) {
 		// ToDo? Move this to main function.
-		std::exit(1); // NOLINT(concurrency-mt-unsafe)
+		std::exit(m_exit_zero ? 0 : 1); // NOLINT(concurrency-mt-unsafe)
 	}
 }
 
@@ -68,6 +69,7 @@ template<class LoggerT, class ConfigT>
 void Reporter<LoggerT, ConfigT>::update_configs(const CliArgs& cli_args)
 {
 	m_logger.update_configs(cli_args);
+	m_exit_zero = cli_args.get("exit-zero").has_value();
 }
 
 template<class LoggerT, class ConfigT>

@@ -37,6 +37,7 @@ template<class ReporterT, size_t MaxTestCases, class ConfigT>
 void RegistryRunner<ReporterT, MaxTestCases, ConfigT>::run_tests(const CliArgs& cli_args)
 {
 	this->m_reporter.update_configs(cli_args);
+	this->m_exit_zero = cli_args.get("exit-zero").has_value();
 
 	std::array<std::string_view, max_cli_args> args;
 	size_t args_size{0};

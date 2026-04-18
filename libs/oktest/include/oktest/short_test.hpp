@@ -9,6 +9,7 @@
 	#include "oktest/expression.hpp" // IWYU pragma: export
 	#include "oktest/get_runner.hpp" // IWYU pragma: export
 	#include "oktest/test_hierarchy.hpp" // IWYU pragma: export
+	#include "oktest/theme.hpp" // IWYU pragma: export
 #endif
 #include "oktest/test.hpp"
 

@@ -1,0 +1,11 @@
+
+==========================================
+%[FAIL%]
+└╴at libs[\\/]oktest[\\/]tests[\\/]fail_main_assert%.cpp:16
+  CHECK%(value == 1%), got: 0 == 1
+  value is not 1
+
+==========================================
+error: some tests failed
+  Tests:      0 failed, 0 passed, 0 total %(%+0 at compile%-time%)
+  Assertions: 1 failed, 0 passed, 1 total
