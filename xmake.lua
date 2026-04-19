@@ -13,19 +13,19 @@ includes("libs/*/xmake.lua")
 --- Library options
 
 option("use_modules", {description = "Build libraries as c++ modules.", default = false})
-option("use_std_module", {description = "Use std module instead of includes.", default = false})
+option("use_std_module", {description = "Use std module instead of includes (requires `use_modules`).", default = false})
 
 option("dev", {description = "Enable developer mode.", default = true})
-option("coverage", {description = "Enable code coverage data generation.", default = false})
+option("coverage", {description = "Enable code coverage data generation (clang-based only).", default = false})
 
 -- Not all toolchain packages can detect system installations.
-option("setup_toolchains", {description = "Install toolchains as packages if not found.", default = false})
+option("setup_toolchains", {description = "Install required toolchains as packages if not found.", default = false})
 
-option("asan", {description = "Enable address sanitizer.", category = "sanitizers", default = false})
-option("lsan", {description = "Enable leak sanitizer.", category = "sanitizers", default = false})
-option("msan", {description = "Enable memory sanitizer.", category = "sanitizers", default = false})
-option("tsan", {description = "Enable thread sanitizer.", category = "sanitizers", default = false})
-option("ubsan", {description = "Enable undefined behaviour sanitizer.", category = "sanitizers", default = false})
+option("asan", {description = "Enable address sanitizer if supported.", category = "sanitizers", default = false})
+option("lsan", {description = "Enable leak sanitizer if supported.", category = "sanitizers", default = false})
+option("msan", {description = "Enable memory sanitizer if supported.", category = "sanitizers", default = false})
+option("tsan", {description = "Enable thread sanitizer if supported.", category = "sanitizers", default = false})
+option("ubsan", {description = "Enable undefined behaviour sanitizer if supported.", category = "sanitizers", default = false})
 
 ----------------------------------------------------------------------------------------------------
 --- Build settings
