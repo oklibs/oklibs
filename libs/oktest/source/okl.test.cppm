@@ -30,6 +30,7 @@ module;
 #include <cstdlib>
 #include <exception>
 #include <iostream>
+#include <iterator>
 #include <optional>
 #include <ranges>
 #include <source_location>

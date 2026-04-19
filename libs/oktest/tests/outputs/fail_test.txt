@@ -7,5 +7,5 @@
 
 ==========================================
 error: some tests failed
-  Tests:      1 failed, 0 passed, 1 total %(%+0 at compile%-time%)
+  Tests:      1 failed, 0 passed, 1 total
   Assertions: 1 failed, 0 passed, 1 total

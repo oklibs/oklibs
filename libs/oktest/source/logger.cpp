@@ -10,9 +10,11 @@
 
 #include <fmt/base.h>
 #include <fmt/color.h>
+#include <fmt/format.h>
 #include <fmt/ranges.h>
 
 #include <cstdint>
+#include <iterator>
 #include <ranges>
 #include <string_view>
 
@@ -101,18 +103,27 @@ void Logger::before_shutdown(const RunData& summary) const
 		fmt::print(m_config.theme.warning, "warning:");
 		fmt::print(" no tests were run.\n");
 	}
-	else if (tests_failed) {
-		fmt::print(m_config.theme.error, "error:");
-		fmt::print(" some tests failed\n"
-		           "  Tests:      {} failed, {} passed, {} total (+{} at compile-time)\n"
-		           "  Assertions: {} failed, {} passed, {} total\n",
-		           summary.failed_test_cases, summary.passed_test_cases, num_runtime_test_cases,
-		           summary.compile_time_test_cases, summary.failed_asserts, summary.passed_asserts, total_asserts);
-	}
 	else {
-		fmt::print(m_config.theme.success, "success:");
-		fmt::print(" all tests passed ({} test cases (+{} at compile-time), {} assertions)\n", num_runtime_test_cases,
-		           summary.compile_time_test_cases, total_asserts);
+		fmt::memory_buffer compile_time_buffer{};
+		if (summary.compile_time_test_cases > 0) {
+			fmt::format_to(std::back_inserter(compile_time_buffer), " (+{} at compile-time)",
+			               summary.compile_time_test_cases);
+		}
+		std::string_view compile_time_str{compile_time_buffer.data(), compile_time_buffer.size()};
+
+		if (tests_failed) {
+			fmt::print(m_config.theme.error, "error:");
+			fmt::print(" some tests failed\n"
+			           "  Tests:      {} failed, {} passed, {} total{}\n"
+			           "  Assertions: {} failed, {} passed, {} total\n",
+			           summary.failed_test_cases, summary.passed_test_cases, num_runtime_test_cases, compile_time_str,
+			           summary.failed_asserts, summary.passed_asserts, total_asserts);
+		}
+		else {
+			fmt::print(m_config.theme.success, "success:");
+			fmt::print(" all tests passed ({} test cases{}, {} assertions)\n", num_runtime_test_cases,
+			           compile_time_str, total_asserts);
+		}
 	}
 }
 
