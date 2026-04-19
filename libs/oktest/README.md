@@ -12,66 +12,6 @@ planned or implemented.
 
 See [Limitations](#limitations) and [ToDos](#todos).
 
-## Features
-
-* **Three Execution Modes:**
-    1. **Runtime:** Standard testing executed when the binary runs.
-    2. **Constexpr:** Tests run at *both* compile-time and runtime.
-    3. **Consteval:** Tests run *only* at compile-time.
-* **Section-Based Testing:** Supports branching sections (`SECTION`) where test cases are re-run for each path.
-* **Templated Tests:** Easily test types and type lists.
-* **Fmt Integration:** Uses `{fmt}` for formatting output messages.
-* Works without exceptions*
-* High customizability
-* Supports nested test cases (see [Limitations](#nested-test-cases))
-
-\* Without exceptions `REQUIRE` checks will abort the entire run.
-
-## Dependencies
-
-* **C++20 compatible Compiler** (Clang, GCC, MSVC, ...)
-* **[fmt](https://github.com/fmtlib/fmt)** 12.0.0 or above
-
-## Integration
-
-### xmake:
-
-```lua
-add_repositories("okl-repo https://github.com/oklibs/xmake-repo")
-add_requires("oktest")
-```
-
-### cmake:
-
-**Note:** Ensure that **[fmt](https://github.com/fmtlib/fmt)** is installed on your system.
-
-**Using `FetchContent`:**
-
-```cmake
-include(FetchContent)
-FetchContent_Declare(
-    oklibs
-    GIT_REPOSITORY https://github.com/oklibs/oklibs.git
-    GIT_TAG        main
-)
-FetchContent_MakeAvailable(oklibs)
-target_link_libraries(your_target PRIVATE oklibs::oktest)
-```
-
-**Using `find_package`** (after installing oklibs):
-
-```cmake
-find_package(oktest REQUIRED)
-target_link_libraries(your_target PRIVATE oklibs::oktest)
-```
-
-**Using `add_subdirectory`**:
-
-```cmake
-add_subdirectory(path/to/oklibs)
-target_link_libraries(your_target PRIVATE oklibs::oktest)
-```
-
 ## Basic Usage
 
 ```cpp
@@ -98,6 +38,65 @@ CONSTEXPR_TEST_CASE("Compile-time and runtime test") {
 };
 ```
 
+## Features
+
+* **Three Execution Modes:**
+    * **Runtime:** Standard testing executed when the binary runs.
+    * **Constexpr:** Tests run at *both* compile-time and runtime.
+    * **Consteval:** Tests run *only* at compile-time.
+* **Section-Based Testing:** Supports branching sections (`SECTION`) where test cases are re-run for each path.
+* **Templated Tests:** Easily test types and type lists.
+* Works without exceptions (without exceptions `REQUIRE` checks will abort the entire run)
+* Highly customizable
+* Supports nested test cases (see [Limitations](#nested-test-cases))
+* Uses `{fmt}` for formatting output messages.
+
+## Dependencies
+
+* **C++20 compatible Compiler** (Clang, GCC, MSVC, ...)
+* **[fmt](https://github.com/fmtlib/fmt)** 12.0.0 or above
+* **[okutils](../okutils)**, **[okbitflag](../okbitflag)** (internal dependencies)
+
+## Integration
+
+### Using xmake:
+
+```lua
+add_repositories("okl-repo https://github.com/oklibs/xmake-repo")
+add_requires("oktest")
+```
+
+### Using cmake:
+
+Ensure that **[fmt](https://github.com/fmtlib/fmt)** is available on your system.
+
+**with `FetchContent`:**
+
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+        oklibs
+        GIT_REPOSITORY https://github.com/oklibs/oklibs.git
+        GIT_TAG main
+)
+FetchContent_MakeAvailable(oklibs)
+target_link_libraries(your_target PRIVATE oklibs::oktest)
+```
+
+**with `find_package`** (after installing oklibs):
+
+```cmake
+find_package(oktest REQUIRED)
+target_link_libraries(your_target PRIVATE oklibs::oktest)
+```
+
+**with `add_subdirectory`**:
+
+```cmake
+add_subdirectory(path/to/oklibs)
+target_link_libraries(your_target PRIVATE oklibs::oktest)
+```
+
 ## Configuration
 
 The library offers the following configuration options:
@@ -114,9 +113,10 @@ Some options can also be configured via command-line arguments.
 
 The following options are currently supported:
 
-* `-h|--help` - Show command-line help.
-* `--theme=` - Set the theme for the output, e.g. `--theme=no_color`.
-* `test_regex` - Regular expression to filter tests by name.
+* `-h|--help`: Show command-line help.
+* `--theme=`: Set the theme for the output, e.g. `--theme=no_color`.
+* `exit-zero`: Return exit code 0 even when tests fail.
+* `test-regex` (positional): Regular expression to filter tests by name.
 
 ## Documentation
 
@@ -221,6 +221,7 @@ struct MyCustomReporter {
     void after_test_node(const Okl::Test::TestNodeData&);
     void after_passed_assert(const Okl::Test::AssertData&) noexcept;
     void after_failed_assert(const Okl::Test::AssertData&);
+    void after_uncaught_exception(const Okl::Test::TestNodeData&, std::string_view);
 };
 
 struct MyCustomLogger {
@@ -231,6 +232,7 @@ struct MyCustomLogger {
     void after_passed_assert(const Okl::Test::AssertData&) const noexcept;
     void after_failed_assert(const Okl::Test::AssertData&) const;
     void before_shutdown(const Okl::Test::RunData&) const;
+    void after_uncaught_exception(const Okl::Test::TestNodeData&, std::string_view);
 };
 ```
 
@@ -291,15 +293,15 @@ TEST_CASE("")
 
 CONSTEXPR_TEST_CASE("")
 {
-    TEST_CASE("") {};           // This does not work (intended?).
-    CONSTEXPR_TEST_CASE("") {}; // This does not work (intended?).
+    TEST_CASE("") {};           // This does not work.
+    CONSTEXPR_TEST_CASE("") {}; // This does not work.
     CONSTEVAL_TEST_CASE("") {}; // This works.
 };
 
 CONSTEVAL_TEST_CASE("")
 {
-    TEST_CASE("") {};           // This does not work (intended?).
-    CONSTEXPR_TEST_CASE("") {}; // This does not work (intended).
+    TEST_CASE("") {};           // This does not work.
+    CONSTEXPR_TEST_CASE("") {}; // This does not work.
     CONSTEVAL_TEST_CASE("") {}; // This works.
 };
 ```
@@ -323,7 +325,7 @@ expressions in macros; otherwise constexpr and consteval tests could be made to 
 
 ## ToDos
 
-Not all of these will be guaranteed to be implemented, this is more of a list of ideas.
+Not all of these will are guaranteed to be implemented, this is more of a list of ideas.
 
 - [x] add a library option to define `main` function (no need for `OKTEST_DEFINE_MAIN`)
 - [ ] improve compile-time error reporting
