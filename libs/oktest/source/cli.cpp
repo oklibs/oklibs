@@ -36,7 +36,7 @@ inline constexpr std::array cli_arg_defines{std::to_array<CliArgDefine>(
 	{{"theme", {}, {}, "auto", "Color theme to use."},
 	 {"help", 'h', ECliArgType::flag, {}, "Print help."},
 	 {"exit-zero", {}, ECliArgType::flag, {}, "Return exit code 0 even when tests fail."},
-	 {{}, {}, {}, {}, "Regex to filter tests with."}})};
+	 {{}, {}, {}, {}, "Filters to select which tests to run, if none are provided, all tests will run."}})};
 // clang-format on
 
 [[noreturn]] void report_error(const std::string_view message)
@@ -156,7 +156,7 @@ void print_help()
 			fmt::print("-{}|", define.short_name);
 		}
 		if (define.name.empty()) {
-			fmt::print("{}", "test_regex");
+			fmt::print("{}", "test-filter");
 		}
 		else {
 			fmt::print("--{}", define.name);

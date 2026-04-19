@@ -26,7 +26,7 @@ public:
 	constexpr void on_test_case(const TestCaseData&);
 
 protected:
-	[[nodiscard]] static constexpr bool should_run_test(std::string_view test_name, std::string_view test_regex);
+	[[nodiscard]] static constexpr bool should_run_test(std::string_view test_name, std::string_view test_filter);
 
 	std::array<TestCaseData, MaxTestCases> m_test_cases{};
 	size_t m_test_case_size{0};
@@ -83,69 +83,69 @@ constexpr void RegistryRunner<ReporterT, MaxTestCases, ConfigT>::on_test_case(co
 // which uses the Boost Software License - Version 1.0.
 template<class ReporterT, size_t MaxTestCases, class ConfigT>
 constexpr bool RegistryRunner<ReporterT, MaxTestCases, ConfigT>::
-    should_run_test(const std::string_view test_name, std::string_view test_regex)
+    should_run_test(const std::string_view test_name, std::string_view test_filter)
 {
-	// An empty regex matches any string; early exit.
-	// An empty string matches an empty regex (exit here) or any regex containing
+	// An empty filter matches any string; early exit.
+	// An empty string matches an empty filter (exit here) or any filter containing
 	// only wildcards (exit later).
-	if (test_regex.empty()) {
+	if (test_filter.empty()) {
 		return true;
 	}
 
-	const size_t regex_size{test_regex.size()};
+	const size_t filter_size{test_filter.size()};
 	const size_t string_size{test_name.size()};
 
-	// Iterate characters of the regex string and exit at the first non-match.
+	// Iterate characters of the filter string and exit at the first non-match.
 	size_t js{0};
-	for (size_t jr{0}; jr < regex_size; ++jr, ++js) {
+	for (size_t jr{0}; jr < filter_size; ++jr, ++js) {
 		bool escaped{false};
-		if (test_regex.at(jr) == '\\') {
+		if (test_filter.at(jr) == '\\') {
 			// Escaped character, look ahead ignoring special characters.
 			++jr;
-			if (jr >= regex_size) {
-				// Nothing left to escape; the regex is ill-formed.
+			if (jr >= filter_size) {
+				// Nothing left to escape; the filter is ill-formed.
 				return false;
 			}
 
 			escaped = true;
 		}
 
-		if (!escaped && test_regex.at(jr) == '*') {
-			// Wildcard is found; if this is the last character of the regex
+		if (!escaped && test_filter.at(jr) == '*') {
+			// Wildcard is found; if this is the last character of the filter
 			// then any further content will be a match; early exit.
-			if (jr == regex_size - 1) {
+			if (jr == filter_size - 1) {
 				return true;
 			}
 
 			// Discard what has already been matched.
-			test_regex = test_regex.substr(jr + 1);
+			test_filter = test_filter.substr(jr + 1);
 
 			// If there are no more characters in the string after discarding, then we only match if
-			// the regex contains only wildcards from there on.
+			// the filter contains only wildcards from there on.
 			const size_t remaining{string_size >= js ? string_size - js : 0u};
 			if (remaining == 0u) {
-				return test_regex.find_first_not_of('*') == test_regex.npos;
+				return test_filter.find_first_not_of('*') == test_filter.npos;
 			}
 
 			// Otherwise, we loop over all remaining characters of the string and look
 			// for a match when starting from each of them.
 			for (size_t o{0}; o < remaining; ++o) {
-				if (should_run_test(test_name.substr(js + o), test_regex)) {
+				if (should_run_test(test_name.substr(js + o), test_filter)) {
 					return true;
 				}
 			}
 
 			return false;
 		}
-		else if (js >= string_size || test_regex.at(jr) != test_name.at(js)) {
+		else if (js >= string_size || test_filter.at(jr) != test_name.at(js)) {
 			// Regular character is found; not a match if not an exact match in the string.
 			return false;
 		}
 	}
 
-	// We have finished reading the regex string and did not find either a definite non-match
+	// We have finished reading the filter string and did not find either a definite non-match
 	// or a definite match. This means we did not have any wildcard left, hence that we need
-	// an exact match. Therefore, only match if the string size is the same as the regex.
+	// an exact match. Therefore, only match if the string size is the same as the filter.
 	return js == string_size;
 }
 } // namespace Okl::Test

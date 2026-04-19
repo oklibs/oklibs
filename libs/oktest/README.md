@@ -116,7 +116,18 @@ The following options are currently supported:
 * `-h|--help`: Show command-line help.
 * `--theme=`: Set the theme for the output, e.g. `--theme=no_color`.
 * `exit-zero`: Return exit code 0 even when tests fail.
-* `test-regex` (positional): Regular expression to filter tests by name.
+* `test-filter` (positional): Filters to select which tests to run, if none are provided, all tests will run.
+
+Filters support the `*` wildcard (matching zero or more characters):
+
+* ab* matches names starting with "ab".
+* *cd matches names ending with "cd".
+* ab*cd matches names starting with "ab" and ending with "cd".
+* abcd requires an exact match.
+
+Prefixing a filter with `~` negates it (e.g., `~ab*` excludes tests starting with "ab"). If a filter contains spaces,
+enclose it in quotes (e.g., `./my_app "my test"`). Finally, multiple filters use `or` logic; a test will run if it
+matches _any_ of the provided arguments.
 
 ## Documentation
 
