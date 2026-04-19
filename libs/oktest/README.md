@@ -336,7 +336,7 @@ expressions in macros; otherwise constexpr and consteval tests could be made to 
 
 ## ToDos
 
-Not all of these will are guaranteed to be implemented, this is more of a list of ideas.
+Not all of these are guaranteed to be implemented, this is more of a list of ideas.
 
 - [x] add a library option to define `main` function (no need for `OKTEST_DEFINE_MAIN`)
 - [ ] improve compile-time error reporting
