@@ -34,7 +34,7 @@ FetchContent_Declare(
         GIT_TAG main
 )
 FetchContent_MakeAvailable(oklibs)
-target_link_libraries(your_target PRIVATE oklibs::okutils)
+target_link_libraries(my_target PRIVATE oklibs::okutils)
 ...
 ```
 
@@ -42,7 +42,7 @@ target_link_libraries(your_target PRIVATE oklibs::okutils)
 
 ```cmake
 find_package(oktest REQUIRED)
-target_link_libraries(your_target PRIVATE oklibs::okutils)
+target_link_libraries(my_target PRIVATE oklibs::okutils)
 ...
 ```
 
@@ -50,7 +50,7 @@ target_link_libraries(your_target PRIVATE oklibs::okutils)
 
 ```cmake
 add_subdirectory(path/to/oklibs)
-target_link_libraries(your_target PRIVATE oklibs::okutils)
+target_link_libraries(my_target PRIVATE oklibs::okutils)
 ...
 ```
 

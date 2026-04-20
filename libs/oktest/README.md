@@ -80,21 +80,21 @@ FetchContent_Declare(
         GIT_TAG main
 )
 FetchContent_MakeAvailable(oklibs)
-target_link_libraries(your_target PRIVATE oklibs::oktest)
+target_link_libraries(my_target PRIVATE oklibs::oktest)
 ```
 
 **with `find_package`** (after installing oklibs):
 
 ```cmake
 find_package(oktest REQUIRED)
-target_link_libraries(your_target PRIVATE oklibs::oktest)
+target_link_libraries(my_target PRIVATE oklibs::oktest)
 ```
 
 **with `add_subdirectory`**:
 
 ```cmake
 add_subdirectory(path/to/oklibs)
-target_link_libraries(your_target PRIVATE oklibs::oktest)
+target_link_libraries(my_target PRIVATE oklibs::oktest)
 ```
 
 ## Configuration
