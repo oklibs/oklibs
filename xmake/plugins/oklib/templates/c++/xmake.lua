@@ -18,17 +18,17 @@ set_languages("c++20")
 ----------------------------------------------------------------------------------------------------
 --- Targets
 
-target("%{targetname}", function()
+target("%{libname}", function()
     set_kind(has_config("use_modules") and "moduleonly" or "headeronly")
-    set_group("%{targetname}")
+    set_group("%{libname}")
     add_deps("okutils")
     -- add_packages()
 
-    set_configdir("$(builddir)/.configs/%{targetname}")
-    add_configfiles("templates/public/**.in", {prefixdir = "include/%{targetname}"})
+    set_configdir("$(builddir)/.configs/%{libname}")
+    add_configfiles("templates/public/**.in", {prefixdir = "include/%{libname}"})
 
-    add_includedirs("include", "$(builddir)/.configs/%{targetname}/include", {public = true})
-    add_headerfiles("include/(**.hpp)", "$(builddir)/.configs/%{targetname}/public/(%{targetname}/**.hpp)")
+    add_includedirs("include", "$(builddir)/.configs/%{libname}/include", {public = true})
+    add_headerfiles("include/(**.hpp)", "$(builddir)/.configs/%{libname}/public/(%{libname}/**.hpp)")
     if has_config("use_modules") then
         add_files("source/okl.*.cppm")
     else
@@ -38,10 +38,10 @@ target("%{targetname}", function()
     add_extrafiles("*|xmake.lua", "templates/**", "tests/**")
 end)
 
-target("%{targetname}_tests", function()
+target("%{libname}_tests", function()
     set_kind("phony")
-    set_group("%{targetname}")
-    add_deps("okutils", "%{targetname}", "oktest")
+    set_group("%{libname}")
+    add_deps("okutils", "%{libname}", "oktest")
     add_extrafiles("tests/**")
     add_tests("tests", {kind = "binary", files = "tests/**.cpp", build_should_pass = is_cross()})
 end)

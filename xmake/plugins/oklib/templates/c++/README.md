@@ -1,1 +1,1 @@
-# %{targetname}
+# %{libname}

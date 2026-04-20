@@ -6,45 +6,46 @@ import("core.project.project")
 function main()
     local force = option.get("force")
     local language = option.get("language")
-    local targetname = option.get("target")
-    local libdir = path.join(os.projectdir(), "libs")
-    local templates_dir = path.join(os.scriptdir(), "templates")
-    local template_dir = path.join(templates_dir, language)
+    local libname = option.get("library")
+
+    local libs_dir = path.join(os.projectdir(), "libs")
+    local template_dir = path.join(os.scriptdir(), "templates", language)
 
     assert(os.isdir(template_dir), "unsupported language(%s)!", language)
-    assert(targetname and targetname ~= ".", "invalid targetname(%s)", targetname)
-    assert(os.isdir(libdir), "could not find library directory at '%s'.", libdir)
+    assert(libname and libname ~= ".", "invalid library name(%s).", libname)
+    assert(os.isdir(libs_dir), "could not find library directory at '%s'.", libs_dir)
 
-    cprint("${bright}create %s ...", targetname)
+    cprint("${bright}create %s ...", libname)
 
-    local targetdir = path.join(libdir, targetname)
-    if not os.isdir(targetdir) then
-        os.mkdir(targetdir)
+    local lib_dir = path.join(libs_dir, libname)
+    if not os.isdir(lib_dir) then
+        os.mkdir(lib_dir)
     end
     if not force then
-        if os.isfile(path.join(targetdir, "xmake.lua")) then
-            raise("library (${underline}%s/xmake.lua${reset}) already exists! Use '-f' to force creation.", targetdir)
+        if os.isfile(path.join(lib_dir, "xmake.lua")) then
+            raise("library (${underline}%s/xmake.lua${reset}) already exists! Use '-f' to force creation.", lib_dir)
         end
-        if not os.emptydir(targetdir) then
-            raise("directory (${underline}%s${reset}) is not empty! Use '-f' to force creation.", targetdir)
+        if not os.emptydir(lib_dir) then
+            raise("directory (${underline}%s${reset}) is not empty! Use '-f' to force creation.", lib_dir)
         end
     end
 
     local builtinvars = {
-        ["targetname"] = targetname,
-        ["TARGETNAME"] = targetname:upper(),
+        ["libname"] = libname,
+        ["LIBNAME"] = libname:upper(),
         ["year"] = os.date("%y"),
         ["YEAR"] = os.date("%Y")
     }
-    local pattern = "(%%{(.-)})"
     local function get_builtinvar(_, variable)
         return builtinvars[variable:trim()]
     end
+
+    local pattern = "(%%{(.-)})"
     for _, file in ipairs(os.files(path.join(template_dir, "**"))) do
         local content = io.readfile(file)
-        local formatted_file = path.relative(file, template_dir):gsub(pattern, get_builtinvar)
+        local formatted_file_name = path.relative(file, template_dir):gsub(pattern, get_builtinvar)
         local formatted_content = content:gsub(pattern, get_builtinvar)
-        local formatted_path = path.join(targetdir, formatted_file)
+        local formatted_path = path.join(lib_dir, formatted_file_name)
 
         local was_file = force and os.isfile(formatted_path)
         io.writefile(formatted_path, formatted_content)

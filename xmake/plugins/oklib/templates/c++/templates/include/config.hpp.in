@@ -1,20 +1,20 @@
 // Copyright ${YEAR} Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef %{TARGETNAME}_CONFIG_HPP
-#define %{TARGETNAME}_CONFIG_HPP
+#ifndef %{LIBNAME}_CONFIG_HPP
+#define %{LIBNAME}_CONFIG_HPP
 
 #include "okutils/core_defines.hpp"
 
-#define %{TARGETNAME}_VERSION_MAJOR ${VERSION_MAJOR}
-#define %{TARGETNAME}_VERSION_MINOR ${VERSION_MINOR}
-#define %{TARGETNAME}_VERSION_PATCH ${VERSION_ALTER}
+#define %{LIBNAME}_VERSION_MAJOR ${VERSION_MAJOR}
+#define %{LIBNAME}_VERSION_MINOR ${VERSION_MINOR}
+#define %{LIBNAME}_VERSION_PATCH ${VERSION_ALTER}
 
 /**
- * Encoded version of %{targetname} as 'MajorMinorPatch'.
+ * Encoded version of %{libname} as 'MajorMinorPatch'.
  * @see OKL_ENCODE_VERSION
  */
-#define %{TARGETNAME}_VERSION OKL_ENCODE_VERSION(%{TARGETNAME}_VERSION_MAJOR, %{TARGETNAME}_VERSION_MINOR, %{TARGETNAME}_VERSION_PATCH)
+#define %{LIBNAME}_VERSION OKL_ENCODE_VERSION(%{LIBNAME}_VERSION_MAJOR, %{LIBNAME}_VERSION_MINOR, %{LIBNAME}_VERSION_PATCH)
 
-${define_export %{TARGETNAME}}
+${define_export %{LIBNAME}}
 
 #endif
