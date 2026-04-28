@@ -15,7 +15,7 @@ See [Limitations](#limitations) and [ToDos](#todos).
 ## Basic Usage
 
 ```cpp
-#include <oktest/short_test.hpp>
+#include <oktest/oktest_short.hpp>
 
 TEST_CASE("Runtime test") {
     int x = 21;
@@ -131,7 +131,7 @@ matches _any_ of the provided arguments.
 
 ## Documentation
 
-See [test.hpp](include/oktest/test.hpp) and [examples.cpp](tests/examples.hpp) for more detailed docs and usage
+See [oktest.hpp](include/oktest/oktest.hpp) and [examples.cpp](tests/examples.hpp) for more detailed docs and usage
 examples.
 
 ### 1. Test Cases
@@ -268,8 +268,8 @@ template<> struct Okl::Test::Config<Okl::Test::CustomRunner> { static inline con
 
 ## Short Macros
 
-The library provides namespaced macros (prefixed with `OKL_`) in `<oktest/test.hpp>` by default to avoid collisions.
-However, if you include `<oktest/short_test.hpp>` (as seen in the examples), you can use the shorthand versions:
+The library provides namespaced macros (prefixed with `OKL_`) in `<oktest/oktest.hpp>` by default to avoid collisions.
+However, if you include `<oktest/oktest_short.hpp>` (as seen in the examples), you can use the shorthand versions:
 
 * `TEST_CASE` instead of `OKL_TEST_CASE`
 * `CHECK` instead of `OKL_CHECK`

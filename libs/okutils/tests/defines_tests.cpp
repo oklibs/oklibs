@@ -6,7 +6,7 @@
 	#include <okutils/types.hpp>
 #endif
 
-#include <oktest/short_test.hpp>
+#include <oktest/oktest_short.hpp>
 #if defined(OKL_USE_MODULES)
 import okl.utils;
 #endif

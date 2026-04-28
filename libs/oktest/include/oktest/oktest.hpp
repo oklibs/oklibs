@@ -1,7 +1,7 @@
 // Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKTEST_TEST_HPP
-#define OKTEST_TEST_HPP
+#ifndef OKTEST_OKTEST_HPP
+#define OKTEST_OKTEST_HPP
 
 #if !defined(OKL_USE_MODULES)
 	#include "oktest/assert_handler.hpp" // IWYU pragma: export

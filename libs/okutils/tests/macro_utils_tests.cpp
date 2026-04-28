@@ -4,7 +4,7 @@
 	#include <okutils/macro_utils.hpp>
 	#include <okutils/types.hpp>
 #endif
-#include <oktest/short_test.hpp>
+#include <oktest/oktest_short.hpp>
 
 #if !defined(OKL_USE_STD_MODULE)
 	#include <string_view>

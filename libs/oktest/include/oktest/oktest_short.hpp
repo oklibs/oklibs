@@ -1,7 +1,7 @@
 // Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKTEST_SHORT_TEST_HPP
-#define OKTEST_SHORT_TEST_HPP
+#ifndef OKTEST_OKTEST_SHORT_HPP
+#define OKTEST_OKTEST_SHORT_HPP
 
 #if !defined(OKL_USE_MODULES)
 	#include "oktest/assert_handler.hpp" // IWYU pragma: export
@@ -11,7 +11,7 @@
 	#include "oktest/test_hierarchy.hpp" // IWYU pragma: export
 	#include "oktest/theme.hpp" // IWYU pragma: export
 #endif
-#include "oktest/test.hpp"
+#include "oktest/oktest.hpp"
 
 #define TEST_CASE(name) OKL_TEST_CASE(name)
 #define TEST_CASE_TEMPLATE(name, ...) OKL_TEST_CASE_TEMPLATE(name, __VA_ARGS__)
