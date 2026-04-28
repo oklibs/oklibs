@@ -3,7 +3,7 @@
 #ifndef OKTEST_CORE_TYPES_HPP
 #define OKTEST_CORE_TYPES_HPP
 
-#include "okbitflag/bitflag.hpp"
+#include "okbitflag/okbitflag.hpp"
 #include "okutils/types.hpp"
 
 #include <array>

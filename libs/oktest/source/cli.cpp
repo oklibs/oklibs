@@ -2,7 +2,7 @@
 
 #include "oktest/cli.hpp"
 
-#include "okbitflag/bitflag.hpp"
+#include "okbitflag/okbitflag.hpp"
 #include "okutils/defines.hpp"
 #include "okutils/types.hpp"
 #include "okutils/utils.hpp"

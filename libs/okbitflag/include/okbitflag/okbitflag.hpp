@@ -1,7 +1,7 @@
 // Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKBITFLAG_BITFLAG_HPP
-#define OKBITFLAG_BITFLAG_HPP
+#ifndef OKBITFLAG_OKBITFLAG_HPP
+#define OKBITFLAG_OKBITFLAG_HPP
 
 #include "okbitflag/detail/valid_flags.hpp"
 #include "okutils/concepts.hpp"

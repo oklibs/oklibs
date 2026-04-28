@@ -1,7 +1,7 @@
 ﻿// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
 #if !defined(OKL_USE_MODULES)
-	#include <okbitflag/bitflag.hpp>
+	#include <okbitflag/okbitflag.hpp>
 	#include <okutils/types.hpp>
 #endif
 #include <oktest/oktest_short.hpp>

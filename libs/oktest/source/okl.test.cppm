@@ -9,8 +9,8 @@ module;
 #include "okutils/defines.hpp"
 
 // Compilers seem to only properly handle mixed includes and imports for std headers.
-#define OKBITFLAG_BITFLAG_HPP
-#include "okbitflag/bitflag.hpp"
+#define OKBITFLAG_OKBITFLAG_HPP
+#include "okbitflag/okbitflag.hpp"
 #define OKUTILS_TYPES_HPP
 #include "okutils/types.hpp"
 #define OKUTILS_UTILS_HPP

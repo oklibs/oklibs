@@ -30,5 +30,5 @@ import okl.utils;
 import std;
 #endif
 
-#include "okbitflag/bitflag.hpp"
 #include "okbitflag/detail/valid_flags.hpp"
+#include "okbitflag/okbitflag.hpp"
