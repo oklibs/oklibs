@@ -9,6 +9,7 @@
 
 #include <bit>
 #include <concepts>
+#include <limits>
 #include <type_traits>
 
 namespace Okl
@@ -57,6 +58,9 @@ public:
 	constexpr Bitflag& toggle_flags(const CAnyOf<Bitflag, T> auto... flags) noexcept;
 	constexpr Bitflag& set_flags_to(bool value, const CAnyOf<Bitflag, T> auto... flags) noexcept;
 	constexpr Bitflag& clear_flags() noexcept;
+
+	static constexpr void for_each_valid(std::invocable<T> auto functor, const CAnyOf<Bitflag, T> auto... skip_flags);
+	constexpr void for_each(std::invocable<T> auto functor, const CAnyOf<Bitflag, T> auto... skip_flags) const;
 
 	[[nodiscard]] constexpr Bitflag operator&(Bitflag) const noexcept;
 	[[nodiscard]] constexpr Bitflag operator&(T) const noexcept;
@@ -267,6 +271,40 @@ constexpr auto Bitflag<T>::clear_flags() noexcept -> Bitflag&
 {
 	m_flags = static_cast<T>(0);
 	return *this;
+}
+
+/**
+ * Iterates over all valid flags for the enumeration type
+ * from the least significant bit to the most significant bit.
+ * @param functor A callable that accepts a single argument of the enumeration type `T`.
+ * @param skip_flags Flags to skip during iteration.
+ */
+template<CUnsignedEnum T>
+constexpr void Bitflag<T>::for_each_valid(std::invocable<T> auto functor, const CAnyOf<Bitflag, T> auto... skip_flags)
+{
+	Bitflag remaining_bits{valid_flags & ~(Bitflag{} | ... | skip_flags)};
+	while (remaining_bits != static_cast<T>(0)) {
+		const Bitflag lowest_bit{remaining_bits & static_cast<T>((~remaining_bits).underlying() + 1u)};
+		functor(lowest_bit.flags());
+		remaining_bits.toggle_flags(lowest_bit);
+	}
+}
+
+/**
+ * Iterates over all flags currently set in bitflag
+ * from the least significant bit to the most significant bit.
+ * @param functor A callable that accepts a single argument of the enumeration type `T`.
+ * @param skip_flags Flags to skip during iteration.
+ */
+template<CUnsignedEnum T>
+constexpr void Bitflag<T>::for_each(std::invocable<T> auto functor, const CAnyOf<Bitflag, T> auto... skip_flags) const
+{
+	Bitflag remaining_bits{*this & ~(Bitflag{} | ... | skip_flags)};
+	while (remaining_bits != static_cast<T>(0)) {
+		const Bitflag lowest_bit{remaining_bits & static_cast<T>((~remaining_bits).underlying() + 1u)};
+		functor(lowest_bit.flags());
+		remaining_bits.toggle_flags(lowest_bit);
+	}
 }
 
 template<CUnsignedEnum T>

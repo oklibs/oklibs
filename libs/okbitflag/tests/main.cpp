@@ -236,3 +236,53 @@ CONSTEXPR_TEST_CASE("comparison")
 	CHECK(bitflag < ETestEnum::second);
 	CHECK(bitflag1 > ETestEnum::first);
 };
+
+CONSTEXPR_TEST_CASE("for_each_valid")
+{
+	const TestBitflag bitflag{TestBitflag::valid_flags};
+
+	SECTION("iterate all")
+	{
+		int num_flags{0};
+		bitflag.for_each_valid([&](const ETestEnum value) {
+			CHECK(bitflag.has_flags(value));
+			++num_flags;
+		});
+		CHECK(num_flags == bitflag.num_valid_flags());
+	}
+
+	SECTION("iterate some")
+	{
+		int num_flags{0};
+		bitflag.for_each_valid([&](const ETestEnum value) {
+			CHECK(bitflag.has_flags(value));
+			++num_flags;
+		}, ETestEnum::fourth, ETestEnum::last);
+		CHECK(num_flags == (bitflag.num_valid_flags() - 2));
+	}
+};
+
+CONSTEXPR_TEST_CASE("for_each")
+{
+	const TestBitflag bitflag{ETestEnum::first, ETestEnum::second, ETestEnum::sixth};
+
+	SECTION("iterate all")
+	{
+		int num_flags{0};
+		bitflag.for_each([&](const ETestEnum value) {
+			CHECK(bitflag.has_flags(value));
+			++num_flags;
+		});
+		CHECK(num_flags == bitflag.num_flags());
+	}
+
+	SECTION("iterate some")
+	{
+		int num_flags{0};
+		bitflag.for_each([&](const ETestEnum value) {
+			CHECK(bitflag.has_flags(value));
+			++num_flags;
+		}, ETestEnum::second, ETestEnum::fourth);
+		CHECK(num_flags == (bitflag.num_flags() - 1));
+	}
+};

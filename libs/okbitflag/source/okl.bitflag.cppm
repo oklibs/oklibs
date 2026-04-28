@@ -18,6 +18,7 @@ module;
 
 #include <bit>
 #include <concepts>
+#include <limits>
 #include <source_location>
 #include <string_view>
 #include <type_traits>
