@@ -19,8 +19,6 @@ OKL_EXPORT_BEGIN
 template<auto ExpectedValue>
 struct ExpressionExtractor {
 	template<class LhsT> constexpr auto operator<=>(const LhsT&) const noexcept;
-
-	template<class LhsT> constexpr auto operator<(const LhsT&) const noexcept;
 };
 
 struct Expression {
@@ -120,12 +118,6 @@ struct ExtractedUnaryExpression {
 template<auto ExpectedValue>
 template<class LhsT>
 constexpr auto ExpressionExtractor<ExpectedValue>::operator<=>(const LhsT& lhs) const noexcept
-{
-	return ExtractedUnaryExpression<ExpectedValue, LhsT>{lhs};
-}
-template<auto ExpectedValue>
-template<class LhsT>
-constexpr auto ExpressionExtractor<ExpectedValue>::operator<(const LhsT& lhs) const noexcept
 {
 	return ExtractedUnaryExpression<ExpectedValue, LhsT>{lhs};
 }
