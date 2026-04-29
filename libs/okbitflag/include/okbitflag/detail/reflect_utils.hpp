@@ -11,7 +11,7 @@
 #include <string_view>
 
 // Needs to be in global namespace.
-struct OklReflectStruct {
+struct OklBitflagReflectStruct {
 	void* m_member;
 	enum class EEnum : Okl::uint8 {
 		value
@@ -27,11 +27,12 @@ template<auto... Vs>
 }
 
 struct TEnumNameInfo {
-	static constexpr std::string_view func_name{function_name<OklReflectStruct::EEnum::value>()};
-	static constexpr size_t begin{func_name.find("OklReflectStruct::EEnum::value")};
+	static constexpr std::string_view func_name{function_name<OklBitflagReflectStruct::EEnum::value>()};
+	static constexpr size_t begin{func_name.find("OklBitflagReflectStruct::EEnum::value")};
 	static constexpr size_t end{
 	    func_name.size() -
-	    (func_name.find("OklReflectStruct::EEnum::value") + std::string_view{"OklReflectStruct::EEnum::value"}.size())};
+	    (func_name.find("OklBitflagReflectStruct::EEnum::value") +
+	     std::string_view{"OklBitflagReflectStruct::EEnum::value"}.size())};
 };
 } // namespace Okl::Detail
 
