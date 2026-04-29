@@ -28,6 +28,11 @@ option("tsan", {description = "Enable thread sanitizer if supported.", category 
 option("ubsan", {description = "Enable undefined behaviour sanitizer if supported.", category = "sanitizers", default = false})
 
 ----------------------------------------------------------------------------------------------------
+--- Dependencies
+
+add_requires("fmt >=12.0.0")
+
+----------------------------------------------------------------------------------------------------
 --- Build settings
 
 add_rules("mode.debug", "mode.releasedbg", "mode.release")

@@ -15,11 +15,6 @@ option("link_main", {description = "Provide a main function in a separate source
 set_languages("c++20")
 
 ----------------------------------------------------------------------------------------------------
---- Dependencies
-
-add_requires("fmt >=12.0.0")
-
-----------------------------------------------------------------------------------------------------
 --- Targets
 
 target("oktest", function()

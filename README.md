@@ -9,6 +9,11 @@ A collection of some of my personal C++ projects.
 - **[oktest](libs/oktest)**: A C++20 testing framework with first-class support for compile-time testing (`constexpr`
   and `consteval`).
 
+## Dependencies
+
+* **C++20 compatible Compiler** (Clang, GCC, MSVC, ...)
+* **[fmt](https://github.com/fmtlib/fmt)** 12.0.0 or above
+
 ## Integration
 
 ### Using xmake:
@@ -22,7 +27,7 @@ add_requires("okutils", "okbitflag", "oktest")
 
 **Note:** The cmake integration will currently add all libraries.
 
-Ensure that the required dependencies of the libraries are available on your system.
+Ensure that the required dependencies are available on your system.
 
 **with `FetchContent`:**
 
