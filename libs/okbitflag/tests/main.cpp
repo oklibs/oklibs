@@ -25,6 +25,16 @@ enum class OKL_FLAG_ENUM ETestEnum : Okl::uint8 {
 using TestBitflag = Okl::Bitflag<ETestEnum>;
 template<TestBitflag> struct TestStruct {};
 
+enum class OKL_FLAG_ENUM ETestEnum2 : Okl::uint8 {
+	third = 1 << 2,
+	fourth = 1 << 3,
+	sixth = 1 << 5,
+};
+
+enum class OKL_FLAG_ENUM EEmptyTestEnum : Okl::uint8 {
+};
+using EmptyTestBitflag = Okl::Bitflag<EEmptyTestEnum>;
+
 CONSTEXPR_TEST_CASE("init")
 {
 	constexpr TestBitflag bitflag{ETestEnum::first};
@@ -96,11 +106,6 @@ TEST_CASE("num_flags")
 	REQUIRE(bitflag.num_flags() == 2);
 };
 
-enum class OKL_FLAG_ENUM ETestEnum2 : Okl::uint8 {
-	third = 1 << 2,
-	fourth = 1 << 3,
-	sixth = 1 << 5,
-};
 CONSTEXPR_TEST_CASE("valid_flags")
 {
 	CHECK(Okl::Bitflag<ETestEnum2>::num_valid_flags() == 3);
@@ -244,7 +249,7 @@ CONSTEXPR_TEST_CASE("for_each_valid")
 	SECTION("iterate all")
 	{
 		int num_flags{0};
-		bitflag.for_each_valid([&](const ETestEnum value) {
+		TestBitflag::for_each_valid([&](const ETestEnum value) {
 			CHECK(bitflag.has_flags(value));
 			++num_flags;
 		});
@@ -254,11 +259,27 @@ CONSTEXPR_TEST_CASE("for_each_valid")
 	SECTION("iterate some")
 	{
 		int num_flags{0};
-		bitflag.for_each_valid([&](const ETestEnum value) {
-			CHECK(bitflag.has_flags(value));
-			++num_flags;
-		}, ETestEnum::fourth, ETestEnum::last);
+		TestBitflag::for_each_valid(
+		    [&](const ETestEnum value) {
+			    CHECK(bitflag.has_flags(value));
+			    ++num_flags;
+		    },
+		    ETestEnum::fourth, ETestEnum::last);
 		CHECK(num_flags == (bitflag.num_valid_flags() - 2));
+	}
+
+	SECTION("iterate none")
+	{
+		int num_flags{0};
+		TestBitflag::for_each_valid([&](const ETestEnum) { ++num_flags; }, bitflag);
+		CHECK(num_flags == 0);
+	}
+
+	SECTION("iterate empty")
+	{
+		int num_flags{0};
+		EmptyTestBitflag::for_each_valid([&](const EEmptyTestEnum) { ++num_flags; });
+		CHECK(num_flags == 0);
 	}
 };
 
@@ -279,10 +300,27 @@ CONSTEXPR_TEST_CASE("for_each")
 	SECTION("iterate some")
 	{
 		int num_flags{0};
-		bitflag.for_each([&](const ETestEnum value) {
-			CHECK(bitflag.has_flags(value));
-			++num_flags;
-		}, ETestEnum::second, ETestEnum::fourth);
+		bitflag.for_each(
+		    [&](const ETestEnum value) {
+			    CHECK(bitflag.has_flags(value));
+			    ++num_flags;
+		    },
+		    ETestEnum::second, ETestEnum::fourth);
 		CHECK(num_flags == (bitflag.num_flags() - 1));
+	}
+
+	SECTION("iterate none")
+	{
+		int num_flags{0};
+		bitflag.for_each([&](const ETestEnum) { ++num_flags; }, bitflag);
+		CHECK(num_flags == 0);
+	}
+
+	SECTION("iterate empty")
+	{
+		const TestBitflag empty_bitflag{};
+		int num_flags{0};
+		empty_bitflag.for_each([&](const ETestEnum) { ++num_flags; });
+		CHECK(num_flags == 0);
 	}
 };
