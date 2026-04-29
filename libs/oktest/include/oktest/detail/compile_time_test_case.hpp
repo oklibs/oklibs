@@ -10,6 +10,8 @@
 namespace Okl::Test::Detail
 {
 OKL_EXPORT_BEGIN
+// NOLINTBEGIN(misc-unconventional-assign-operator)
+
 template<class... Ts>
 struct CompileTimeTestCase {
 	consteval CompileTimeTestCase() = default;
@@ -45,6 +47,7 @@ consteval auto CompileTimeTestCase<Ts...>::operator=(auto test_case) const
 	return test_case;
 	OKL_WARNING_POP()
 }
-} // namespace Okl::Test::Detail
 
+// NOLINTEND(misc-unconventional-assign-operator)
+} // namespace Okl::Test::Detail
 #endif

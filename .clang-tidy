@@ -26,7 +26,7 @@ Checks:
   - '-readability-magic-numbers' # Too many cases where it is a nuisance.
   - '-readability-named-parameter'
   - '-readability-redundant-member-init'
-#  - '-readability-static-accessed-through-instance'
+  - '-readability-static-accessed-through-instance'
   - '-readability-use-concise-preprocessor-directives'
   - '-readability-uppercase-literal-suffix'
 

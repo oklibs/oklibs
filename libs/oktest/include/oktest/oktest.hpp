@@ -54,7 +54,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_TEST_CASE(name) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( \
+#define OKL_TEST_CASE(name) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase<::Okl::Test::runtime_mode>{name} = \
 		[]([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) \
@@ -81,7 +81,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_TEST_CASE_TEMPLATE(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( \
+#define OKL_TEST_CASE_TEMPLATE(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase<::Okl::Test::runtime_mode, __VA_ARGS__>{name} = \
 		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) \
@@ -108,7 +108,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_TEST_CASE_TEMPLATE_LIST(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( \
+#define OKL_TEST_CASE_TEMPLATE_LIST(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase{name, ::Okl::Test::Detail::TestCaseTypeList<::Okl::Test::runtime_mode, __VA_ARGS__>{}} = \
 		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) \
@@ -135,7 +135,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_CONSTEXPR_TEST_CASE(name) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( \
+#define OKL_CONSTEXPR_TEST_CASE(name) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase<::Okl::Test::constexpr_mode>{name} = \
 		::Okl::Test::Detail::CompileTimeTestCase<>{} = \
@@ -164,7 +164,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_CONSTEXPR_TEST_CASE_TEMPLATE(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( \
+#define OKL_CONSTEXPR_TEST_CASE_TEMPLATE(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase<::Okl::Test::constexpr_mode, __VA_ARGS__>{name} = \
 		::Okl::Test::Detail::CompileTimeTestCase<__VA_ARGS__>{} = \
@@ -193,7 +193,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_CONSTEXPR_TEST_CASE_TEMPLATE_LIST(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( \
+#define OKL_CONSTEXPR_TEST_CASE_TEMPLATE_LIST(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase{name, ::Okl::Test::Detail::TestCaseTypeList<::Okl::Test::constexpr_mode, __VA_ARGS__>{}} = \
 		::Okl::Test::Detail::CompileTimeTestCase{::Okl::Test::TypeList<__VA_ARGS__>{}} = \
@@ -223,7 +223,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_CONSTEVAL_TEST_CASE(name) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( \
+#define OKL_CONSTEVAL_TEST_CASE(name) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase<::Okl::Test::consteval_mode>{name} = \
 		::Okl::Test::Detail::CompileTimeTestCase<>{} = \
@@ -254,7 +254,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_CONSTEVAL_TEST_CASE_TEMPLATE(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( \
+#define OKL_CONSTEVAL_TEST_CASE_TEMPLATE(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase<::Okl::Test::consteval_mode, __VA_ARGS__>{name} = \
 		::Okl::Test::Detail::CompileTimeTestCase<__VA_ARGS__>{} = \
@@ -285,7 +285,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_CONSTEVAL_TEST_CASE_TEMPLATE_LIST(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( \
+#define OKL_CONSTEVAL_TEST_CASE_TEMPLATE_LIST(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase{name, ::Okl::Test::Detail::TestCaseTypeList<::Okl::Test::consteval_mode, __VA_ARGS__>{}} = \
 		::Okl::Test::Detail::CompileTimeTestCase{::Okl::Test::TypeList<__VA_ARGS__>{}} = \
@@ -432,7 +432,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 		extraSuccess \
 		::Okl::Test::Detail::after_passed_assert(#__VA_ARGS__, OKL_CHECK_IMPL_expression, ::Okl::Test::EAssertType::assertType, ::Okl::Test::EAssertModifier::assertModifier, ::Okl::Test::assertMode); \
 	} \
-	else \
+	else /* NOLINT(readability-inconsistent-ifelse-braces): Required for user messages. */ \
 		OKL_SUPPRESS_WARNING_MSVC(26444, "Don't try to declare a local variable with no name") \
 		::Okl::Test::Detail::AssertFailed<>{#__VA_ARGS__, OKL_CHECK_IMPL_expression, ::Okl::Test::EAssertType::assertType, ::Okl::Test::EAssertModifier::assertModifier, ::Okl::Test::assertMode}
 
@@ -441,7 +441,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 		extraSuccess \
 		::Okl::Test::Detail::after_passed_assert(expressionString, {}, ::Okl::Test::EAssertType::assertType, ::Okl::Test::EAssertModifier::assertModifier, ::Okl::Test::assertMode); \
 	} \
-	else \
+	else /* NOLINT(readability-inconsistent-ifelse-braces): Required for user messages. */ \
 		OKL_SUPPRESS_WARNING_MSVC(26444, "Don't try to declare a local variable with no name") \
 		::Okl::Test::Detail::AssertFailed<>{expressionString, {}, ::Okl::Test::EAssertType::assertType, ::Okl::Test::EAssertModifier::assertModifier, ::Okl::Test::assertMode}
 
@@ -450,7 +450,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 		static_assert(__VA_ARGS__); \
 		::Okl::Test::Detail::after_passed_assert(#__VA_ARGS__, {}, ::Okl::Test::EAssertType::assertType, ::Okl::Test::EAssertModifier::assertModifier, ::Okl::Test::consteval_mode); \
 	} \
-	else \
+	else /* NOLINT(readability-inconsistent-ifelse-braces): Required for user messages. */ \
 		OKL_SUPPRESS_WARNING_MSVC(26444, "Don't try to declare a local variable with no name") \
 		::Okl::Test::Detail::AssertFailed<>{}
 

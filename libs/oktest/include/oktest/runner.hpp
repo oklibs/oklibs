@@ -81,7 +81,7 @@ void Runner<ReporterT, ConfigT>::after_failed_assert(const AssertData& assert_da
 	m_reporter.after_failed_assert(assert_data);
 	if (assert_data.type == EAssertType::require) {
 #if OKTEST_WITH_EXCEPTIONS
-		throw AssertFailureException{};
+		throw AssertFailureException{}; // NOLINT(hicpp-exception-baseclass)
 #else
 		std::quick_exit(m_exit_zero ? 0 : 1);
 #endif
@@ -99,7 +99,7 @@ constexpr void Runner<ReporterT, ConfigT>::on_test_case(const TestCaseData& test
 		try {
 			test_case_data.test_case(test_context);
 		}
-		catch (AssertFailureException) {
+		catch (AssertFailureException) { // NOLINT(bugprone-empty-catch)
 		}
 		catch (const std::exception& exception) {
 			m_reporter.after_uncaught_exception(test_case_data.node, exception.what());

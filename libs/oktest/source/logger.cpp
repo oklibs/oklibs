@@ -5,6 +5,7 @@
 #include "oktest/cli.hpp"
 #include "oktest/core_types.hpp"
 #include "oktest/test_context.hpp"
+#include "oktest/theme.hpp"
 #include "okutils/defines.hpp"
 #include "okutils/types.hpp"
 
@@ -121,8 +122,8 @@ void Logger::before_shutdown(const RunData& summary) const
 		}
 		else {
 			fmt::print(m_config.theme.success, "success:");
-			fmt::print(" all tests passed ({} test cases{}, {} assertions)\n", num_runtime_test_cases,
-			           compile_time_str, total_asserts);
+			fmt::print(" all tests passed ({} test cases{}, {} assertions)\n", num_runtime_test_cases, compile_time_str,
+			           total_asserts);
 		}
 	}
 }

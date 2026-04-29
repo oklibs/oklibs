@@ -96,13 +96,13 @@ constexpr bool RegistryRunner<ReporterT, MaxTestCases, ConfigT>::
 	const size_t string_size{test_name.size()};
 
 	// Iterate characters of the filter string and exit at the first non-match.
-	size_t js{0};
-	for (size_t jr{0}; jr < filter_size; ++jr, ++js) {
+	size_t string_index{0};
+	for (size_t filter_index{0}; filter_index < filter_size; ++filter_index, ++string_index) {
 		bool escaped{false};
-		if (test_filter.at(jr) == '\\') {
+		if (test_filter.at(filter_index) == '\\') {
 			// Escaped character, look ahead ignoring special characters.
-			++jr;
-			if (jr >= filter_size) {
+			++filter_index;
+			if (filter_index >= filter_size) {
 				// Nothing left to escape; the filter is ill-formed.
 				return false;
 			}
@@ -110,34 +110,35 @@ constexpr bool RegistryRunner<ReporterT, MaxTestCases, ConfigT>::
 			escaped = true;
 		}
 
-		if (!escaped && test_filter.at(jr) == '*') {
+		if (!escaped && test_filter.at(filter_index) == '*') {
 			// Wildcard is found; if this is the last character of the filter
 			// then any further content will be a match; early exit.
-			if (jr == filter_size - 1) {
+			if (filter_index == filter_size - 1) {
 				return true;
 			}
 
 			// Discard what has already been matched.
-			test_filter = test_filter.substr(jr + 1);
+			test_filter = test_filter.substr(filter_index + 1);
 
 			// If there are no more characters in the string after discarding, then we only match if
 			// the filter contains only wildcards from there on.
-			const size_t remaining{string_size >= js ? string_size - js : 0u};
+			const size_t remaining{string_size >= string_index ? string_size - string_index : 0u};
 			if (remaining == 0u) {
 				return test_filter.find_first_not_of('*') == test_filter.npos;
 			}
 
 			// Otherwise, we loop over all remaining characters of the string and look
 			// for a match when starting from each of them.
-			for (size_t o{0}; o < remaining; ++o) {
-				if (should_run_test(test_name.substr(js + o), test_filter)) {
+			for (size_t offset{0}; offset < remaining; ++offset) {
+				if (should_run_test(test_name.substr(string_index + offset), test_filter)) {
 					return true;
 				}
 			}
 
 			return false;
 		}
-		else if (js >= string_size || test_filter.at(jr) != test_name.at(js)) {
+
+		if (string_index >= string_size || test_filter.at(filter_index) != test_name.at(string_index)) {
 			// Regular character is found; not a match if not an exact match in the string.
 			return false;
 		}
@@ -146,7 +147,7 @@ constexpr bool RegistryRunner<ReporterT, MaxTestCases, ConfigT>::
 	// We have finished reading the filter string and did not find either a definite non-match
 	// or a definite match. This means we did not have any wildcard left, hence that we need
 	// an exact match. Therefore, only match if the string size is the same as the filter.
-	return js == string_size;
+	return string_index == string_size;
 }
 } // namespace Okl::Test
 
