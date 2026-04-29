@@ -46,13 +46,13 @@ CONSTEXPR_TEST_CASE("init")
 	OKL_DISABLE_WARNING_MSVC(26813, "Use 'bitwise and' to check if a flag is set.")
 
 	Okl::Bitflag bitflag2{ETestEnum::first};
-	REQUIRE(bitflag2.m_flags == ETestEnum::first);
+	REQUIRE(bitflag2 == ETestEnum::first);
 
 	bitflag2 = ETestEnum::second;
-	REQUIRE(bitflag2.m_flags == ETestEnum::second);
+	REQUIRE(bitflag2 == ETestEnum::second);
 
 	bitflag1 = bitflag2;
-	REQUIRE(bitflag1.m_flags == ETestEnum::second);
+	REQUIRE(bitflag1 == ETestEnum::second);
 
 	constexpr Okl::Bitflag bitflag3{ETestEnum::first, ETestEnum::second};
 	CHECK(bitflag3.has_flags(ETestEnum::first));
@@ -67,25 +67,25 @@ CONSTEXPR_TEST_CASE("assignment")
 	TestBitflag bitflag{ETestEnum::first};
 
 	bitflag &= ETestEnum::second;
-	REQUIRE(bitflag.m_flags == static_cast<ETestEnum>(0));
+	REQUIRE(bitflag == static_cast<ETestEnum>(0));
 
 	OKL_WARNING_PUSH()
 	OKL_DISABLE_WARNING_MSVC(26813, "Use 'bitwise and' to check if a flag is set.")
 
 	bitflag |= ETestEnum::first;
-	REQUIRE(bitflag.m_flags == ETestEnum::first);
+	REQUIRE(bitflag == ETestEnum::first);
 
 	bitflag ^= ETestEnum::first;
-	REQUIRE(bitflag.m_flags == static_cast<ETestEnum>(0));
+	REQUIRE(bitflag == static_cast<ETestEnum>(0));
 
 	bitflag |= TestBitflag{ETestEnum::second};
-	REQUIRE(bitflag.m_flags == ETestEnum::second);
+	REQUIRE(bitflag == ETestEnum::second);
 
 	bitflag &= TestBitflag{ETestEnum::first};
-	REQUIRE(bitflag.m_flags == static_cast<ETestEnum>(0));
+	REQUIRE(bitflag == static_cast<ETestEnum>(0));
 
 	bitflag ^= TestBitflag{ETestEnum::third};
-	REQUIRE(bitflag.m_flags == ETestEnum::third);
+	REQUIRE(bitflag == ETestEnum::third);
 
 	OKL_WARNING_POP()
 };
@@ -97,7 +97,7 @@ CONSTEXPR_TEST_CASE("conversion")
 	REQUIRE(enum_class == ETestEnum::first);
 };
 
-TEST_CASE("num_flags")
+CONSTEXPR_TEST_CASE("num_flags")
 {
 	TestBitflag bitflag{ETestEnum::first};
 	REQUIRE(bitflag.num_flags() == 1);
@@ -106,33 +106,10 @@ TEST_CASE("num_flags")
 	REQUIRE(bitflag.num_flags() == 2);
 };
 
-CONSTEXPR_TEST_CASE("valid_flags")
-{
-	CHECK(Okl::Bitflag<ETestEnum2>::num_valid_flags() == 3);
-	CHECK(static_cast<TestBitflag::UnderlyingType>(Okl::Bitflag<ETestEnum2>::valid_flags) == 0b00101100u);
-
-	CHECK(TestBitflag::num_valid_flags() == 6);
-	CHECK(static_cast<TestBitflag::UnderlyingType>(TestBitflag::valid_flags) == 0b10101111u);
-};
-
 TEST_CASE("underlying")
 {
-	OKL_WARNING_PUSH()
-	OKL_DISABLE_WARNING_MSVC(26813, "Use 'bitwise and' to check if a flag is set.")
-
 	constexpr TestBitflag bitflag{TestBitflag::from_underlying(1 << 0)};
-	CHECK(bitflag.m_flags == ETestEnum::first);
-
-	TestBitflag bitflag_mut{ETestEnum::first};
-	REQUIRE(bitflag_mut.underlying() == 1);
-
-	bitflag_mut.underlying_ref() = 2;
-	CHECK(bitflag_mut.flags() == ETestEnum::second);
-
-	OKL_WARNING_POP()
-
-	constexpr TestBitflag bitflag_const{ETestEnum::third};
-	CHECK(bitflag_const.underlying() == 4);
+	CHECK(bitflag == ETestEnum::first);
 };
 
 CONSTEXPR_TEST_CASE("has_flags")
@@ -207,21 +184,21 @@ CONSTEXPR_TEST_CASE("bitwise_ops")
 	OKL_WARNING_PUSH()
 	OKL_DISABLE_WARNING_MSVC(26813, "Use 'bitwise and' to check if a flag is set.")
 
-	CHECK((bitflag & bitflag1).m_flags == static_cast<ETestEnum>(0));
-	CHECK((bitflag & ETestEnum::first).m_flags == ETestEnum::first);
-	CHECK((ETestEnum::first & bitflag).m_flags == ETestEnum::first);
+	CHECK((bitflag & bitflag1) == static_cast<ETestEnum>(0));
+	CHECK((bitflag & ETestEnum::first) == ETestEnum::first);
+	CHECK((ETestEnum::first & bitflag) == ETestEnum::first);
 
-	CHECK((bitflag | bitflag1).m_flags ==
+	CHECK((bitflag | bitflag1) ==
 	      static_cast<ETestEnum>(static_cast<Okl::uint8>(ETestEnum::first) |
 	                             static_cast<Okl::uint8>(ETestEnum::second)));
-	CHECK((bitflag | ETestEnum::second).m_flags == (bitflag | bitflag1).m_flags);
-	CHECK((ETestEnum::first | bitflag1).m_flags == (bitflag | bitflag1).m_flags);
+	CHECK((bitflag | ETestEnum::second) == (bitflag | bitflag1));
+	CHECK((ETestEnum::first | bitflag1) == (bitflag | bitflag1));
 
-	CHECK((bitflag ^ bitflag1).m_flags == (bitflag | bitflag1).m_flags);
-	CHECK((bitflag ^ ETestEnum::first).m_flags == static_cast<ETestEnum>(0));
-	CHECK((ETestEnum::first ^ bitflag).m_flags == static_cast<ETestEnum>(0));
+	CHECK((bitflag ^ bitflag1) == (bitflag | bitflag1));
+	CHECK((bitflag ^ ETestEnum::first) == static_cast<ETestEnum>(0));
+	CHECK((ETestEnum::first ^ bitflag) == static_cast<ETestEnum>(0));
 
-	CHECK((~bitflag).m_flags == static_cast<ETestEnum>(~static_cast<TestEnumUnderlyingType>(ETestEnum::first)));
+	CHECK((~bitflag) == static_cast<ETestEnum>(~static_cast<TestEnumUnderlyingType>(ETestEnum::first)));
 
 	OKL_WARNING_POP()
 };
@@ -240,47 +217,6 @@ CONSTEXPR_TEST_CASE("comparison")
 
 	CHECK(bitflag < ETestEnum::second);
 	CHECK(bitflag1 > ETestEnum::first);
-};
-
-CONSTEXPR_TEST_CASE("for_each_valid")
-{
-	const TestBitflag bitflag{TestBitflag::valid_flags};
-
-	SECTION("iterate all")
-	{
-		int num_flags{0};
-		TestBitflag::for_each_valid([&](const ETestEnum value) {
-			CHECK(bitflag.has_flags(value));
-			++num_flags;
-		});
-		CHECK(num_flags == bitflag.num_valid_flags());
-	}
-
-	SECTION("iterate some")
-	{
-		int num_flags{0};
-		TestBitflag::for_each_valid(
-		    [&](const ETestEnum value) {
-			    CHECK(bitflag.has_flags(value));
-			    ++num_flags;
-		    },
-		    ETestEnum::fourth, ETestEnum::last);
-		CHECK(num_flags == (bitflag.num_valid_flags() - 2));
-	}
-
-	SECTION("iterate none")
-	{
-		int num_flags{0};
-		TestBitflag::for_each_valid([&](const ETestEnum) { ++num_flags; }, bitflag);
-		CHECK(num_flags == 0);
-	}
-
-	SECTION("iterate empty")
-	{
-		int num_flags{0};
-		EmptyTestBitflag::for_each_valid([&](const EEmptyTestEnum) { ++num_flags; });
-		CHECK(num_flags == 0);
-	}
 };
 
 CONSTEXPR_TEST_CASE("for_each")
@@ -321,6 +257,57 @@ CONSTEXPR_TEST_CASE("for_each")
 		const TestBitflag empty_bitflag{};
 		int num_flags{0};
 		empty_bitflag.for_each([&](const ETestEnum) { ++num_flags; });
+		CHECK(num_flags == 0);
+	}
+};
+
+CONSTEXPR_TEST_CASE("valid_flags")
+{
+	CHECK(TestBitflag::valid_flags().num_flags() == 6);
+	CHECK(TestBitflag::valid_flags().flags() == 0b10101111u);
+
+	CHECK(Okl::Bitflag<ETestEnum2>::valid_flags().num_flags() == 3);
+	CHECK(Okl::Bitflag<ETestEnum2>::valid_flags().flags() == 0b00101100u);
+};
+
+CONSTEXPR_TEST_CASE("valid_flags.for_each")
+{
+	const TestBitflag bitflag{TestBitflag::valid_flags()};
+
+	SECTION("iterate all")
+	{
+		int num_flags{0};
+		bitflag.for_each([&](const ETestEnum value) {
+			CHECK(bitflag.has_flags(value));
+			++num_flags;
+		});
+		CHECK(num_flags == bitflag.num_flags());
+	}
+
+	SECTION("iterate some")
+	{
+		int num_flags{0};
+		bitflag.for_each(
+		    [&](const ETestEnum value) {
+			    CHECK(bitflag.has_flags(value));
+			    ++num_flags;
+		    },
+		    ETestEnum::fourth, ETestEnum::last);
+		CHECK(num_flags == (bitflag.num_flags() - 2));
+	}
+
+	SECTION("iterate none")
+	{
+		int num_flags{0};
+		bitflag.for_each([&](const ETestEnum) { ++num_flags; }, bitflag);
+		CHECK(num_flags == 0);
+	}
+
+	SECTION("iterate empty")
+	{
+		const EmptyTestBitflag empty_bitflag{EmptyTestBitflag::valid_flags()};
+		int num_flags{0};
+		empty_bitflag.for_each([&](const EEmptyTestEnum) { ++num_flags; });
 		CHECK(num_flags == 0);
 	}
 };

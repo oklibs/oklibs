@@ -62,7 +62,7 @@ constexpr std::string_view to_string(const Mode mode)
 {
 	OKL_STATIC_VAR constexpr std::array mode_strings{[] {
 		std::array<std::string_view, 3> strings{};
-		static_assert(strings.size() == static_cast<size_t>(Mode::valid_flags));
+		static_assert(strings.size() == static_cast<size_t>(Mode::valid_flags().flags()));
 
 		strings.at(static_cast<size_t>(EMode::run_time) - 1) = "";
 		strings.at(static_cast<size_t>(EMode::compile_time) - 1) = "CONSTEVAL_";
