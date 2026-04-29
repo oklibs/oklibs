@@ -22,7 +22,7 @@ public:
 	using Type = T;
 	using UnderlyingType = std::underlying_type_t<T>;
 
-	static constexpr T valid_flags{Detail::get_valid_flags<T>()};
+	static constexpr T valid_flags{Detail::get_valid_flags<T>()}; /* Mask of all named enum flags. */
 
 	T m_flags{};
 
