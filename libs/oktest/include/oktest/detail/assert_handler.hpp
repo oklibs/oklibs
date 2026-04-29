@@ -1,10 +1,10 @@
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKTEST_ASSERT_HANDLER_HPP
-#define OKTEST_ASSERT_HANDLER_HPP
+#ifndef OKTEST_DETAIL_ASSERT_HANDLER_HPP
+#define OKTEST_DETAIL_ASSERT_HANDLER_HPP
 
 #include "oktest/core_types.hpp"
-#include "oktest/expression.hpp"
+#include "oktest/detail/expression.hpp"
 #include "oktest/get_runner.hpp"
 #include "oktest/test_context.hpp"
 #include "okutils/defines.hpp"
@@ -15,32 +15,9 @@
 #include <string_view>
 #include <utility>
 
-namespace Okl::Test
+namespace Okl::Test::Detail
 {
 OKL_EXPORT_BEGIN
-namespace Detail
-{
-template<class... Ts> class AssertFailed;
-
-template<class... Ts>
-constexpr void after_passed_assert(
-    std::string_view expression,
-    const Expression& decomposed,
-    EAssertType,
-    EAssertModifier,
-    Mode,
-    const std::source_location& = std::source_location::current());
-
-#if OKTEST_WITH_EXCEPTIONS
-template<class Callable, class... Args> constexpr bool throws(Callable&& callable, Args&&... args);
-template<class ExceptionT, class Callable, class... Args> constexpr bool throws_as(Callable&& callable, Args&&... args);
-#endif
-} // namespace Detail
-OKL_EXPORT_END
-
-
-namespace Detail
-{
 template<class... Ts>
 class AssertFailed {
 public:
@@ -49,7 +26,7 @@ public:
 	// This needs to be non constexpr to fail on compile time assertions.
 	explicit AssertFailed(
 	    const std::string_view expression,
-	    const Detail::Expression& decomposed,
+	    const Expression& decomposed,
 	    const EAssertType type,
 	    const EAssertModifier modifier,
 	    const Mode mode,
@@ -84,6 +61,21 @@ private:
 	AssertData m_assert_data;
 	fmt::basic_memory_buffer<char, 512> m_buffer{};
 };
+
+template<class... Ts>
+constexpr void after_passed_assert(
+    std::string_view expression,
+    const Expression& decomposed,
+    EAssertType,
+    EAssertModifier,
+    Mode,
+    const std::source_location& = std::source_location::current());
+
+#if OKTEST_WITH_EXCEPTIONS
+template<class Callable, class... Args> constexpr bool throws(Callable&& callable, Args&&... args);
+template<class ExceptionT, class Callable, class... Args> constexpr bool throws_as(Callable&& callable, Args&&... args);
+#endif
+OKL_EXPORT_END
 
 
 template<class... Ts>
@@ -143,7 +135,6 @@ constexpr bool throws_as(Callable&& callable, Args&&... args)
 	return false;
 }
 #endif
-} // namespace Detail
-} // namespace Okl::Test
+} // namespace Okl::Test::Detail
 
 #endif

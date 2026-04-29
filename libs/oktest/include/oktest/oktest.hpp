@@ -4,11 +4,14 @@
 #define OKTEST_OKTEST_HPP
 
 #if !defined(OKL_USE_MODULES)
-	#include "oktest/assert_handler.hpp" // IWYU pragma: export
 	#include "oktest/core_types.hpp" // IWYU pragma: export
-	#include "oktest/expression.hpp" // IWYU pragma: export
+	#include "oktest/detail/assert_handler.hpp" // IWYU pragma: export
+	#include "oktest/detail/compile_time_test_case.hpp"// IWYU pragma: export
+	#include "oktest/detail/expression.hpp" // IWYU pragma: export
+	#include "oktest/detail/runtime_test_case.hpp"// IWYU pragma: export
+	#include "oktest/detail/scope.hpp"// IWYU pragma: export
+	#include "oktest/detail/section.hpp"// IWYU pragma: export
 	#include "oktest/get_runner.hpp" // IWYU pragma: export
-	#include "oktest/test_hierarchy.hpp" // IWYU pragma: export
 	#include "oktest/theme.hpp" // IWYU pragma: export
 #endif
 #include "oktest/config.hpp"

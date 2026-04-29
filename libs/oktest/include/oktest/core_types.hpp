@@ -47,6 +47,14 @@ enum class EAssertModifier : uint8 {
 [[nodiscard]] constexpr std::string_view to_string(ETestNodeType);
 [[nodiscard]] constexpr std::string_view to_string(EAssertType);
 [[nodiscard]] constexpr std::string_view to_string(EAssertModifier);
+
+namespace Detail
+{
+template<Mode, class...> struct TestCaseTypeList {};
+
+template<class T> constexpr std::string_view get_type_name() noexcept;
+template<class T> inline constexpr std::string_view type_name{get_type_name<T>()};
+} // namespace Detail
 OKL_EXPORT_END
 
 
@@ -106,6 +114,42 @@ constexpr std::string_view to_string(const EAssertModifier assert_modifier)
 	}()};
 	return assert_modifier_strings.at(static_cast<size_t>(assert_modifier));
 }
+
+namespace Detail
+{
+template<class T>
+constexpr std::string_view get_type_name() noexcept
+{
+#if OKL_COMPILER_CLANG_AVAILABLE
+	OKL_STATIC_VAR constexpr std::string_view prefix{"[T = "};
+	OKL_STATIC_VAR constexpr std::string_view suffix{"]"};
+	OKL_STATIC_VAR constexpr std::string_view function{__PRETTY_FUNCTION__};
+#elif OKL_COMPILER_GCC_AVAILABLE
+	OKL_STATIC_VAR constexpr std::string_view prefix{"with T = "};
+	OKL_STATIC_VAR constexpr std::string_view suffix{"; "};
+	OKL_STATIC_VAR constexpr std::string_view function{__PRETTY_FUNCTION__};
+#elif OKL_COMPILER_MSVC_AVAILABLE
+	OKL_STATIC_VAR constexpr std::string_view prefix{"get_type_name<"};
+	OKL_STATIC_VAR constexpr std::string_view suffix{">(void)"};
+	OKL_STATIC_VAR constexpr std::string_view function{__FUNCSIG__};
+#elif OKL_ENABLE_DEV
+	#error Unsupported compiler for ` get_type_name()` .
+#else
+	OKL_STATIC_VAR constexpr std::string_view prefix{};
+	OKL_STATIC_VAR constexpr std::string_view suffix{};
+	OKL_STATIC_VAR constexpr std::string_view function{"?"};
+#endif
+
+	if constexpr (!prefix.empty()) {
+		OKL_STATIC_VAR constexpr auto start{function.find(prefix) + prefix.size()};
+		OKL_STATIC_VAR constexpr auto end{function.find(suffix)};
+		return function.substr(start, end - start);
+	}
+	else {
+		return function;
+	}
+}
+} // namespace Detail
 } // namespace Okl::Test
 
 #endif

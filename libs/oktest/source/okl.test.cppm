@@ -46,10 +46,14 @@ import okl.utils;
 import std;
 #endif
 
-#include "oktest/assert_handler.hpp"
 #include "oktest/cli.hpp"
 #include "oktest/core_types.hpp"
-#include "oktest/expression.hpp"
+#include "oktest/detail/assert_handler.hpp"
+#include "oktest/detail/compile_time_test_case.hpp"
+#include "oktest/detail/expression.hpp"
+#include "oktest/detail/runtime_test_case.hpp"
+#include "oktest/detail/scope.hpp"
+#include "oktest/detail/section.hpp"
 #include "oktest/get_runner.hpp"
 #include "oktest/logger.hpp"
 #include "oktest/main.hpp"
@@ -57,7 +61,6 @@ import std;
 #include "oktest/reporter.hpp"
 #include "oktest/runner.hpp"
 #include "oktest/test_context.hpp"
-#include "oktest/test_hierarchy.hpp"
 #include "oktest/theme.hpp"
 
 module :private;

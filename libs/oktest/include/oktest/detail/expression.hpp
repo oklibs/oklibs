@@ -1,7 +1,7 @@
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKTEST_EXPRESSION_HPP
-#define OKTEST_EXPRESSION_HPP
+#ifndef OKTEST_DETAIL_EXPRESSION_HPP
+#define OKTEST_DETAIL_EXPRESSION_HPP
 
 #include "okutils/defines.hpp"
 

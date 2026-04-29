@@ -19,14 +19,19 @@
 namespace Okl::Test
 {
 OKL_EXPORT_BEGIN
-struct AssertData;
-struct TestNodeData;
-struct TestCaseData;
-struct RunData;
-template<class...> struct TypeList;
-template<size_t MaxDepth = OKTEST_MAX_NESTED_NODES> struct TestContext;
-OKL_EXPORT_END
+template<size_t MaxDepth = OKTEST_MAX_NESTED_NODES>
+struct TestContext {
+	[[nodiscard]] constexpr bool enter_section();
+	constexpr void leave_section() noexcept;
+	[[nodiscard]] constexpr bool next_section();
 
+protected:
+	std::array<size_t, MaxDepth> target_path{}; /* Index to select at each nesting level for the current run. */
+	std::array<size_t, MaxDepth> node_counts{}; /* Number of nodes discovered at each level. */
+	std::array<size_t, MaxDepth> current_visit_counts{}; /* Number of nodes visited in the current run. */
+	size_t current_depth{0}; /* Nesting level in the current run. */
+	size_t path_length{1}; /* Length of the valid path for the next run. */
+};
 
 struct AssertData {
 	std::string_view expression_string{};
@@ -50,7 +55,6 @@ struct TestNodeData {
 
 struct TestCaseData {
 	using TestFunctionPtr = void (*)(TestContext<>&);
-
 	TestFunctionPtr test_case{nullptr};
 	TestNodeData node{};
 };
@@ -65,20 +69,8 @@ struct RunData {
 
 struct AssertFailureException {}; // NOLINT(hicpp-exception-baseclass)
 template<class...> struct TypeList {};
-
-template<size_t MaxDepth>
-struct TestContext {
-	[[nodiscard]] constexpr bool enter_section();
-	constexpr void leave_section() noexcept;
-	[[nodiscard]] constexpr bool next_section();
-
-protected:
-	std::array<size_t, MaxDepth> target_path{}; /* Index to select at each nesting level for the current run. */
-	std::array<size_t, MaxDepth> node_counts{}; /* Number of nodes discovered at each level. */
-	std::array<size_t, MaxDepth> current_visit_counts{}; /* Number of nodes visited in the current run. */
-	size_t current_depth{0}; /* Nesting level in the current run. */
-	size_t path_length{1}; /* Length of the valid path for the next run. */
-};
+template<class T, class FunctorT> constexpr TestCaseData::TestFunctionPtr as_test_function(const FunctorT&) noexcept;
+OKL_EXPORT_END
 
 
 /**
@@ -148,6 +140,12 @@ constexpr bool TestContext<MaxDepth>::next_section()
 		--path_length;
 	}
 	return false;
+}
+
+template<class T, class FunctorT>
+constexpr TestCaseData::TestFunctionPtr as_test_function(const FunctorT&) noexcept
+{
+	return [](::Okl::Test::TestContext<>& test_ctx) { FunctorT{}.template operator()<T>(test_ctx); };
 }
 } // namespace Okl::Test
 
