@@ -6,6 +6,7 @@ set_license("BSL-1.0")
 set_version("0.1.0")
 
 add_plugindirs("xmake/plugins")
+add_moduledirs("xmake/modules")
 includes("xmake/rules/**.lua")
 includes("libs/*/xmake.lua")
 
