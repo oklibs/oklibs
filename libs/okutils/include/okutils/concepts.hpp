@@ -131,6 +131,8 @@ template<class T, class CharT>
 concept CStringViewLike =
     std::convertible_to<const T&, std::basic_string_view<CharT>> && !std::convertible_to<const T&, const CharT*>;
 
+template<class T, class ReturnT, class... ArgTypes>
+concept CInvocableR = std::is_invocable_r_v<ReturnT, T, ArgTypes...>;
 
 // Assignment operators ------------------------------------------------------------------------------------------------
 
