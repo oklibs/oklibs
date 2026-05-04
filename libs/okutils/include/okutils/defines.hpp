@@ -12,9 +12,9 @@
 #include <version>
 
 #if !defined(OKL_CPP_VERSION)
+	// On MSVC, if `/Zc:__cplusplus` is not set, `__cplusplus` will be `199711L`,
+	// `_MSVC_LANG` will always be the correct value.
 	#if defined(_MSVC_LANG) && _MSVC_LANG > __cplusplus
-		// On MSVC, if `/Zc:__cplusplus` is not set, `__cplusplus` will be `199711L`,
-		// `_MSVC_LANG` will always be the correct value.
 		#define OKL_CPP_VERSION OKL_ENCODE_VERSION_YYYYMM(_MSVC_LANG)
 	#elif defined(__cplusplus)
 		#define OKL_CPP_VERSION OKL_ENCODE_VERSION_YYYYMM(__cplusplus)
