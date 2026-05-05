@@ -224,7 +224,18 @@
 #endif
 
 #if !defined(OKL_DEBUG_SECTION)
-	#define OKL_DEBUG_SECTION OKL_CODE_SECTION(".okdbg")
+	#if OKL_ARCH_ARM
+		// Putting the code into a separate section in the linked executable will
+		// require jumps larger than the branch instruction can handle. Clang will
+		// only generate the trampolines in the .text segment of the binary. If the
+		// 'okdbg' segment is present, it will generate code that it cannot link.
+
+		#define OKL_DEBUG_SECTION
+	#elif OKL_OS_APPLE
+		#define OKL_DEBUG_SECTION OKL_CODE_SECTION("__OKDBG,__okdbg")
+	#else
+		#define OKL_DEBUG_SECTION OKL_CODE_SECTION(".okdbg")
+	#endif
 #endif
 
 #if !defined(OKL_EMPTY_BASES)
