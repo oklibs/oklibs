@@ -8,6 +8,7 @@
 #include "okutils/config.hpp" // IWYU pragma: export
 #include "okutils/core_defines.hpp" // IWYU pragma: export
 #include "okutils/macro_utils.hpp" // IWYU pragma: export
+#include "okutils/os_defines.hpp" // IWYU pragma: export
 
 #include <type_traits>
 #include <version>
