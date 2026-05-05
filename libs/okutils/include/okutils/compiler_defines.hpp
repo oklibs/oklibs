@@ -3,7 +3,6 @@
 #ifndef OKUTILS_COMPILER_DEFINES_HPP
 #define OKUTILS_COMPILER_DEFINES_HPP
 
-#include "okutils/config.hpp"
 #include "okutils/core_defines.hpp"
 
 #if defined(__clang__) && defined(__apple_build_version__)
