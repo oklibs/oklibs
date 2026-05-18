@@ -75,18 +75,24 @@
 #if OKL_COMPILER_INTEL_AVAILABLE
 	// intel ToDo Set the required version number.
 	#define OKL_COMPILER_INTEL 1
+	#define OKL_WARNING_PUSH_INTEL() _Pragma("clang diagnostic push")
+	#define OKL_WARNING_POP_INTEL() _Pragma("clang diagnostic pop")
 	#define OKL_DISABLE_WARNING_INTEL(warningName, ...) OKL_DISABLE_WARNING(, warningName)
 #elif OKL_COMPILER_EMSCRIPTEN_AVAILABLE
 	#if OKL_COMPILER_EMSCRIPTEN_VERSION < OKL_ENCODE_VERSION(3, 1, 41)
 		#error "okutils: Requires Emscripten version 3.1.41 or later."
 	#endif
 	#define OKL_COMPILER_EMSCRIPTEN 1
+	#define OKL_WARNING_PUSH_EMSCRIPTEN() _Pragma("clang diagnostic push")
+	#define OKL_WARNING_POP_EMSCRIPTEN() _Pragma("clang diagnostic pop")
 	#define OKL_DISABLE_WARNING_EMSCRIPTEN(warningName, ...) OKL_DISABLE_WARNING(, warningName)
 #elif OKL_COMPILER_APPLE_CLANG_AVAILABLE
 	#if OKL_COMPILER_APPLE_CLANG_VERSION < OKL_ENCODE_VERSION(16, 0, 0)
 		#error "okutils: Requires Apple Clang version 16.0.0 or later."
 	#endif
 	#define OKL_COMPILER_APPLE_CLANG 1
+	#define OKL_WARNING_PUSH_APPLE_CLANG() _Pragma("clang diagnostic push")
+	#define OKL_WARNING_POP_APPLE_CLANG() _Pragma("clang diagnostic pop")
 	#define OKL_DISABLE_WARNING_APPLE_CLANG(warningName, ...) OKL_DISABLE_WARNING(, warningName)
 #elif OKL_COMPILER_CLANG_AVAILABLE
 	#if defined(OKL_USE_MODULES)
@@ -97,6 +103,8 @@
 		#error "okutils: Requires Clang version 19.0.0 or later."
 	#endif
 	#define OKL_COMPILER_CLANG 1
+	#define OKL_WARNING_PUSH_CLANG() _Pragma("clang diagnostic push")
+	#define OKL_WARNING_POP_CLANG() _Pragma("clang diagnostic pop")
 	#define OKL_DISABLE_WARNING_CLANG(warningName, ...) OKL_DISABLE_WARNING(, warningName)
 #elif OKL_COMPILER_GCC_AVAILABLE
 	// Modules currently work with GCC 11.0.0 or later.
@@ -104,6 +112,8 @@
 		#error "okutils: Requires GCC version 11.0.0 or later."
 	#endif
 	#define OKL_COMPILER_GCC 1
+	#define OKL_WARNING_PUSH_GCC() _Pragma("GCC diagnostic push")
+	#define OKL_WARNING_POP_GCC() _Pragma("GCC diagnostic pop")
 	#define OKL_DISABLE_WARNING_GCC(warningName, ...) OKL_DISABLE_WARNING(, warningName)
 #elif OKL_COMPILER_MSVC_AVAILABLE
 	#if defined(OKL_USE_MODULES)
@@ -114,32 +124,46 @@
 		#error "okutils: Requires MSVC version 19.29 (VS 2019 16.11) or later."
 	#endif
 	#define OKL_COMPILER_MSVC 1
+	#define OKL_WARNING_PUSH_MSVC() __pragma(warning(push))
+	#define OKL_WARNING_POP_MSVC() __pragma(warning(pop))
 	#define OKL_DISABLE_WARNING_MSVC(warningNumber, ...) OKL_DISABLE_WARNING(warningNumber,)
 	#define OKL_SUPPRESS_WARNING_MSVC(warningNumber, ...) __pragma(warning(suppress : warningNumber))
 #endif
 
 #if !defined(OKL_COMPILER_APPLE_CLANG)
 	#define OKL_COMPILER_APPLE_CLANG 0
+	#define OKL_WARNING_PUSH_APPLE_CLANG()
+	#define OKL_WARNING_POP_APPLE_CLANG()
 	#define OKL_DISABLE_WARNING_APPLE_CLANG(warningName, ...)
 #endif
 #if !defined(OKL_COMPILER_CLANG)
 	#define OKL_COMPILER_CLANG 0
+	#define OKL_WARNING_PUSH_CLANG()
+	#define OKL_WARNING_POP_CLANG()
 	#define OKL_DISABLE_WARNING_CLANG(warningName, ...)
 #endif
 #if !defined(OKL_COMPILER_EMSCRIPTEN)
 	#define OKL_COMPILER_EMSCRIPTEN 0
+	#define OKL_WARNING_PUSH_EMSCRIPTEN()
+	#define OKL_WARNING_POP_EMSCRIPTEN()
 	#define OKL_DISABLE_WARNING_EMSCRIPTEN(warningName, ...)
 #endif
 #if !defined(OKL_COMPILER_GCC)
 	#define OKL_COMPILER_GCC 0
+	#define OKL_WARNING_PUSH_GCC()
+	#define OKL_WARNING_POP_GCC()
 	#define OKL_DISABLE_WARNING_GCC(warningName, ...)
 #endif
 #if !defined(OKL_COMPILER_INTEL)
 	#define OKL_COMPILER_INTEL 0
+	#define OKL_WARNING_PUSH_INTEL()
+	#define OKL_WARNING_POP_INTEL()
 	#define OKL_DISABLE_WARNING_INTEL(warningName, ...)
 #endif
 #if !defined(OKL_COMPILER_MSVC)
 	#define OKL_COMPILER_MSVC 0
+	#define OKL_WARNING_PUSH_MSVC()
+	#define OKL_WARNING_POP_MSVC()
 	#define OKL_DISABLE_WARNING_MSVC(warningNumber, ...)
 	#define OKL_SUPPRESS_WARNING_MSVC(warningNumber, ...)
 #endif
