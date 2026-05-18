@@ -90,17 +90,17 @@
 
 #if !defined(OKL_LIKELY)
 	#if OKL_COMPILER_GCC_AVAILABLE || OKL_COMPILER_CLANG_AVAILABLE
-		#define OKL_LIKELY(expr) __builtin_expect(!!(expr), 1)
+		#define OKL_LIKELY(expr) __builtin_expect(static_cast<bool>(expr), 1)
 	#else
-		#define OKL_LIKELY(expr) (!!(expr))
+		#define OKL_LIKELY(expr) (static_cast<bool>(expr))
 	#endif
 #endif
 
 #if !defined(OKL_UNLIKELY)
 	#if OKL_COMPILER_GCC_AVAILABLE || OKL_COMPILER_CLANG_AVAILABLE
-		#define OKL_UNLIKELY(expr) __builtin_expect(!!(expr), 0)
+		#define OKL_UNLIKELY(expr) __builtin_expect(static_cast<bool>(expr), 0)
 	#else
-		#define OKL_UNLIKELY(expr) (!!(expr))
+		#define OKL_UNLIKELY(expr) (static_cast<bool>(expr))
 	#endif
 #endif
 
