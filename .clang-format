@@ -69,8 +69,8 @@ SpaceAfterTemplateKeyword: false
 SpaceBeforeParens: ControlStatementsExceptControlMacros
 SpacesInAngles: Never # Leave
 SpacesInContainerLiterals: false
-StatementAttributeLikeMacros: []
-StatementMacros: [OKL_SUPPRESS_GSL]
+StatementAttributeLikeMacros: [OKL_SUPPRESS_GSL]
+StatementMacros: []
 TabWidth: 4
 UseTab: ForIndentation # Never
 WhitespaceSensitiveMacros: [OKL_STRINGIFY]
