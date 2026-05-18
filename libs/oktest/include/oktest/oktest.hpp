@@ -57,7 +57,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 #define OKL_TEST_CASE(name) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase<::Okl::Test::runtime_mode>{name} = \
-		[]([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) \
+		[]([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
 	)
 
 /**
@@ -84,7 +84,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 #define OKL_TEST_CASE_TEMPLATE(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase<::Okl::Test::runtime_mode, __VA_ARGS__>{name} = \
-		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) \
+		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
 	)
 
 /**
@@ -111,7 +111,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 #define OKL_TEST_CASE_TEMPLATE_LIST(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase{name, ::Okl::Test::Detail::TestCaseTypeList<::Okl::Test::runtime_mode, __VA_ARGS__>{}} = \
-		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) \
+		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
 	)
 
 /**
@@ -139,7 +139,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase<::Okl::Test::constexpr_mode>{name} = \
 		::Okl::Test::Detail::CompileTimeTestCase<>{} = \
-		[]([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) \
+		[]([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
 	)
 
 /**
@@ -168,7 +168,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase<::Okl::Test::constexpr_mode, __VA_ARGS__>{name} = \
 		::Okl::Test::Detail::CompileTimeTestCase<__VA_ARGS__>{} = \
-		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) \
+		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
 	)
 
 /**
@@ -197,7 +197,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase{name, ::Okl::Test::Detail::TestCaseTypeList<::Okl::Test::constexpr_mode, __VA_ARGS__>{}} = \
 		::Okl::Test::Detail::CompileTimeTestCase{::Okl::Test::TypeList<__VA_ARGS__>{}} = \
-		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) \
+		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
 	)
 
 /**
@@ -227,7 +227,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase<::Okl::Test::consteval_mode>{name} = \
 		::Okl::Test::Detail::CompileTimeTestCase<>{} = \
-		[]([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) \
+		[]([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
 	)
 
 /**
@@ -258,7 +258,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase<::Okl::Test::consteval_mode, __VA_ARGS__>{name} = \
 		::Okl::Test::Detail::CompileTimeTestCase<__VA_ARGS__>{} = \
-		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) \
+		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
 	)
 
 /**
@@ -289,7 +289,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
 		::Okl::Test::Detail::TestCase{name, ::Okl::Test::Detail::TestCaseTypeList<::Okl::Test::consteval_mode, __VA_ARGS__>{}} = \
 		::Okl::Test::Detail::CompileTimeTestCase{::Okl::Test::TypeList<__VA_ARGS__>{}} = \
-		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) \
+		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
 	)
 
 /**
