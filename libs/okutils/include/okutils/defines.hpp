@@ -50,8 +50,8 @@
 		#define OKL_ASSUME(expr) __assume(expr)
 	#elif OKL_COMPILER_CLANG_AVAILABLE
 		#define OKL_ASSUME(expr) __builtin_assume(expr)
-	#elif OKL_COMPILER_GCC_AVAILABLE
-		#define OKL_ASSUME(expr) OKL_MULTILINE_MACRO(if (!(expr)) { __builtin_unreachable(); })
+	#elif OKL_COMPILER_GCC_VERSION >= OKL_ENCODE_VERSION(13, 0, 0)
+		#define OKL_ASSUME(expr) [[gnu::assume(expr)]]
 	#else
 		#define OKL_ASSUME(expr)
 	#endif
