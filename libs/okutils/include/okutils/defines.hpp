@@ -324,7 +324,7 @@
 
 #if !defined(OKL_SUPPRESS_GSL)
 	#if OKL_COMPILER_MSVC
-		#define OKL_SUPPRESS_GSL(warning, ...) [[gsl::suppress(warning)]]
+		#define OKL_SUPPRESS_GSL(warning, ...) [[gsl::suppress(warning __VA_OPT__(, justification: __VA_ARGS__))]]
 	#elif OKL_COMPILER_CLANG_AVAILABLE
 		#define OKL_SUPPRESS_GSL(warning, ...) [[gsl::suppress(warning)]]
 	#else

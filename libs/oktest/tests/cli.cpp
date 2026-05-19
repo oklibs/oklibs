@@ -18,7 +18,7 @@ using namespace Okl::Test;
 
 TEST_CASE("cli.no_args")
 {
-	OKL_SUPPRESS_GSL("type.3", "Don't use const_cast")
+	OKL_SUPPRESS_GSL("type.3") // "Don't use const_cast".
 	static constexpr char* argv[]{const_cast<char*>("test")};
 	static constexpr int argc{sizeof(argv) / sizeof(char*)};
 	const CliArgs cli_args{argc, argv};
@@ -30,7 +30,7 @@ TEST_CASE("cli.no_args")
 
 TEST_CASE("cli.long_key_value")
 {
-	OKL_SUPPRESS_GSL("type.3", "Don't use const_cast")
+	OKL_SUPPRESS_GSL("type.3") // "Don't use const_cast".
 	static constexpr char* argv[]{
 	    const_cast<char*>("test"), const_cast<char*>("--theme=default_theme")};
 	static constexpr int argc{sizeof(argv) / sizeof(char*)};
@@ -43,7 +43,7 @@ TEST_CASE("cli.long_key_value")
 
 TEST_CASE("cli.long_flag")
 {
-	OKL_SUPPRESS_GSL("type.3", "Don't use const_cast")
+	OKL_SUPPRESS_GSL("type.3") // "Don't use const_cast".
 	static constexpr char* argv[]{const_cast<char*>("test"), const_cast<char*>("--help")};
 	static constexpr int argc{sizeof(argv) / sizeof(char*)};
 	const CliArgs cli_args{argc, argv};
@@ -55,7 +55,7 @@ TEST_CASE("cli.long_flag")
 
 TEST_CASE("cli.short_flag")
 {
-	OKL_SUPPRESS_GSL("type.3", "Don't use const_cast")
+	OKL_SUPPRESS_GSL("type.3") // "Don't use const_cast".
 	static constexpr char* argv[]{const_cast<char*>("test"), const_cast<char*>("-h")};
 	static constexpr int argc{sizeof(argv) / sizeof(char*)};
 	const CliArgs cli_args{argc, argv};
@@ -67,7 +67,7 @@ TEST_CASE("cli.short_flag")
 
 TEST_CASE("cli.positional")
 {
-	OKL_SUPPRESS_GSL("type.3", "Don't use const_cast")
+	OKL_SUPPRESS_GSL("type.3") // "Don't use const_cast".
 	static constexpr char* argv[]{const_cast<char*>("test"), const_cast<char*>("abc")};
 	static constexpr int argc{sizeof(argv) / sizeof(char*)};
 	const CliArgs cli_args{argc, argv};
@@ -79,7 +79,7 @@ TEST_CASE("cli.positional")
 
 TEST_CASE("cli.multi-positional")
 {
-	OKL_SUPPRESS_GSL("type.3", "Don't use const_cast")
+	OKL_SUPPRESS_GSL("type.3") // "Don't use const_cast".
 	static constexpr char* argv[]{const_cast<char*>("test"), const_cast<char*>("abc"), const_cast<char*>("def")};
 	static constexpr int argc{sizeof(argv) / sizeof(char*)};
 	const CliArgs cli_args{argc, argv};
@@ -101,7 +101,7 @@ TEST_CASE("cli.multi-positional")
 
 TEST_CASE("cli.mixed_args")
 {
-	OKL_SUPPRESS_GSL("type.3", "Don't use const_cast")
+	OKL_SUPPRESS_GSL("type.3") // "Don't use const_cast".
 	static constexpr char* argv[]{
 	    const_cast<char*>("test"), const_cast<char*>("-h"), const_cast<char*>("--theme=default_theme"), const_cast<char*>("123")};
 	static constexpr int argc{sizeof(argv) / sizeof(char*)};
