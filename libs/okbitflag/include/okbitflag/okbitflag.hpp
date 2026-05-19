@@ -48,6 +48,7 @@ public:
 
 	[[nodiscard]] constexpr bool has_flags(const CAnyOf<Bitflag, T> auto... flags) const noexcept;
 	[[nodiscard]] constexpr bool has_any_flag(const CAnyOf<Bitflag, T> auto... flags) const noexcept;
+	[[nodiscard]] constexpr bool has_exactly_one_of(const CAnyOf<Bitflag, T> auto... flags) const noexcept;
 	constexpr Bitflag& add_flags(const CAnyOf<Bitflag, T> auto... flags) noexcept;
 	constexpr Bitflag& remove_flags(const CAnyOf<Bitflag, T> auto... flags) noexcept;
 	constexpr Bitflag& toggle_flags(const CAnyOf<Bitflag, T> auto... flags) noexcept;
@@ -186,6 +187,22 @@ constexpr auto Bitflag<T>::has_any_flag(const CAnyOf<Bitflag, T> auto... flags) 
 	}
 	else {
 		return (*this & (static_cast<Bitflag>(flags) | ...)) != static_cast<T>(0);
+	}
+}
+
+/**
+ * Whether this bitflag has only one of the specified flags.
+ * @param flags The flags to check for. If not specified, all valid/named flags will be checked.
+ * @return True if this bitflag has only one of the specified flags, false otherwise.
+ */
+template<CUnsignedEnum T>
+constexpr auto Bitflag<T>::has_exactly_one_of(const CAnyOf<Bitflag, T> auto... flags) const noexcept -> bool
+{
+	if constexpr (sizeof...(flags) == 0) {
+		return (*this & valid_flags()).num_flags() == 1;
+	}
+	else {
+		return (*this & (static_cast<Bitflag>(flags) | ...)).num_flags() == 1;
 	}
 }
 

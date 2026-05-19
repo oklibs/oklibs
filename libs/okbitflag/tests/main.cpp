@@ -127,6 +127,14 @@ CONSTEXPR_TEST_CASE("has_any_flag")
 	CHECK(!bitflag.has_any_flag(TestBitflag{ETestEnum::third} | ETestEnum::fourth));
 };
 
+CONSTEXPR_TEST_CASE("has_exactly_one_of")
+{
+	const TestBitflag bitflag{ETestEnum::first, ETestEnum::second};
+	CHECK(bitflag.has_exactly_one_of(ETestEnum::first, ETestEnum::third));
+	CHECK_NOT(bitflag.has_exactly_one_of(ETestEnum::first, ETestEnum::second));
+	CHECK_NOT(bitflag.has_exactly_one_of(ETestEnum::third, ETestEnum::fourth));
+};
+
 CONSTEXPR_TEST_CASE("add_flags")
 {
 	TestBitflag bitflag{ETestEnum::first};
