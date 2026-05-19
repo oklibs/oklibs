@@ -326,7 +326,7 @@
 	#if OKL_COMPILER_MSVC
 		#define OKL_SUPPRESS_GSL(warning, ...) [[gsl::suppress(warning)]]
 	#elif OKL_COMPILER_CLANG_AVAILABLE
-		#define OKL_SUPPRESS_GSL(warning, ...) [[gsl::suppress(#warning)]]
+		#define OKL_SUPPRESS_GSL(warning, ...) [[gsl::suppress(warning)]]
 	#else
 		#define OKL_SUPPRESS_GSL(warning, ...)
 	#endif

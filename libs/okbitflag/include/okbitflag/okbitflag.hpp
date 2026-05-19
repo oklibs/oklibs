@@ -126,7 +126,7 @@ template<CUnsignedEnum T>
 			}
 			else if (at(names, i) == ',' || i == end - 1) {
 				if (is_valid) {
-					OKL_SUPPRESS_GSL(type.1, "Don't use a static_cast for arithmetic conversions.")
+					OKL_SUPPRESS_GSL("type.1", "Don't use a static_cast for arithmetic conversions.")
 					result |= static_cast<UnderlyingType>(UnderlyingType{1u} << flag_index);
 				}
 				++flag_index;
