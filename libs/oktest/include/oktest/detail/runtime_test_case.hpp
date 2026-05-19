@@ -14,6 +14,8 @@
 namespace Okl::Test::Detail
 {
 OKL_EXPORT_BEGIN
+OKL_WARNING_PUSH()
+OKL_DISABLE_WARNING_MSVC(26426)
 template<Mode TestMode, class... Ts>
 struct TestCase {
 	std::string_view m_name{};
@@ -32,6 +34,7 @@ struct TestCase {
 
 	TestCase& operator=(auto test_case);
 };
+OKL_WARNING_POP()
 
 template<class... Ts>
 struct TestCase<consteval_mode, Ts...> {
