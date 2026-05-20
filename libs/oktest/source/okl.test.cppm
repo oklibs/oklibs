@@ -19,6 +19,7 @@ module;
 #include <fmt/base.h>
 #include <fmt/color.h>
 #include <fmt/format.h>
+#include <fmt/os.h>
 #include <fmt/ranges.h>
 
 #include <algorithm>
@@ -57,6 +58,7 @@ import std;
 #include "oktest/get_runner.hpp"
 #include "oktest/logger.hpp"
 #include "oktest/main.hpp"
+#include "oktest/output_redirector.hpp"
 #include "oktest/registry_runner.hpp"
 #include "oktest/reporter.hpp"
 #include "oktest/runner.hpp"

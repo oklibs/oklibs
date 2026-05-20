@@ -56,6 +56,9 @@ target("oktest", function()
     add_tests("cli", {kind = "binary", files = "tests/cli.cpp", build_should_pass = is_cross()})
     add_tests("cli_help", {kind = "binary", files = "tests/benchmarks/include.cpp", runargs = {"--help"}, build_should_pass = is_cross()})
     add_tests("logger", {kind = "binary", files = "tests/logger.cpp", runargs = {"--theme=no_color"}, plain = true, pass_output_files = "tests/outputs/logger.txt", build_should_pass = is_cross()})
+    if not is_plat("wasm") then
+        add_tests("output_redirector", {kind = "binary", files = "tests/output_redirector.cpp", build_should_pass = is_cross()})
+    end
 
     add_tests("bench_asserts", {kind = "binary", group = "bench", files = "tests/benchmarks/asserts.cpp", build_should_pass = is_cross()})
     add_tests("bench_include", {kind = "binary", group = "bench", files = "tests/benchmarks/include.cpp", build_should_pass = is_cross()})
