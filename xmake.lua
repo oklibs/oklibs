@@ -18,6 +18,7 @@ option("use_std_module", {description = "Use std module instead of includes (req
 
 option("dev", {description = "Enable developer mode.", default = true})
 option("coverage", {description = "Enable code coverage data generation (clang-based only).", default = false})
+option("with_exceptions", {description = "Allow exception usage.", default = true})
 
 -- Not all toolchain packages can detect system installations.
 option("setup_toolchains", {description = "Install required toolchains as packages if not found.", default = false})
@@ -43,6 +44,8 @@ set_defaultmode("releasedbg")
 set_encodings("utf-8")
 add_cxflags("/Zc:preprocessor", {tools = "cl"})
 
+set_exceptions(has_config("with_exceptions") and "cxx" or "no-cxx")
+
 if has_config("use_modules") then
     add_defines("OKL_USE_MODULES")
     set_policy("build.c++.modules.hide_dependencies", true)
@@ -63,8 +66,6 @@ end
 if has_config("dev") then
     set_policy("check.target_package_licenses", true)
     set_warnings("everything")
-
-    set_exceptions("cxx")
 
     add_cxflags(
         "/Zc:inline",

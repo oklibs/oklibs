@@ -4,14 +4,7 @@ cmake_minimum_required(VERSION 3.20)
 project(oktest VERSION 0.1.0 LANGUAGES CXX)
 
 set(OKTEST_MAX_NESTED 8 CACHE STRING "Maximum nesting level for test cases and sections.")
-option(OKTEST_WITH_EXCEPTIONS "Allow exception usage." ON)
 option(OKTEST_LINK_MAIN "Provide a main function in a separate source file." ON)
-
-if(OKTEST_WITH_EXCEPTIONS)
-    set(OKTEST_WITH_EXCEPTIONS_VALUE 1)
-else()
-    set(OKTEST_WITH_EXCEPTIONS_VALUE 0)
-endif()
 
 if(OKTEST_LINK_MAIN)
     set(OKTEST_LINK_MAIN_VALUE 1)

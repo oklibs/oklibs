@@ -15,7 +15,12 @@ target("okutils", function()
     set_group("okutils")
 
     set_configdir("$(builddir)/.configs/okutils")
-    add_configfiles("templates/include/**.in", {prefixdir = "include/okutils"})
+    add_configfiles("templates/include/**.in", {
+        prefixdir = "include/okutils",
+        variables = {
+            WITH_EXCEPTIONS = has_config("with_exceptions") and 1 or 0
+        }
+    })
 
     add_includedirs("include", "$(builddir)/.configs/okutils/include", {public = true})
     add_headerfiles("include/(**.hpp)", "$(builddir)/.configs/okutils/include/(okutils/**.hpp)")

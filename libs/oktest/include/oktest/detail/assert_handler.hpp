@@ -71,7 +71,7 @@ constexpr void after_passed_assert(
     Mode,
     const std::source_location& = std::source_location::current());
 
-#if OKTEST_WITH_EXCEPTIONS
+#if OKL_INTERNAL_WITH_EXCEPTIONS
 template<class Callable, class... Args> constexpr bool throws(Callable&& callable, Args&&... args);
 template<class ExceptionT, class Callable, class... Args> constexpr bool throws_as(Callable&& callable, Args&&... args);
 #endif
@@ -107,7 +107,7 @@ constexpr void after_passed_assert(
 	});
 }
 
-#if OKTEST_WITH_EXCEPTIONS
+#if OKL_INTERNAL_WITH_EXCEPTIONS
 template<class Callable, class... Args>
 constexpr bool throws(Callable&& callable, Args&&... args)
 {

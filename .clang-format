@@ -36,7 +36,7 @@ CommentPragmas: '^ *(ReSharper disable|ReSharper restore|NOLINT)'
 CompactNamespaces: true # false
 EmptyLineBeforeAccessModifier: Always
 ForEachMacros: []
-IfMacros: []
+IfMacros: [OKL_INTERNAL_TRY, OKL_INTERNAL_CATCH]
 IncludeBlocks: Regroup
 IncludeCategories:
   - Regex: '^"' # Internal includes.

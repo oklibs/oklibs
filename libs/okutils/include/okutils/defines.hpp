@@ -201,6 +201,14 @@
 	#endif
 #endif
 
+#if OKL_INTERNAL_WITH_EXCEPTIONS
+	#define OKL_INTERNAL_TRY try
+	#define OKL_INTERNAL_CATCH(...) catch(__VA_ARGS__)
+#else
+	#define OKL_INTERNAL_TRY
+	#define OKL_INTERNAL_CATCH(...) if constexpr (false)
+#endif
+
 // Compiler Extensions -------------------------------------------------------------------------------------------------
 
 #if !defined(OKL_CODE_SECTION)

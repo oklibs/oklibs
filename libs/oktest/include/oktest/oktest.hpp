@@ -363,7 +363,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 #define OKL_CONSTEXPR_CHECK_NOT(...) OKTEST_PRIVATE_CHECK(check, not_, constexpr_mode, false, static_assert(!(__VA_ARGS__));, __VA_ARGS__)
 #define OKL_CONSTEVAL_CHECK_NOT(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(check, not_, !(__VA_ARGS__))
 
-#if OKTEST_WITH_EXCEPTIONS
+#if OKL_INTERNAL_WITH_EXCEPTIONS
 	/**
 	 * Checks that the expression throws an exception of any type.
 	 * If not, logs a failure and aborts the current test case.

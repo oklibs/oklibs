@@ -8,7 +8,7 @@
 #include "oktest/core_types.hpp"
 #include "oktest/test_context.hpp"
 
-#if OKTEST_WITH_EXCEPTIONS
+#if OKL_INTERNAL_WITH_EXCEPTIONS
 	#include <exception>
 #else
 	#include <cstdlib>
@@ -80,7 +80,7 @@ void Runner<ReporterT, ConfigT>::after_failed_assert(const AssertData& assert_da
 {
 	m_reporter.after_failed_assert(assert_data);
 	if (assert_data.type == EAssertType::require) {
-#if OKTEST_WITH_EXCEPTIONS
+#if OKL_INTERNAL_WITH_EXCEPTIONS
 		throw AssertFailureException{}; // NOLINT(hicpp-exception-baseclass)
 #else
 		std::quick_exit(m_exit_zero ? 0 : 1);
@@ -95,7 +95,7 @@ constexpr void Runner<ReporterT, ConfigT>::on_test_case(const TestCaseData& test
 
 	TestContext<> test_context{};
 	do {
-#if OKTEST_WITH_EXCEPTIONS
+#if OKL_INTERNAL_WITH_EXCEPTIONS
 		try {
 			test_case_data.test_case(test_context);
 		}
