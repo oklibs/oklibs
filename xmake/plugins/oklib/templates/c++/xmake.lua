@@ -20,10 +20,10 @@ target("%{libname}", function()
     -- add_packages()
 
     set_configdir("$(builddir)/.configs/%{libname}")
-    add_configfiles("templates/public/**.in", {prefixdir = "include/%{libname}"})
+    add_configfiles("templates/include/**.in", {prefixdir = "include/%{libname}"})
 
     add_includedirs("include", "$(builddir)/.configs/%{libname}/include", {public = true})
-    add_headerfiles("include/(**.hpp)", "$(builddir)/.configs/%{libname}/public/(%{libname}/**.hpp)")
+    add_headerfiles("include/(**.hpp)", "$(builddir)/.configs/%{libname}/include/(%{libname}/**.hpp)")
     if has_config("use_modules") then
         add_files("source/okl.*.cppm")
     else
