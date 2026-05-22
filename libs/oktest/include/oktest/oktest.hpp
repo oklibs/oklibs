@@ -54,11 +54,16 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_TEST_CASE(name) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
-	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
+#define OKL_TEST_CASE(name) \
+	OKL_WARNING_PUSH_MSVC() OKL_WARNING_PUSH_CLANG() \
+	OKL_DISABLE_WARNING_MSVC(5264) /* "'const' variable is not used". */ \
+	OKL_DISABLE_WARNING_MSVC(26426) /* "Global initializer calls a non-constexpr function". */ \
+	OKL_DISABLE_WARNING_CLANG("-Wglobal-constructors") \
+	OKL_DISABLE_WARNING_CLANG("-Wshadow-uncaptured-local") \
+	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = /* NOLINT(bugprone-throwing-static-initialization) */ \
 		::Okl::Test::Detail::TestCase<::Okl::Test::runtime_mode>{name} = \
 		[]([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
-	)
+	OKL_WARNING_POP_MSVC() OKL_WARNING_POP_CLANG()
 
 /**
  * Defines a root-level test case that manages its own execution loop.
@@ -81,11 +86,16 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_TEST_CASE_TEMPLATE(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
-	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
+#define OKL_TEST_CASE_TEMPLATE(name, ...) \
+	OKL_WARNING_PUSH_MSVC() OKL_WARNING_PUSH_CLANG() \
+	OKL_DISABLE_WARNING_MSVC(5264) /* "'const' variable is not used". */ \
+	OKL_DISABLE_WARNING_MSVC(26426) /* "Global initializer calls a non-constexpr function". */ \
+	OKL_DISABLE_WARNING_CLANG("-Wglobal-constructors") \
+	OKL_DISABLE_WARNING_CLANG("-Wshadow-uncaptured-local") \
+	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = /* NOLINT(bugprone-throwing-static-initialization) */ \
 		::Okl::Test::Detail::TestCase<::Okl::Test::runtime_mode, __VA_ARGS__>{name} = \
 		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
-	)
+	OKL_WARNING_POP_MSVC() OKL_WARNING_POP_CLANG()
 
 /**
  * Defines a root-level test case that manages its own execution loop.
@@ -108,11 +118,16 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_TEST_CASE_TEMPLATE_LIST(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
-	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
+#define OKL_TEST_CASE_TEMPLATE_LIST(name, ...) \
+	OKL_WARNING_PUSH_MSVC() OKL_WARNING_PUSH_CLANG() \
+	OKL_DISABLE_WARNING_MSVC(5264) /* "'const' variable is not used". */ \
+	OKL_DISABLE_WARNING_MSVC(26426) /* "Global initializer calls a non-constexpr function". */ \
+	OKL_DISABLE_WARNING_CLANG("-Wglobal-constructors") \
+	OKL_DISABLE_WARNING_CLANG("-Wshadow-uncaptured-local") \
+	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = /* NOLINT(bugprone-throwing-static-initialization) */ \
 		::Okl::Test::Detail::TestCase{name, ::Okl::Test::Detail::TestCaseTypeList<::Okl::Test::runtime_mode, __VA_ARGS__>{}} = \
 		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
-	)
+	OKL_WARNING_POP_MSVC() OKL_WARNING_POP_CLANG()
 
 /**
  * Defines a root-level test case that manages its own execution loop.
@@ -135,12 +150,18 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_CONSTEXPR_TEST_CASE(name) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
-	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
+#define OKL_CONSTEXPR_TEST_CASE(name) \
+	OKL_WARNING_PUSH_MSVC() OKL_WARNING_PUSH_CLANG() \
+	OKL_DISABLE_WARNING_MSVC(5264) /* "'const' variable is not used". */ \
+	OKL_DISABLE_WARNING_MSVC(26426) /* "Global initializer calls a non-constexpr function". */ \
+	OKL_DISABLE_WARNING_CLANG("-Wglobal-constructors") \
+	OKL_DISABLE_WARNING_CLANG("-Wshadow-uncaptured-local") \
+	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = /* NOLINT(bugprone-throwing-static-initialization) */ \
 		::Okl::Test::Detail::TestCase<::Okl::Test::constexpr_mode>{name} = \
 		::Okl::Test::Detail::CompileTimeTestCase<>{} = \
 		[]([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
-	)
+	OKL_WARNING_POP_MSVC() \
+	OKL_WARNING_POP_CLANG()
 
 /**
  * Defines a root-level test case that manages its own execution loop.
@@ -164,12 +185,18 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_CONSTEXPR_TEST_CASE_TEMPLATE(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
-	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
+#define OKL_CONSTEXPR_TEST_CASE_TEMPLATE(name, ...) \
+	OKL_WARNING_PUSH_MSVC() OKL_WARNING_PUSH_CLANG() \
+	OKL_DISABLE_WARNING_MSVC(5264) /* "'const' variable is not used". */ \
+	OKL_DISABLE_WARNING_MSVC(26426) /* "Global initializer calls a non-constexpr function". */ \
+	OKL_DISABLE_WARNING_CLANG("-Wglobal-constructors") \
+	OKL_DISABLE_WARNING_CLANG("-Wshadow-uncaptured-local") \
+	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = /* NOLINT(bugprone-throwing-static-initialization) */ \
 		::Okl::Test::Detail::TestCase<::Okl::Test::constexpr_mode, __VA_ARGS__>{name} = \
 		::Okl::Test::Detail::CompileTimeTestCase<__VA_ARGS__>{} = \
 		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
-	)
+	OKL_WARNING_POP_MSVC() \
+	OKL_WARNING_POP_CLANG()
 
 /**
  * Defines a root-level test case that manages its own execution loop.
@@ -193,12 +220,18 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_CONSTEXPR_TEST_CASE_TEMPLATE_LIST(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
-	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
+#define OKL_CONSTEXPR_TEST_CASE_TEMPLATE_LIST(name, ...) \
+	OKL_WARNING_PUSH_MSVC() OKL_WARNING_PUSH_CLANG() \
+	OKL_DISABLE_WARNING_MSVC(5264) /* "'const' variable is not used". */ \
+	OKL_DISABLE_WARNING_MSVC(26426) /* "Global initializer calls a non-constexpr function". */ \
+	OKL_DISABLE_WARNING_CLANG("-Wglobal-constructors") \
+	OKL_DISABLE_WARNING_CLANG("-Wshadow-uncaptured-local") \
+	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = /* NOLINT(bugprone-throwing-static-initialization) */ \
 		::Okl::Test::Detail::TestCase{name, ::Okl::Test::Detail::TestCaseTypeList<::Okl::Test::constexpr_mode, __VA_ARGS__>{}} = \
 		::Okl::Test::Detail::CompileTimeTestCase{::Okl::Test::TypeList<__VA_ARGS__>{}} = \
 		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
-	)
+	OKL_WARNING_POP_MSVC() \
+	OKL_WARNING_POP_CLANG()
 
 /**
  * Defines a root-level test case that manages its own execution loop.
@@ -223,12 +256,18 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_CONSTEVAL_TEST_CASE(name) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
-	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
+#define OKL_CONSTEVAL_TEST_CASE(name) \
+	OKL_WARNING_PUSH_MSVC() OKL_WARNING_PUSH_CLANG() \
+	OKL_DISABLE_WARNING_MSVC(5264) /* "'const' variable is not used". */ \
+	OKL_DISABLE_WARNING_MSVC(26426) /* "Global initializer calls a non-constexpr function". */ \
+	OKL_DISABLE_WARNING_CLANG("-Wglobal-constructors") \
+	OKL_DISABLE_WARNING_CLANG("-Wshadow-uncaptured-local") \
+	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = /* NOLINT(bugprone-throwing-static-initialization) */ \
 		::Okl::Test::Detail::TestCase<::Okl::Test::consteval_mode>{name} = \
 		::Okl::Test::Detail::CompileTimeTestCase<>{} = \
 		[]([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
-	)
+	OKL_WARNING_POP_MSVC() \
+	OKL_WARNING_POP_CLANG()
 
 /**
  * Defines a root-level test case that manages its own execution loop.
@@ -254,12 +293,18 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_CONSTEVAL_TEST_CASE_TEMPLATE(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
-	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
+#define OKL_CONSTEVAL_TEST_CASE_TEMPLATE(name, ...) \
+	OKL_WARNING_PUSH_MSVC() OKL_WARNING_PUSH_CLANG() \
+	OKL_DISABLE_WARNING_MSVC(5264) /* "'const' variable is not used". */ \
+	OKL_DISABLE_WARNING_MSVC(26426) /* "Global initializer calls a non-constexpr function". */ \
+	OKL_DISABLE_WARNING_CLANG("-Wglobal-constructors") \
+	OKL_DISABLE_WARNING_CLANG("-Wshadow-uncaptured-local") \
+	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = /* NOLINT(bugprone-throwing-static-initialization) */ \
 		::Okl::Test::Detail::TestCase<::Okl::Test::consteval_mode, __VA_ARGS__>{name} = \
 		::Okl::Test::Detail::CompileTimeTestCase<__VA_ARGS__>{} = \
 		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
-	)
+	OKL_WARNING_POP_MSVC() \
+	OKL_WARNING_POP_CLANG()
 
 /**
  * Defines a root-level test case that manages its own execution loop.
@@ -285,12 +330,18 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  * }
  * @endcode
  */
-#define OKL_CONSTEVAL_TEST_CASE_TEMPLATE_LIST(name, ...) OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS( /* NOLINT(bugprone-throwing-static-initialization) */ \
-	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = \
+#define OKL_CONSTEVAL_TEST_CASE_TEMPLATE_LIST(name, ...) \
+	OKL_WARNING_PUSH_MSVC() OKL_WARNING_PUSH_CLANG() \
+	OKL_DISABLE_WARNING_MSVC(5264) /* "'const' variable is not used". */ \
+	OKL_DISABLE_WARNING_MSVC(26426) /* "Global initializer calls a non-constexpr function". */ \
+	OKL_DISABLE_WARNING_CLANG("-Wglobal-constructors") \
+	OKL_DISABLE_WARNING_CLANG("-Wshadow-uncaptured-local") \
+	[[maybe_unused]] const auto OKL_CONCAT(ok_test_case_, __COUNTER__) = /* NOLINT(bugprone-throwing-static-initialization) */ \
 		::Okl::Test::Detail::TestCase{name, ::Okl::Test::Detail::TestCaseTypeList<::Okl::Test::consteval_mode, __VA_ARGS__>{}} = \
 		::Okl::Test::Detail::CompileTimeTestCase{::Okl::Test::TypeList<__VA_ARGS__>{}} = \
 		[]<class TestType>([[maybe_unused]] ::Okl::Test::TestContext<>& _ok_test_ctx) -> void \
-	)
+	OKL_WARNING_POP_MSVC() \
+	OKL_WARNING_POP_CLANG()
 
 /**
  * Defines a branching section that executes in isolation.
@@ -453,18 +504,5 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 	else /* NOLINT(readability-inconsistent-ifelse-braces): Required for user messages. */ \
 		OKL_SUPPRESS_WARNING_MSVC(26444, "Don't try to declare a local variable with no name") \
 		::Okl::Test::Detail::AssertFailed<>{}
-
-#if OKL_COMPILER_GCC
-	#define OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS(...) __VA_ARGS__
-#else
-	#define OKTEST_PRIVATE_DISABLE_TEST_CASE_WARNINGS(...) \
-		OKL_WARNING_PUSH() \
-		OKL_DISABLE_WARNING_MSVC(5264, "'const' variable is not used") \
-		OKL_DISABLE_WARNING_MSVC(26426, "Global initializer calls a non-constexpr function") \
-		OKL_DISABLE_WARNING_CLANG("-Wglobal-constructors") \
-		OKL_DISABLE_WARNING_CLANG("-Wshadow-uncaptured-local") \
-		__VA_ARGS__ \
-		OKL_WARNING_POP()
-#endif
 
 #endif

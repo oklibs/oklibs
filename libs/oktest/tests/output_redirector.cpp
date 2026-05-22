@@ -3,9 +3,8 @@
 #if !defined(OKL_USE_MODULES)
 	#include <oktest/output_redirector.hpp>
 #endif
-#include <oktest/oktest_short.hpp>
-
 #include <fmt/base.h>
+#include <oktest/oktest_short.hpp>
 
 #if !defined(OKL_USE_STD_MODULE)
 	#include <cstdio>
