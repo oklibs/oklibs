@@ -1,0 +1,28 @@
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
+
+#ifndef OKASSERT_CONFIG_HPP
+#define OKASSERT_CONFIG_HPP
+
+#include "okutils/core_defines.hpp"
+
+#define OKASSERT_VERSION_MAJOR ${VERSION_MAJOR}
+#define OKASSERT_VERSION_MINOR ${VERSION_MINOR}
+#define OKASSERT_VERSION_PATCH ${VERSION_ALTER}
+
+/**
+ * Encoded version of okassert as 'MajorMinorPatch'.
+ * @see OKL_ENCODE_VERSION
+ */
+#define OKASSERT_VERSION OKL_ENCODE_VERSION(OKASSERT_VERSION_MAJOR, OKASSERT_VERSION_MINOR, OKASSERT_VERSION_PATCH)
+
+#define OKASSERT_COLOR_MODE_NEVER 0
+#define OKASSERT_COLOR_MODE_ALWAYS 1
+#define OKASSERT_COLOR_MODE_AUTO 2
+
+#if !defined(OKASSERT_COLOR_MODE)
+	#define OKASSERT_COLOR_MODE ${COLOR_MODE}
+#endif
+
+${define_export OKASSERT}
+
+#endif
