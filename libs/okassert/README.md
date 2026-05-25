@@ -23,6 +23,7 @@ messages.
     - [Color output](#color-output)
 - [Performance](#performance)
     - [Callsite Codegen (clang, -O3)](#callsite-codegen-clang--o3)
+- [Todos](#Todos)
 
 ## Dependencies
 
@@ -254,4 +255,12 @@ be optimized.
 
 It will not optimize as nicely with -O2 because we can't guarantee that the failure function will never return. We want
 to give the ability to continue the program if a debugger is present and non-fatal assertions are handled in the same
-function aswell. ~~User-provided failure functions could be made to never return to get better optimizations.~~ (ToDo?)
+function aswell.
+
+## ToDos
+
+- [ ] add tags (setting enabled severity per library or module)
+- [ ] add better color schemes
+- [ ] add better customization
+- [ ] use different error handler for fatal and non-fatal asserts for better codegen?
+- [ ] benchmark compile-times
