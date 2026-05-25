@@ -213,7 +213,7 @@ Failure messages are tinted red when stderr is a terminal. The detection mode is
 With xmake, set it through the build option:
 
 ```lua
-add_requires("oklibs", {configs = {okassert = true, okassert_color_mode = "never"}})
+add_requires("oklibs", {configs = {okassert = true, assert_color_mode = "never"}})
 ```
 
 Or define `OKASSERT_COLOR_MODE` directly before including the header to override the build-time default.
