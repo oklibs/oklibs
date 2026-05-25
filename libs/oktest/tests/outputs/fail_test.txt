@@ -3,7 +3,7 @@
 %[FAIL%] in test case "fail at runtime"
 └╴at libs[\\/]oktest[\\/]tests[\\/]fail_test%.cpp:8
   CHECK%(value == 1%), got: 0 == 1
-  value is not 1
+  expected failure
 
 ==========================================
 error: some tests failed

@@ -5,5 +5,5 @@
 TEST_CASE("fail at runtime")
 {
 	constexpr int value{0};
-	CHECK(value == 1) << "value is not 1";
+	CHECK(value == 1) << "expected failure";
 };
