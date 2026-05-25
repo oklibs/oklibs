@@ -1,0 +1,119 @@
+name: Single-header artifacts
+
+on:
+  push:
+    branches: [dev]
+    paths-ignore: [.gitignore, LICENSE, README.md]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: single-header
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Generate and publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write # We need to commit to the single-header branch.
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: true
+
+      - name: Setup xmake
+        uses: xmake-io/github-action-setup-xmake@3a1a5dddfc7fa625d9a698738334bf55655a861a # v1.2.5
+        with:
+          xmake-version: 3.0.7
+          actions-cache-folder: .xmake-cache
+          package-cache: true
+          package-cache-key: linux_x86_64_clang_release
+          build-cache: true
+          build-cache-key: linux_x86_64_clang_release
+
+      - name: Setup Cpp
+        uses: aminya/setup-cpp@1f17f92d6a52bfcb1a25348e2c526c2e5cbb1134 # v1.8.0
+        with:
+          compiler: llvm-19
+
+      - name: Configure
+        run: xmake f -vy -p linux -a x86_64 --toolchain=clang -m release --dev=n
+
+      - name: Amalgamate
+        run: |
+          set -euo pipefail
+          mkdir -p amalgamated
+          for libdir in libs/*/; do
+            lib="$(basename "$libdir")"
+            xmake l okl.cli.amalgamate --target="$lib" --outputdir=amalgamated
+          done
+          ls -la amalgamated
+
+      - name: Verify amalgamated headers
+        run: |
+          set -euo pipefail
+          for libdir in libs/*/; do
+            lib="$(basename "$libdir")"
+            header="amalgamated/$lib.hpp"
+            [ -f "$header" ] || continue
+            xmake l okl.cli.verify_amalgamated --target="$lib" --header="$header"
+          done
+
+      - name: Publish to single-header branch
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          # Stash artifacts and sources the setup-xmake post-step needs,
+          # outside the worktree before switching branches.
+          xmake_staging="$(mktemp -d)"
+          cp amalgamated/*.hpp "$xmake_staging/"
+          cp xmake.lua "$xmake_staging/"
+          cp -r xmake "$xmake_staging/"
+          cp -r libs "$xmake_staging/"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git ls-remote --exit-code --heads origin single-header >/dev/null 2>&1; then
+            git fetch --depth=1 origin single-header
+            git checkout single-header
+          else
+            git checkout --orphan single-header
+          fi
+
+          # Wipe tracked files (preserve .git and .xmake-cache).
+          git rm -rf --quiet . 2>/dev/null || true
+          find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name '.xmake-cache' -exec rm -rf {} +
+
+          cp "$xmake_staging"/*.hpp .
+          cp "$xmake_staging/xmake.lua" .
+          cp -r "$xmake_staging/xmake" .
+          cp -r "$xmake_staging/libs" .
+
+          echo '.xmake-cache/' > .gitignore
+
+          short_sha="${SHA:0:7}"
+          cat > README.md <<EOF
+          # oklibs single-header artifacts
+
+          Auto-generated amalgamated single-header builds of the
+          [oklibs](https://github.com/oklibs/oklibs) libraries. This branch is
+          overwritten on each push to \`main\`/\`dev\`; do not edit by hand.
+
+          Source revision: [\`$short_sha\`](https://github.com/oklibs/oklibs/commit/$SHA) (branch \`$REF_NAME\`)
+          EOF
+
+          git add README.md *.hpp
+          if git diff --staged --quiet; then
+            echo "No changes to single-header artifacts."
+            exit 0
+          fi
+          git commit -m "amalgamate: update from $REF_NAME@$short_sha"
+          git push origin single-header
