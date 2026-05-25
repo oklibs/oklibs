@@ -20,7 +20,7 @@ OKL_EXPORT namespace Okl::Test
 template<class LoggerT, class ConfigT = LoggerT::ConfigType>
 class Reporter {
 public:
-	using ConfigType = LoggerConfig;
+	using ConfigType = ConfigT;
 
 	Reporter() = default;
 	Reporter(Reporter&&) = default;
