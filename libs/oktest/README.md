@@ -12,6 +12,28 @@ planned or implemented.
 
 See [Limitations](#limitations) and [ToDos](#todos).
 
+## Table of Contents
+
+- [Basic Usage](#basic-usage)
+- [Features](#features)
+- [Dependencies](#dependencies)
+- [Integration](#integration)
+    - [Using xmake](#using-xmake)
+- [Configuration](#configuration)
+    - [Command-line options](#command-line-options)
+- [Documentation](#documentation)
+    - [Test Cases](#test-cases)
+    - [Assertions](#assertions)
+    - [Sections and Scopes](#sections-and-scopes)
+    - [Customization](#customization)
+- [Short Macros](#short-macros)
+- [Limitations](#limitations)
+    - [Compile-time tests](#compile-time-tests)
+    - [Nested test cases](#nested-test-cases)
+    - [Multithreading](#multithreading)
+    - [IDE Integrations](#ide-integrations)
+- [ToDos](#todos)
+
 ## Basic Usage
 
 ```cpp
@@ -102,7 +124,7 @@ matches _any_ of the provided arguments.
 See [oktest.hpp](include/oktest/oktest.hpp) and [examples.cpp](tests/examples.hpp) for more detailed docs and usage
 examples.
 
-### 1. Test Cases
+### Test Cases
 
 `oktest` provides three types of test cases depending on when you want the logic verified.
 
@@ -129,7 +151,7 @@ TEST_CASE_TEMPLATE_LIST("List types", Okl::Test::TypeList<int, float>) {
 };
 ```
 
-### 2. Assertions
+### Assertions
 
 | Macro                                       | Behaviour                                                 |
 |:--------------------------------------------|:----------------------------------------------------------|
@@ -150,7 +172,7 @@ Assertions support streaming messages using `<<`, these will only be evaluated i
 CHECK(x == 42) << "x is not 42";
 ```
 
-### 3. Sections and Scopes
+### Sections and Scopes
 
 * **`SECTION(name)`**: A branching point. The test case effectively re-runs from the start to enter this section.
   Variables declared outside the section are reset for every run.
@@ -171,7 +193,7 @@ CONSTEXPR_TEST_CASE("Vector") {
 };
 ```
 
-### 4. Customization
+### Customization
 
 Custom runners need to be defined in the same translation unit as the main function.
 
