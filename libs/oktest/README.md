@@ -103,8 +103,8 @@ The library offers the following configuration options:
 
 | Option            | Description                                                                                                          | Default |
 |:------------------|:---------------------------------------------------------------------------------------------------------------------|:--------|
-| `max_nested`      | Maximum nesting level for test cases and sections.                                                                   | `8`     |
-| `link_main`       | Provide a main function in a separate source file. When used with modules this requires a C++26 compatible compiler. | `true`  |
+| `test_max_nested` | Maximum nesting level for test cases and sections.                                                                   | `8`     |
+| `test_link_main`  | Provide a main function in a separate source file. When used with modules this requires a C++26 compatible compiler. | `true`  |
 
 ### Command-line options
 

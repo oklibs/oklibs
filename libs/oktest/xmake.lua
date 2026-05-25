@@ -5,8 +5,8 @@ set_version("0.1.0")
 ----------------------------------------------------------------------------------------------------
 --- Library options
 
-option("max_nested", {description = "Maximum nesting level for test cases and sections.", default = 8})
-option("link_main", {description = "Provide a main function in a separate source file.", default = true})
+option("test_max_nested", {description = "Maximum nesting level for test cases and sections.", default = 8})
+option("test_link_main", {description = "Provide a main function in a separate source file.", default = true})
 
 ----------------------------------------------------------------------------------------------------
 --- Build settings
@@ -23,8 +23,8 @@ target("oktest", function()
 
     set_configdir("$(builddir)/.configs/oktest")
     add_configfiles("templates/include/**.in", {prefixdir = "include/oktest", variables = {
-        MAX_NESTED = get_config("max_nested"),
-        LINK_MAIN = has_config("link_main") and 1 or 0
+        MAX_NESTED = get_config("test_max_nested"),
+        LINK_MAIN = has_config("test_link_main") and 1 or 0
     }})
 
     add_includedirs("include", "$(builddir)/.configs/oktest/include", {public = true})
