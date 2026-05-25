@@ -8,7 +8,6 @@ messages.
 - [Dependencies](#dependencies)
 - [Integration](#integration)
     - [Using xmake](#using-xmake)
-    - [Using cmake](#using-cmake)
 - [Usage](#usage)
     - [Build severities](#build-severities)
     - [Modifier flags](#modifier-flags)
@@ -47,10 +46,6 @@ Or to only enable `okassert`
 add_repositories("okl-repo https://github.com/oklibs/xmake-repo")
 add_requires("oklibs", {configs = {okassert = true}})
 ```
-
-### Using cmake:
-
-ToDo
 
 ## Usage
 

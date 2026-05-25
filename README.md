@@ -23,42 +23,6 @@ add_repositories("okl-repo https://github.com/oklibs/xmake-repo")
 add_requires("okutils", "okbitflag", "oktest")
 ```
 
-### Using cmake:
-
-**Note:** The cmake integration will currently add all libraries.
-
-Ensure that the required dependencies are available on your system.
-
-**with `FetchContent`:**
-
-```cmake
-include(FetchContent)
-FetchContent_Declare(
-        oklibs
-        GIT_REPOSITORY https://github.com/oklibs/oklibs.git
-        GIT_TAG main
-)
-FetchContent_MakeAvailable(oklibs)
-target_link_libraries(my_target PRIVATE oklibs::okutils)
-...
-```
-
-**with `find_package`** (after installing oklibs):
-
-```cmake
-find_package(oktest REQUIRED)
-target_link_libraries(my_target PRIVATE oklibs::okutils)
-...
-```
-
-**with `add_subdirectory`**:
-
-```cmake
-add_subdirectory(path/to/oklibs)
-target_link_libraries(my_target PRIVATE oklibs::okutils)
-...
-```
-
 ## Configuration
 
 The main project offers the following configuration options when using xmake:
