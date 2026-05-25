@@ -46,3 +46,8 @@ The main project offers the following configuration options when using xmake:
 ## License
 
 _oklibs_ is licensed under the [Boost Software License 1.0](LICENSE).
+
+
+## ToDos
+
+- [ ] require minimum code coverage in ci
