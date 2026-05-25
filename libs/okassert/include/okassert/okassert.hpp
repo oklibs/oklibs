@@ -113,6 +113,10 @@ import okl.assert;
 	#define OKASSERT_REPORT_FAILURE_FUNCTION(...) ::Okl::Detail::report_assertion_failure(__VA_ARGS__)
 #endif
 
+#if !defined(OKASSERT_SHOULD_DO_ASSERT)
+	#define OKASSERT_SHOULD_DO_ASSERT(assertSeverity) ::Okl::should_do_assert(assertSeverity)
+#endif
+
 #if !defined(OKASSERT_LINE)
 	#if defined(__LINE__)
 		#define OKASSERT_LINE __LINE__
@@ -151,7 +155,7 @@ import okl.assert;
 				"OKL_ASSERT/_VERIFY requires exactly one build severity: disabled, debug, releasedbg, or release."); \
 			__VA_OPT__(decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
 		\
-			return ::Okl::should_do_assert(OKL_ASSERT_severity); \
+			return OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_severity); \
 		}()
 #else
 	// `OKL_ASSUME()` requires capture of the condition, the lambda can still be
@@ -165,7 +169,7 @@ import okl.assert;
 				"OKL_ASSERT/_VERIFY requires exactly one build severity: disabled, debug, releasedbg, or release."); \
 			__VA_OPT__(decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
 		\
-			if constexpr (::Okl::should_do_assert(OKL_ASSERT_severity)) { \
+			if constexpr (OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_severity)) { \
 				return true; \
 			} \
 			else { \

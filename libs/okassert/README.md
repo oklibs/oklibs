@@ -19,6 +19,7 @@ messages.
     - [Stacktrace](#stacktrace)
 - [Customization](#customization)
     - [Failure reporting function](#failure-reporting-function)
+    - [Active build severities](#Active-build-severities)
     - [Location macros](#location-macros)
     - [Color output](#color-output)
 - [Performance](#performance)
@@ -171,6 +172,27 @@ behavior (whether to abort) is the reporter's responsibility, see `Okl::Detail::
 ```c++
 #define OKASSERT_REPORT_FAILURE_FUNCTION(data, expr_args, msg_args) my_reporter(data, expr_args, msg_args)
 #include <okassert/okassert.hpp>
+```
+
+### Active build severities
+
+`OKASSERT_SHOULD_DO_ASSERT(severity)` decides whether an assertion is compiled in. It defaults to
+`::Okl::should_do_assert(severity)`, which gates `debug`/`releasedbg`/`release` against the build-mode macros from
+okutils. Define it before including the header to replace the policy entirely.
+
+The macro must expand to a constant expression (it is evaluated inside `if constexpr` / `consteval`). It receives a
+`Okl::AssertSeverity` so any of the flag predicates in [base.hpp](include/okassert/base.hpp) are available.
+
+```c++
+#define OKASSERT_SHOULD_DO_ASSERT(inSeverity) my_should_do_assert(inSeverity)
+#include <okassert/okassert.hpp>
+
+// Treat releasedbg-severity asserts as always-on in this TU, leave the rest at default.
+constexpr bool my_should_do_assert(Okl::AssertSeverity severity) noexcept
+{
+    if (severity.has_flags(Okl::EAssertSeverity::releasedbg)) return true;
+    return Okl::should_do_assert(severity);
+}
 ```
 
 ### Location macros
