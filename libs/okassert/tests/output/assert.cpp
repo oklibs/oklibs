@@ -1,10 +1,12 @@
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#if !defined(OKL_USE_MODULES)
-	#include <oktest/output_redirector.hpp>
-#endif
+#define OKASSERT_PRIVATE_NO_IMPORT
 #include <okassert/okassert.hpp>
 #include <oktest/oktest_short.hpp>
+
+#if defined(OKL_USE_MODULES)
+import okl.assert;
+#endif
 
 static void test_function();
 

@@ -1,19 +1,19 @@
 
 %[non%-fatal|release%] Assertion failed: false
 false
-at libs[\\/]okassert[\\/]tests[\\/]output[\\/]assert%.cpp:25
+at libs[\\/]okassert[\\/]tests[\\/]output[\\/]assert%.cpp:27
    .*test_function.*
 
 %[non%-fatal|release%] Assertion failed: false_bool
 false
 User Message
-at libs[\\/]okassert[\\/]tests[\\/]output[\\/]assert%.cpp:26
+at libs[\\/]okassert[\\/]tests[\\/]output[\\/]assert%.cpp:28
    .*test_function.*
 
 %[non%-fatal|release%] Assertion failed: some_int0 >= some_int1
 100 >= 300
 User Message 300
-at libs[\\/]okassert[\\/]tests[\\/]output[\\/]assert%.cpp:27
+at libs[\\/]okassert[\\/]tests[\\/]output[\\/]assert%.cpp:29
    .*test_function.*
 
 ==========================================
