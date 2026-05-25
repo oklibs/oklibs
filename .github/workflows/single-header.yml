@@ -2,7 +2,7 @@ name: Single-header artifacts
 
 on:
   push:
-    branches: [dev]
+    branches: [main]
     paths-ignore: [.gitignore, LICENSE, README.md]
   workflow_dispatch:
 
@@ -105,7 +105,7 @@ jobs:
 
           Auto-generated amalgamated single-header builds of the
           [oklibs](https://github.com/oklibs/oklibs) libraries. This branch is
-          overwritten on each push to \`main\`/\`dev\`; do not edit by hand.
+          overwritten on each push to \`main\`, do not edit by hand.
 
           Source revision: [\`$short_sha\`](https://github.com/oklibs/oklibs/commit/$SHA) (branch \`$REF_NAME\`)
           EOF
