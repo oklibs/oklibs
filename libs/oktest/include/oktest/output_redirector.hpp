@@ -17,6 +17,7 @@
 
 namespace Okl::Test
 {
+#if !OKL_OS_WASM
 OKL_EXPORT_BEGIN
 class OutputRedirector {
 public:
@@ -38,9 +39,11 @@ private:
 	fmt::file m_original; /* Original file passed to redirector. */
 	fmt::file m_read_end; /* Read the end of the pipe where the output is redirected. */
 };
+#endif
 OKL_EXPORT_END
 
 
+#if !OKL_OS_WASM
 inline OutputRedirector::OutputRedirector(std::FILE* file, const bool should_flush)
     : m_file(file)
 {
@@ -107,6 +110,7 @@ inline void OutputRedirector::restore()
 	m_original.dup2(FMT_POSIX(fileno(m_file)));
 	m_original.close();
 }
+#endif
 } // namespace Okl::Test
 
 #endif

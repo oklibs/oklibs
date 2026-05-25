@@ -12,6 +12,7 @@
 	#include "oktest/detail/scope.hpp"// IWYU pragma: export
 	#include "oktest/detail/section.hpp"// IWYU pragma: export
 	#include "oktest/get_runner.hpp" // IWYU pragma: export
+	#include "oktest/output_redirector.hpp" // IWYU pragma: export
 	#include "oktest/theme.hpp" // IWYU pragma: export
 #endif
 #include "oktest/oktest.hpp"
