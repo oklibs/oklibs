@@ -32,6 +32,9 @@ jobs:
           - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg, compiler: llvm-19 }
           - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: release, compiler: llvm-19, args: --dev=n }
 
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: gcc, mode: debug }
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: gcc, mode: releasedbg }
+
           - { plat: wasm, os: ubuntu-latest, arch: wasm32, toolchain: emcc, mode: debug, args: --setup_toolchains=y }
           - { plat: wasm, os: ubuntu-latest, arch: wasm32, toolchain: emcc, mode: releasedbg, args: --setup_toolchains=y }
           - { plat: wasm, os: ubuntu-latest, arch: wasm64, toolchain: emcc, mode: debug, args: --setup_toolchains=y }
