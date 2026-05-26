@@ -11,11 +11,18 @@
 
 #include <fmt/base.h>
 
-#include <array>
-#include <atomic>
+#if !defined(OKL_USE_STD_MODULE)
+	#include <array>
+	#include <atomic>
+#else
+	#include <fmt/format.h>
+#endif
 
 #if defined(OKL_USE_MODULES) && !defined(OKASSERT_PRIVATE_NO_IMPORT)
 import okl.assert;
+#endif
+#if defined(OKL_USE_STD_MODULE)
+import std;
 #endif
 
 /**
