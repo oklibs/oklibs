@@ -256,7 +256,7 @@ inline OKL_NOINLINE OKL_DEBUG_SECTION bool report_assertion_failure(
 			fmt::format_to(out_it, "{}:{}\n   {}\n", assert_data.file_name, assert_data.line,
 			               assert_data.function_name);
 
-#if defined(__cpp_lib_stacktrace) && __cpp_lib_stacktrace >= 202011L
+#if OKL_HAS_CPP23 && defined(__cpp_lib_stacktrace) && __cpp_lib_stacktrace >= 202011L
 			// Skipping this function and the noinline lambda + potentially
 			// non-inlined outer lambda at the callsite.
 			fmt::format_to(out_it, text_style_error, "Stacktrace:\n{}\n",
