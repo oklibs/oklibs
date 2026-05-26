@@ -333,3 +333,6 @@ Not all of these are guaranteed to be implemented, this is more of a list of ide
 - [ ] provide more utility for customizing runner/reporter/logger
 - [ ] improve cli handling
 - [ ] add support for custom cli args
+- [ ] add `list-tests` cli option
+- [ ] add `verbosity` cli option
+- [ ] add `output` cli option (save to file instead of standard output)
