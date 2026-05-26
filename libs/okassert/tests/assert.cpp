@@ -237,7 +237,7 @@ CONSTEXPR_TEST_CASE("assert: severity build conditional execution")
 		else {
 			CHECK(counter == 0);
 		}
-	};
+	}
 	SECTION("releasedbg severity")
 	{
 		int counter{0};

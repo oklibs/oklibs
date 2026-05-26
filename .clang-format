@@ -70,7 +70,7 @@ SpaceBeforeParens: ControlStatementsExceptControlMacros
 SpacesInAngles: Never # Leave
 SpacesInContainerLiterals: false
 StatementAttributeLikeMacros: [OKL_SUPPRESS_GSL]
-StatementMacros: []
+StatementMacros: [SECTION, SCOPE, OKL_SECTION, OKL_SCOPE]
 TabWidth: 4
 UseTab: ForIndentation # Never
 WhitespaceSensitiveMacros: [OKL_STRINGIFY]

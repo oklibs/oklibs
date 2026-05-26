@@ -243,7 +243,7 @@ CONSTEXPR_TEST_CASE("verify: expression always evaluated regardless of build sev
 		int counter{0};
 		OKL_VERIFY(debug, ++counter > 0);
 		CHECK(counter == 1);
-	};
+	}
 	SECTION("releasedbg severity")
 	{
 		int counter{0};

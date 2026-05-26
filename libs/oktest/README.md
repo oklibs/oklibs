@@ -47,7 +47,7 @@ TEST_CASE("Runtime test") {
     SECTION("Modifying x") {
         ++x;
         CHECK(x == 22);
-    };
+    }
 };
 
 CONSTEXPR_TEST_CASE("Compile-time and runtime test") {
@@ -57,7 +57,7 @@ CONSTEXPR_TEST_CASE("Compile-time and runtime test") {
     SECTION("Modifying x") {
         ++x;
         CHECK(x == 22);
-    };
+    }
 };
 ```
 
@@ -177,12 +177,19 @@ CONSTEXPR_TEST_CASE("Vector") {
     SECTION("Pushing") {
         values.push_back(1);
         CHECK(values.size() == 1);
-    };
+    }
 
     SECTION("Empty") {
         CHECK(values.empty()); // `values` is empty here, unaffected by "Pushing".
-    };
+    }
 };
+```
+
+A trailing `;` after `SECTION` / `SCOPE` blocks is optional. If you use `clang-format`, list `SECTION` and `SCOPE` (and
+their `OKL_`-prefixed counterparts) under `StatementMacros` so the omitted-semicolon form is not misclassified:
+
+```yml
+StatementMacros: [SECTION, SCOPE, OKL_SECTION, OKL_SCOPE]
 ```
 
 ### Customization
