@@ -4,8 +4,7 @@
 #define OKTEST_MAIN_HPP
 
 #include "oktest/config.hpp"
-
-#include <okutils/defines.hpp>
+#include "okutils/defines.hpp"
 
 namespace Okl::Test
 {
