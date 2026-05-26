@@ -720,7 +720,9 @@
 #if !defined(OKL_NOINLINE)
 	#if OKL_COMPILER_MSVC_AVAILABLE
 		#define OKL_NOINLINE __declspec(noinline)
-	#elif OKL_COMPILER_GCC_AVAILABLE || OKL_COMPILER_CLANG_AVAILABLE
+	#elif OKL_COMPILER_CLANG_AVAILABLE
+		#define OKL_NOINLINE __attribute__((noinline))
+	#elif OKL_COMPILER_GCC_AVAILABLE
 		#define OKL_NOINLINE __attribute__((noinline))
 	#else
 		#define OKL_NOINLINE
@@ -875,13 +877,13 @@
 		// Putting the code into a separate section in the linked executable will
 		// require jumps larger than the branch instruction can handle. Clang will
 		// only generate the trampolines in the .text segment of the binary. If the
-		// 'okdbg' segment is present, it will generate code that it cannot link.
+		// 'okldbg' segment is present, it will generate code that it cannot link.
 
 		#define OKL_DEBUG_SECTION
 	#elif OKL_OS_APPLE
-		#define OKL_DEBUG_SECTION OKL_CODE_SECTION("__OKDBG,__okdbg")
+		#define OKL_DEBUG_SECTION OKL_CODE_SECTION("__OKlDBG,__okldbg")
 	#else
-		#define OKL_DEBUG_SECTION OKL_CODE_SECTION(".okdbg")
+		#define OKL_DEBUG_SECTION OKL_CODE_SECTION(".okldbg")
 	#endif
 #endif
 
@@ -2253,7 +2255,7 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 
 [[nodiscard]] bool is_debugger_present() noexcept(OKL_OS_ANDROID + OKL_OS_LINUX + OKL_OS_APPLE == 0);
 
-[[nodiscard]] inline OKL_NOINLINE OKL_DEBUG_SECTION bool
+[[nodiscard]] OKL_NOINLINE OKL_DEBUG_SECTION bool
 report_assertion_failure(const StaticAssertData&, fmt::format_args expr_args, fmt::format_args message_args);
 } // namespace Detail
 OKL_EXPORT_END
@@ -2382,7 +2384,7 @@ inline bool is_debugger_present() noexcept(OKL_OS_ANDROID + OKL_OS_LINUX + OKL_O
 #endif
 }
 
-inline OKL_NOINLINE OKL_DEBUG_SECTION bool report_assertion_failure(
+OKL_NOINLINE OKL_DEBUG_SECTION bool report_assertion_failure(
     const StaticAssertData& assert_data, const fmt::format_args expr_args, const fmt::format_args message_args)
 {
 	static const auto text_style_error{assert_error_text_style()};
