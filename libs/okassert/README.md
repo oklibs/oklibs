@@ -279,5 +279,6 @@ function aswell.
 - [ ] add tags (setting enabled severity per library or module)
 - [ ] add better color schemes
 - [ ] add better customization
-- [ ] use different error handler for fatal and non-fatal asserts for better codegen?
 - [ ] benchmark compile-times
+- [ ] add option to disable decomposition?
+- [ ] use different error handler for fatal and non-fatal asserts for better codegen?
