@@ -37,23 +37,7 @@ import okl.assert;
 			return true; \
 		} \
 	\
-		[&](const auto&... OKL_ASSERT_args) OKL_NOINLINE OKL_DEBUG_SECTION { \
-			OKL_STATIC_VAR constexpr ::Okl::StaticAssertData OKL_ASSERT_assert_data{ \
-				OKASSERT_PRIVATE_GET_ASSERT_SEVERITY(assertSeverity), \
-				OKASSERT_LINE, OKASSERT_FILE, OKL_ASSERT_Function.data(), \
-				#assertExpression __VA_OPT__(, OKL_VA_AT_0(__VA_ARGS__))}; \
-		\
-			if constexpr (::Okl::should_assert_log_once(OKL_ASSERT_assert_data.severity)) { \
-				static constinit ::std::atomic<bool> OKL_ASSERT_executed{false}; \
-				if (OKL_ASSERT_executed.load(::std::memory_order_relaxed) || OKL_ASSERT_executed.exchange(true, ::std::memory_order_relaxed)) { \
-					return; \
-				} \
-			} \
-		\
-			if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
-				OKL_DEBUG_BREAK(); \
-			} \
-		}(__VA_OPT__(OKL_VA_CONSUME_1(__VA_ARGS__))); \
+		OKASSERT_PRIVATE_HANDLE_FAILURE(assertSeverity, assertExpression, __VA_ARGS__); \
 	\
 		return false; \
 	OKL_WARNING_POP_CLANG() \
@@ -80,23 +64,7 @@ import okl.assert;
 			return OKL_ASSERT_result; \
 		} \
 	\
-		[&](const auto&... OKL_ASSERT_args) OKL_NOINLINE OKL_DEBUG_SECTION { \
-			OKL_STATIC_VAR constexpr ::Okl::StaticAssertData OKL_ASSERT_assert_data{ \
-				OKASSERT_PRIVATE_GET_ASSERT_SEVERITY(assertSeverity), \
-				OKASSERT_LINE, OKASSERT_FILE, OKL_ASSERT_Function.data(), \
-				#assertExpression __VA_OPT__(, OKL_VA_AT_0(__VA_ARGS__))}; \
-		\
-			if constexpr (::Okl::should_assert_log_once(OKL_ASSERT_assert_data.severity)) { \
-				static constinit ::std::atomic<bool> OKL_ASSERT_executed{false}; \
-				if (OKL_ASSERT_executed.load(::std::memory_order_relaxed) || OKL_ASSERT_executed.exchange(true, ::std::memory_order_relaxed)) { \
-					return; \
-				} \
-			} \
-		\
-			if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
-				OKL_DEBUG_BREAK(); \
-			} \
-		}(__VA_OPT__(OKL_VA_CONSUME_1(__VA_ARGS__))); \
+		OKASSERT_PRIVATE_HANDLE_FAILURE(assertSeverity, assertExpression, __VA_ARGS__); \
 	\
 		return OKL_ASSERT_result; \
 	OKL_WARNING_POP_CLANG() \
@@ -144,6 +112,25 @@ import okl.assert;
 	#endif
 #endif
 
+
+#define OKASSERT_PRIVATE_HANDLE_FAILURE(assertSeverity, assertExpression, ...) \
+	[&](const auto&... OKL_ASSERT_args) OKL_NOINLINE OKL_DEBUG_SECTION { \
+		OKL_STATIC_VAR constexpr ::Okl::StaticAssertData OKL_ASSERT_assert_data{ \
+			OKASSERT_PRIVATE_GET_ASSERT_SEVERITY(assertSeverity), \
+			OKASSERT_LINE, OKASSERT_FILE, OKL_ASSERT_Function.data(), \
+			#assertExpression __VA_OPT__(, OKL_VA_AT_0(__VA_ARGS__))}; \
+	\
+		if constexpr (::Okl::should_assert_log_once(OKL_ASSERT_assert_data.severity)) { \
+			static constinit ::std::atomic<bool> OKL_ASSERT_executed{false}; \
+			if (OKL_ASSERT_executed.load(::std::memory_order_relaxed) || OKL_ASSERT_executed.exchange(true, ::std::memory_order_relaxed)) { \
+				return; \
+			} \
+		} \
+	\
+		if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
+			OKL_DEBUG_BREAK(); \
+		} \
+	}(__VA_OPT__(OKL_VA_CONSUME_1(__VA_ARGS__)))
 
 #if OKL_BUILD_DEBUG
 	#define OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, assertExpression, ...) \
