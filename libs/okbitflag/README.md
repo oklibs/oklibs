@@ -2,6 +2,8 @@
 
 A C++20 utility for managing and manipulating type-safe bitflags.
 
+[Compiler Explorer example](https://godbolt.org/z/4q3jqaf3h)
+
 ## Usage
 
 ```cpp

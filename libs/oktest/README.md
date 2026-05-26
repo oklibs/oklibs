@@ -3,6 +3,8 @@
 A C++20 testing framework designed with first-class support for compile-time testing (`constexpr` and
 `consteval`).
 
+[Compiler Explorer example](https://godbolt.org/z/6YbssWzea)
+
 ## Experimental / Early Development
 
 The library is currently in an **early stage of development**. The API, macro definitions, and internal implementation

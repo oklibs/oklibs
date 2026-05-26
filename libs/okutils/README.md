@@ -2,6 +2,8 @@
 
 A collection of common C++20 utilities, concepts, and macros.
 
+[Compiler Explorer example](https://godbolt.org/z/KoTThqqMr)
+
 ## Integration
 
 ### xmake:
