@@ -81,7 +81,9 @@
 #if !defined(OKL_NOINLINE)
 	#if OKL_COMPILER_MSVC_AVAILABLE
 		#define OKL_NOINLINE __declspec(noinline)
-	#elif OKL_COMPILER_GCC_AVAILABLE || OKL_COMPILER_CLANG_AVAILABLE
+	#elif OKL_COMPILER_CLANG_AVAILABLE
+		#define OKL_NOINLINE __attribute__((noinline))
+	#elif OKL_COMPILER_GCC_AVAILABLE
 		#define OKL_NOINLINE __attribute__((noinline))
 	#else
 		#define OKL_NOINLINE

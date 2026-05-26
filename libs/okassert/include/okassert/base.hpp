@@ -94,7 +94,7 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 
 [[nodiscard]] bool is_debugger_present() noexcept(OKL_OS_ANDROID + OKL_OS_LINUX + OKL_OS_APPLE == 0);
 
-[[nodiscard]] inline OKL_NOINLINE OKL_DEBUG_SECTION bool
+[[nodiscard]] OKL_NOINLINE OKL_DEBUG_SECTION bool
 report_assertion_failure(const StaticAssertData&, fmt::format_args expr_args, fmt::format_args message_args);
 } // namespace Detail
 OKL_EXPORT_END
@@ -223,7 +223,7 @@ inline bool is_debugger_present() noexcept(OKL_OS_ANDROID + OKL_OS_LINUX + OKL_O
 #endif
 }
 
-inline OKL_NOINLINE OKL_DEBUG_SECTION bool report_assertion_failure(
+OKL_NOINLINE OKL_DEBUG_SECTION bool report_assertion_failure(
     const StaticAssertData& assert_data, const fmt::format_args expr_args, const fmt::format_args message_args)
 {
 	static const auto text_style_error{assert_error_text_style()};
