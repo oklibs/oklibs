@@ -97,7 +97,7 @@ The optional message is a `fmt::format_string`; arguments are only evaluated on
 failure:
 
 ```c++
-OKL_ASSERT(release, index < size, "index {} out of range (size = {})", index, size);
+OKL_ASSERT(release, index < size, "values[{}] lookup out of bounds", size);
 ```
 
 The format string is validated at compile time against the argument types.
