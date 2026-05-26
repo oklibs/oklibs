@@ -2,6 +2,8 @@
 
 A collection of some of my personal C++ projects.
 
+Most of the libraries are experimental and will likely have frequent breaking changes.
+
 ## Libraries
 
 - **[okutils](libs/okutils)**: A collection of common utilities, concepts, and macros.
@@ -46,7 +48,6 @@ The main project offers the following configuration options when using xmake:
 ## License
 
 _oklibs_ is licensed under the [Boost Software License 1.0](LICENSE).
-
 
 ## ToDos
 
