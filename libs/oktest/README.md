@@ -194,9 +194,13 @@ StatementMacros: [SECTION, SCOPE, OKL_SECTION, OKL_SCOPE]
 
 ### Customization
 
-Custom runners need to be defined in the same translation unit as the main function.
+It is recommended to create a new header that includes the oktest header along with the custom `Config` struct
+specialization, and then include that header in place of the default `<oktest/oktest.hpp>` (or
+`<oktest/oktest_short.hpp>`).
 
 ```cpp
+#include <oktest/oktest.hpp> // IWYU pragma: export
+
 template<>
 struct Okl::Test::Config<Okl::Test::CustomRunner> {
     static inline constinit RegistryRunner<Reporter<Logger>> runner{{
