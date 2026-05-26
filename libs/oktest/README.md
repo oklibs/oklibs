@@ -21,8 +21,7 @@ See [Limitations](#limitations) and [ToDos](#todos).
 - [Dependencies](#dependencies)
 - [Integration](#integration)
     - [Using xmake](#using-xmake)
-- [Configuration](#configuration)
-    - [Command-line options](#command-line-options)
+- [Command-line options](#command-line-options)
 - [Documentation](#documentation)
     - [Test Cases](#test-cases)
     - [Assertions](#assertions)
@@ -90,16 +89,7 @@ add_repositories("okl-repo https://github.com/oklibs/xmake-repo")
 add_requires("oktest")
 ```
 
-## Configuration
-
-The library offers the following configuration options:
-
-| Option            | Description                                                                                                          | Default |
-|:------------------|:---------------------------------------------------------------------------------------------------------------------|:--------|
-| `test_max_nested` | Maximum nesting level for test cases and sections.                                                                   | `8`     |
-| `test_link_main`  | Provide a main function in a separate source file. When used with modules this requires a C++26 compatible compiler. | `true`  |
-
-### Command-line options
+## Command-line options
 
 Some options can also be configured via command-line arguments.
 
