@@ -282,5 +282,6 @@ function aswell.
 - [ ] add better color schemes
 - [ ] add better customization
 - [ ] benchmark compile-times
+- [ ] optimize non-fatal asserts
 - [ ] add option to disable decomposition?
 - [ ] use different error handler for fatal and non-fatal asserts for better codegen?
