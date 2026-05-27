@@ -106,7 +106,10 @@ The format string is validated at compile time against the argument types.
 
 ### Return value
 
-Both macros return a `bool` and can be used as part of an expression:
+Both macros can be used as part of an expression:
+
+`OKL_ASSERT` returns the expression's result contextually converted to `bool`, or `true` when the assertion is disabled.
+
 
 ```c++
 if (!OKL_ASSERT(release | non_fatal, ptr != nullptr, "ptr was null")) {
@@ -114,8 +117,13 @@ if (!OKL_ASSERT(release | non_fatal, ptr != nullptr, "ptr was null")) {
 }
 ```
 
-When the assertion is disabled, the assertion macro returns `true` so the branch is taken as if the check had passed.
-The verify macro returns the resulting value.
+`OKL_VERIFY` returns the expression's result unchanged (preserving its type and value category), both when the assertion is active and when it is disabled.
+
+```c++
+if (auto* node = OKL_VERIFY(release | non_fatal, tree.find(key), "missing key {}", key)) {
+    use(*node);
+}
+```
 
 ### `OKL_ASSERT` vs `OKL_VERIFY`
 
