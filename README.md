@@ -4,4 +4,4 @@ Auto-generated amalgamated single-header builds of the
 [oklibs](https://github.com/oklibs/oklibs) libraries. This branch is
 overwritten on each push to `main`, do not edit by hand.
 
-Source revision: [`541a58d`](https://github.com/oklibs/oklibs/commit/541a58dae035af1735b1838326cdf2e4719339c3) (branch `main`)
+Source revision: [`a5b0b7a`](https://github.com/oklibs/oklibs/commit/a5b0b7a7f4cdaaf447e50e4bf1d67d8924f01bf4) (branch `main`)
