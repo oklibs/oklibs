@@ -203,7 +203,7 @@ Failure messages are tinted red when stderr is a terminal. The detection mode is
 
 | Value                        | Meaning                                |
 |------------------------------|----------------------------------------|
-| `OKASSERT_COLOR_MODE_AUTO`   | enable color only when stderr is a TTY |
+| `OKASSERT_COLOR_MODE_DETECT` | enable color only when stderr is a TTY |
 | `OKASSERT_COLOR_MODE_ALWAYS` | always emit color escape codes         |
 | `OKASSERT_COLOR_MODE_NEVER`  | never emit color escape codes          |
 

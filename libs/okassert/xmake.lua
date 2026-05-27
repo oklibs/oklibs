@@ -5,7 +5,7 @@ set_version("0.1.0")
 ----------------------------------------------------------------------------------------------------
 --- Library options
 
-option("assert_color_mode", {description = "Color output mode for assertion messages.", default = "auto", values = {"auto", "always", "never"}})
+option("assert_color_mode", {description = "Color output mode for assertion messages.", default = "detect", values = {"detect", "always", "never"}})
 
 ----------------------------------------------------------------------------------------------------
 --- Build settings
@@ -23,7 +23,7 @@ target("okassert", function()
 
     set_configdir("$(builddir)/.configs/okassert")
     add_configfiles("templates/include/**.in", {prefixdir = "include/okassert", variables = {
-        COLOR_MODE = ({never = 0, always = 1, auto = 2})[get_config("assert_color_mode")] or 2
+        COLOR_MODE = ({never = 0, always = 1, detect = 2})[get_config("assert_color_mode")] or 2
     }})
 
     add_includedirs("include", "$(builddir)/.configs/okassert/include", {public = true})

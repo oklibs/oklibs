@@ -15,7 +15,7 @@
 	#include <mach/mach_init.h>
 	#include <mach/task.h>
 #endif
-#if OKASSERT_COLOR_MODE == OKASSERT_COLOR_MODE_AUTO
+#if OKASSERT_COLOR_MODE == OKASSERT_COLOR_MODE_DETECT
 	#if OKL_OS_WINDOWS
 		#include <io.h>
 	#else
