@@ -7,5 +7,5 @@
 
 TEST_CASE("verify assert with no build type should fail to compile")
 {
-	OKL_VERIFY(assume, std::rand());
+	OKL_VERIFY(non_fatal, std::rand());
 };

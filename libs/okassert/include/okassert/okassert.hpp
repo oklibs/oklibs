@@ -139,46 +139,17 @@ import std;
 		} \
 	}(__VA_OPT__(OKL_VA_CONSUME_1(__VA_ARGS__)))
 
-#if OKL_BUILD_DEBUG
-	#define OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, assertExpression, ...) \
-		[]() consteval noexcept { \
-			using enum ::Okl::EAssertSeverity; \
-			OKL_STATIC_VAR constexpr auto OKL_ASSERT_severity{::Okl::AssertSeverity{} | assertSeverity}; /* NOLINT(bugprone-macro-parentheses) */ \
-		\
-			static_assert(::Okl::has_unique_build_severity(OKL_ASSERT_severity), \
-				"OKL_ASSERT/_VERIFY requires exactly one build severity: disabled, debug, releasedbg, or release."); \
-			__VA_OPT__(decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
-		\
-			return OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_severity); \
-		}()
-#else
-	// `OKL_ASSUME()` requires capture of the condition, the lambda can still be
-	// used at compile-time.
-	#define OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, assertExpression, ...) \
-		[&]() noexcept { \
-			using enum ::Okl::EAssertSeverity; \
-			OKL_STATIC_VAR constexpr auto OKL_ASSERT_severity{::Okl::AssertSeverity{} | assertSeverity}; /* NOLINT(bugprone-macro-parentheses) */ \
-		\
-			static_assert(::Okl::has_unique_build_severity(OKL_ASSERT_severity), \
-				"OKL_ASSERT/_VERIFY requires exactly one build severity: disabled, debug, releasedbg, or release."); \
-			__VA_OPT__(decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
-		\
-			if constexpr (OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_severity)) { \
-				return true; \
-			} \
-			else { \
-				if constexpr (::Okl::should_assert_assume(OKL_ASSERT_severity)) { \
-					if OKL_IS_NOT_CONSTEVAL { /* MSVC evaluates `__assume()` expressions when executed at compile time. */ \
-						OKL_WARNING_PUSH_MSVC() OKL_DISABLE_WARNING_MSVC(4557) /* "'__assume' contains effect ...". */\
-						OKL_WARNING_PUSH_CLANG() OKL_DISABLE_WARNING_CLANG("-Wassume") \
-						OKL_ASSUME(static_cast<bool>(assertExpression)); \
-						OKL_WARNING_POP_MSVC() OKL_WARNING_POP_CLANG() \
-					} \
-				} \
-				return false; \
-			} \
-		}()
-#endif
+#define OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, assertExpression, ...) \
+	[]() consteval noexcept { \
+		using enum ::Okl::EAssertSeverity; \
+		OKL_STATIC_VAR constexpr auto OKL_ASSERT_severity{::Okl::AssertSeverity{} | assertSeverity}; /* NOLINT(bugprone-macro-parentheses) */ \
+	\
+		static_assert(::Okl::has_unique_build_severity(OKL_ASSERT_severity), \
+			"OKL_ASSERT/_VERIFY requires exactly one build severity: disabled, debug, releasedbg, or release."); \
+		__VA_OPT__(decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
+	\
+		return OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_severity); \
+	}()
 
 #define OKASSERT_PRIVATE_GET_ASSERT_SEVERITY(...) \
 	[]() consteval noexcept { \

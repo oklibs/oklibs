@@ -7,5 +7,5 @@
 
 TEST_CASE("assert with no build type should fail to compile")
 {
-	OKL_ASSERT(assume, std::rand());
+	OKL_ASSERT(non_fatal, std::rand());
 };

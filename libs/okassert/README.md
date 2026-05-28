@@ -81,14 +81,11 @@ Combine a build severity with any of these flags using `|`:
 
 * `non_fatal` &mdash; report the failure but do not abort.
 * `log_always` &mdash; always log on failure (non-fatal asserts log once by default).
-* `assume` &mdash; when the assertion is disabled, hint to the optimizer that the expression is true (`__assume` /
-  `__builtin_assume`).
 
 ```c++
 void process(const std::span<const int> data)
 {
     OKL_ASSERT(release | non_fatal, !data.empty(), "skipping empty batch");
-    OKL_ASSERT(debug | assume, data.size() < 1024);
     // ...
 }
 ```
