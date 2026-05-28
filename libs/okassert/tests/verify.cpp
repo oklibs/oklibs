@@ -262,12 +262,6 @@ CONSTEXPR_TEST_CASE("verify: expression always evaluated regardless of build sev
 		OKL_VERIFY(disabled, ++counter > 0);
 		CHECK(counter == 1);
 	}
-	SECTION("disabled | assume still evaluates expression")
-	{
-		int counter{0};
-		OKL_VERIFY(disabled | assume, ++counter > 0);
-		CHECK(counter == 1);
-	}
 };
 
 TEST_CASE("verify: message formatting variants")

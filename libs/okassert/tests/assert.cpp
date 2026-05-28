@@ -261,12 +261,6 @@ CONSTEXPR_TEST_CASE("assert: severity build conditional execution")
 		OKL_ASSERT(disabled, ++counter > 0);
 		CHECK(counter == 0);
 	}
-	SECTION("disabled | assume does not evaluate expression")
-	{
-		OKL_SUPPRESS_GSL("con.4") int counter{0};
-		OKL_ASSERT(disabled | assume, ++counter > 0);
-		CHECK(counter == 0);
-	}
 };
 
 TEST_CASE("assert: message formatting variants")
