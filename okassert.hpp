@@ -2208,19 +2208,16 @@ enum class EAssertSeverity : uint8 {
 	 */
 	non_fatal = 1 << 0,
 
-	/** The expression will be assumed as true when the assertion is disabled. */
-	assume = 1 << 1,
-
 	/**
 	 * Assertion will always be logged on failure.
 	 * By default, non-fatal assertions are logged only once.
 	 */
-	log_always = 1 << 2,
+	log_always = 1 << 1,
 
-	disabled = 1 << 3, /* Do not enable assertion in any build. */
-	debug = 1 << 4, /* Enable assertion only in debug builds. */
-	releasedbg = 1 << 5, /* Enable assertion only in debug and releasedbg builds. */
-	release = 1 << 6, /* Enable assertion in all builds. */
+	disabled = 1 << 2, /* Do not enable assertion in any build. */
+	debug = 1 << 3, /* Enable assertion only in debug builds. */
+	releasedbg = 1 << 4, /* Enable assertion only in debug and releasedbg builds. */
+	release = 1 << 5, /* Enable assertion in all builds. */
 };
 using AssertSeverity = Bitflag<EAssertSeverity>;
 
@@ -2237,7 +2234,6 @@ struct StaticAssertData {
 [[nodiscard]] constexpr bool has_unique_build_severity(AssertSeverity severity) noexcept;
 [[nodiscard]] constexpr bool should_do_assert(AssertSeverity severity) noexcept;
 [[nodiscard]] constexpr bool should_assert_log_once(AssertSeverity severity) noexcept;
-[[nodiscard]] constexpr bool should_assert_assume(AssertSeverity severity) noexcept;
 [[nodiscard]] constexpr bool is_assert_fatal(AssertSeverity severity) noexcept;
 
 namespace Detail
@@ -2263,9 +2259,8 @@ OKL_EXPORT_END
 
 constexpr std::string severity_to_string(const AssertSeverity severity)
 {
-	OKL_STATIC_VAR constexpr std::array<std::pair<EAssertSeverity, std::string_view>, 5> flags{
-	    {{EAssertSeverity::assume, "|assume"},
-	     {EAssertSeverity::log_always, "|log_always"},
+	OKL_STATIC_VAR constexpr std::array<std::pair<EAssertSeverity, std::string_view>, 4> flags{
+	    {{EAssertSeverity::log_always, "|log_always"},
 	     {EAssertSeverity::debug, "|debug"},
 	     {EAssertSeverity::releasedbg, "|releasedbg"},
 	     {EAssertSeverity::release, "|release"}}};
@@ -2306,11 +2301,6 @@ constexpr bool should_do_assert(const AssertSeverity severity) noexcept
 constexpr bool should_assert_log_once(const AssertSeverity severity) noexcept
 {
 	return !is_assert_fatal(severity) && !severity.has_flags(EAssertSeverity::log_always);
-}
-
-constexpr bool should_assert_assume(const AssertSeverity severity) noexcept
-{
-	return severity.has_flags(EAssertSeverity::assume);
 }
 
 constexpr bool is_assert_fatal(const AssertSeverity severity) noexcept
@@ -2624,46 +2614,17 @@ import std;
 		} \
 	}(__VA_OPT__(OKL_VA_CONSUME_1(__VA_ARGS__)))
 
-#if OKL_BUILD_DEBUG
-	#define OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, assertExpression, ...) \
-		[]() consteval noexcept { \
-			using enum ::Okl::EAssertSeverity; \
-			OKL_STATIC_VAR constexpr auto OKL_ASSERT_severity{::Okl::AssertSeverity{} | assertSeverity}; /* NOLINT(bugprone-macro-parentheses) */ \
-		\
-			static_assert(::Okl::has_unique_build_severity(OKL_ASSERT_severity), \
-				"OKL_ASSERT/_VERIFY requires exactly one build severity: disabled, debug, releasedbg, or release."); \
-			__VA_OPT__(decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
-		\
-			return OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_severity); \
-		}()
-#else
-	// `OKL_ASSUME()` requires capture of the condition, the lambda can still be
-	// used at compile-time.
-	#define OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, assertExpression, ...) \
-		[&]() noexcept { \
-			using enum ::Okl::EAssertSeverity; \
-			OKL_STATIC_VAR constexpr auto OKL_ASSERT_severity{::Okl::AssertSeverity{} | assertSeverity}; /* NOLINT(bugprone-macro-parentheses) */ \
-		\
-			static_assert(::Okl::has_unique_build_severity(OKL_ASSERT_severity), \
-				"OKL_ASSERT/_VERIFY requires exactly one build severity: disabled, debug, releasedbg, or release."); \
-			__VA_OPT__(decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
-		\
-			if constexpr (OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_severity)) { \
-				return true; \
-			} \
-			else { \
-				if constexpr (::Okl::should_assert_assume(OKL_ASSERT_severity)) { \
-					if OKL_IS_NOT_CONSTEVAL { /* MSVC evaluates `__assume()` expressions when executed at compile time. */ \
-						OKL_WARNING_PUSH_MSVC() OKL_DISABLE_WARNING_MSVC(4557) /* "'__assume' contains effect ...". */\
-						OKL_WARNING_PUSH_CLANG() OKL_DISABLE_WARNING_CLANG("-Wassume") \
-						OKL_ASSUME(static_cast<bool>(assertExpression)); \
-						OKL_WARNING_POP_MSVC() OKL_WARNING_POP_CLANG() \
-					} \
-				} \
-				return false; \
-			} \
-		}()
-#endif
+#define OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, assertExpression, ...) \
+	[]() consteval noexcept { \
+		using enum ::Okl::EAssertSeverity; \
+		OKL_STATIC_VAR constexpr auto OKL_ASSERT_severity{::Okl::AssertSeverity{} | assertSeverity}; /* NOLINT(bugprone-macro-parentheses) */ \
+	\
+		static_assert(::Okl::has_unique_build_severity(OKL_ASSERT_severity), \
+			"OKL_ASSERT/_VERIFY requires exactly one build severity: disabled, debug, releasedbg, or release."); \
+		__VA_OPT__(decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
+	\
+		return OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_severity); \
+	}()
 
 #define OKASSERT_PRIVATE_GET_ASSERT_SEVERITY(...) \
 	[]() consteval noexcept { \
