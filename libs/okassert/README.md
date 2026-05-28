@@ -3,7 +3,7 @@
 A C++20 assertion library with build-time severity levels, expression decomposition, and `fmt`-formatted failure
 messages.
 
-[Compiler Explorer example](https://godbolt.org/z/cbhGGYbMa)
+[Compiler Explorer example](https://godbolt.org/z/TGzd4PoW9)
 
 ## Table of Contents
 
