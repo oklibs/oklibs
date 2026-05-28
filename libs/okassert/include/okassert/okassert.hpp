@@ -35,7 +35,7 @@ import std;
  * @return The result of the expression as a bool or `true` if disabled.
  */
 #define OKL_ASSERT(assertSeverity, assertExpression, ...) ( \
-	!OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, assertExpression, __VA_ARGS__) \
+	!OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, __VA_ARGS__) \
 	OKL_WARNING_PUSH_CLANG() \
 	OKL_DISABLE_WARNING_CLANG("-Wunreachable-code") \
 	OKL_SUPPRESS_WARNING_MSVC(4702) \
@@ -61,7 +61,7 @@ import std;
  * @return The result of the expression.
  */
 #define OKL_VERIFY(assertSeverity, assertExpression, ...) ( \
-	OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, assertExpression, __VA_ARGS__) \
+	OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, __VA_ARGS__) \
 	OKL_WARNING_PUSH_CLANG() \
 	OKL_DISABLE_WARNING_CLANG("-Wunreachable-code") \
 	OKL_SUPPRESS_WARNING_MSVC(4702) \
@@ -82,6 +82,25 @@ import std;
 	: (assertExpression) \
 	OKL_WARNING_POP_CLANG() \
 )
+
+/**
+ * Emits a compiler assume hint for the given expression, but only when an assertion
+ * with the supplied severity would be compiled out. Has no effect when an equivalent
+ * assertion would be active.
+ * @param severity @see Okl::EAssertSeverity
+ * @param expression Expression to assume true.
+ */
+#define OKASSERT_ASSUME(assertSeverity, assertExpression) \
+    do { \
+        if constexpr (!OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity)) { \
+            if OKL_IS_NOT_CONSTEVAL { /* MSVC evaluates `__assume()` expressions when executed at compile time. */ \
+                OKL_WARNING_PUSH_MSVC() OKL_DISABLE_WARNING_MSVC(4557) /* "'__assume' contains effect ...". */ \
+                OKL_WARNING_PUSH_CLANG() OKL_DISABLE_WARNING_CLANG("-Wassume") \
+                OKL_ASSUME(static_cast<bool>(assertExpression)); \
+                OKL_WARNING_POP_MSVC() OKL_WARNING_POP_CLANG() \
+            } \
+        } \
+    } while (false)
 
 
 #if !defined(OKASSERT_REPORT_FAILURE_FUNCTION)
@@ -139,7 +158,7 @@ import std;
 		} \
 	}(__VA_OPT__(OKL_VA_CONSUME_1(__VA_ARGS__)))
 
-#define OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, assertExpression, ...) \
+#define OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, ...) \
 	[]() consteval noexcept { \
 		using enum ::Okl::EAssertSeverity; \
 		OKL_STATIC_VAR constexpr auto OKL_ASSERT_severity{::Okl::AssertSeverity{} | assertSeverity}; /* NOLINT(bugprone-macro-parentheses) */ \

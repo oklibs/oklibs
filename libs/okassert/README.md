@@ -18,6 +18,7 @@ messages.
     - [`OKL_ASSERT` vs `OKL_VERIFY`](#okl_assert-vs-okl_verify)
     - [Expression decomposition](#expression-decomposition)
     - [Stacktrace](#stacktrace)
+    - [Assume-hint](#assume-hint)
 - [Customization](#customization)
     - [Failure reporting function](#failure-reporting-function)
     - [Active build severities](#Active-build-severities)
@@ -152,6 +153,39 @@ Types that are not formattable with `fmt` are reported as `?`; raw pointers use`
 When the standard library provides `<stacktrace>` (C++23, `__cpp_lib_stacktrace >= 202011L`), a stacktrace of the
 failing callsite is appended to the failure output automatically. On toolchains without `<stacktrace>` support the
 feature is silently skipped, so no extra configuration is required.
+
+### Assume-hint
+
+`OKASSERT_ASSUME(severity, expression)` emits a compiler hint for `expression` to be true, but only
+when an assertion with the same severity would be compiled out. When an equivalent assertion is active, the macro
+expands to nothing.
+
+Pair it with `OKL_ASSERT` / `OKL_VERIFY` to keep the invariant available to the optimizer in builds where the runtime
+check is disabled:
+
+```c++
+int read(const std::span<const std::byte> buffer, const std::size_t offset)
+{
+    OKL_ASSERT(debug, offset < buffer.size());
+    OKASSERT_ASSUME(debug, offset < buffer.size());
+    return std::to_integer<int>(buffer[offset]);
+}
+```
+
+If we want to prevent drifting, we can wrap them in a user-defined macro so the expression is
+only written once. The trade-off is that the wrapper is a statement, so it can no longer be used as part of an
+expression (the `bool` result of `OKL_ASSERT` is not forwarded):
+
+```c++
+#define MY_ASSERT_ASSUME(severity, expression) \
+    do { \
+        OKL_ASSERT(severity, expression); \
+        OKASSERT_ASSUME(severity, expression); \
+    } while (false)
+```
+
+We can't add the `assume` functionality to `OKL_ASSERT`/`OKL_VERIFY` directly because most compilers will not optimize
+based on an `assume` in a previous lambda.
 
 ## Customization
 
