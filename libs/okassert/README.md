@@ -78,7 +78,7 @@ Exactly one build severity is required, this is checked at compile time.
 
 ### Modifier flags
 
-Combine a build severity with any of these flags using `|`:
+Combine a build-severity with any of these flags using `|`:
 
 * `non_fatal` &mdash; report the failure but do not abort.
 * `log_always` &mdash; always log on failure (non-fatal asserts log once by default).
@@ -108,14 +108,14 @@ Both macros can be used as part of an expression:
 
 `OKL_ASSERT` returns the expression's result contextually converted to `bool`, or `true` when the assertion is disabled.
 
-
 ```c++
 if (!OKL_ASSERT(release | non_fatal, ptr != nullptr, "ptr was null")) {
     return ErrorCode::NullPointer;
 }
 ```
 
-`OKL_VERIFY` returns the expression's result unchanged (preserving its type and value category), both when the assertion is active and when it is disabled.
+`OKL_VERIFY` returns the expression's result unchanged (preserving its type and value category), both when the assertion
+is active and when it is disabled.
 
 ```c++
 if (auto* node = OKL_VERIFY(release | non_fatal, tree.find(key), "missing key {}", key)) {
@@ -324,5 +324,5 @@ function aswell.
 - [ ] add better customization
 - [ ] benchmark compile-times
 - [ ] optimize non-fatal asserts
-- [ ] add option to disable decomposition?
+- [ ] add an option to disable decomposition?
 - [ ] use different error handler for fatal and non-fatal asserts for better codegen?
