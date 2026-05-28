@@ -276,7 +276,7 @@ main:
 </pre>
 </td></tr></table>
 
-[Compiler Explorer](https://godbolt.org/z/591efTafE)
+[Compiler Explorer](https://godbolt.org/z/YfxnKq4en)
 
 The fail branch here could be optimized further, but this would require handling some edge cases differently or trimming
 some features. Each additional runtime format arg will add a move instruction to the fail case, compile time args will
