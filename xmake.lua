@@ -138,9 +138,9 @@ if has_config("setup_toolchains") then
 end
 
 set_policy("build.sanitizer.address", has_config("asan"))
-set_policy("build.sanitizer.thread", has_config("lsan"))
+set_policy("build.sanitizer.leak", has_config("lsan"))
 set_policy("build.sanitizer.memory", has_config("msan"))
-set_policy("build.sanitizer.leak", has_config("tsan"))
+set_policy("build.sanitizer.thread", has_config("tsan"))
 set_policy("build.sanitizer.undefined", has_config("ubsan"))
 
 ----------------------------------------------------------------------------------------------------
