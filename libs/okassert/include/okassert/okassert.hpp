@@ -142,7 +142,10 @@ import std;
 #define OKASSERT_PRIVATE_HANDLE_FAILURE(assertSeverity, assertExpression, ...) \
 	[&](const auto&... OKL_ASSERT_args) OKL_NOINLINE OKL_DEBUG_SECTION { \
 		OKL_STATIC_VAR constexpr ::Okl::StaticAssertData OKL_ASSERT_assert_data{ \
-			OKASSERT_PRIVATE_GET_ASSERT_SEVERITY(assertSeverity), \
+			[]() consteval noexcept { \
+				using enum ::Okl::EAssertSeverity; \
+				return ::Okl::AssertSeverity{} | assertSeverity; \
+			}(), \
 			OKASSERT_LINE, OKASSERT_FILE, OKL_ASSERT_Function.data(), \
 			#assertExpression __VA_OPT__(, OKL_VA_AT_0(__VA_ARGS__))}; \
 	\
@@ -168,12 +171,6 @@ import std;
 		__VA_OPT__(decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
 	\
 		return OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_severity); \
-	}()
-
-#define OKASSERT_PRIVATE_GET_ASSERT_SEVERITY(...) \
-	[]() consteval noexcept { \
-		using enum ::Okl::EAssertSeverity; \
-		return ::Okl::AssertSeverity{} | __VA_ARGS__; \
 	}()
 
 #endif
