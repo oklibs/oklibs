@@ -258,7 +258,7 @@ OKL_NOINLINE OKL_DEBUG_SECTION bool report_assertion_failure(
 		}
 
 		fmt::print(stderr, "{}", fmt::string_view{assert_msg_buffer.data(), assert_msg_buffer.size()});
-		std::ignore = std::fflush(stderr);
+		static_cast<void>(std::fflush(stderr));
 	}
 	OKL_INTERNAL_CATCH(...) {
 		always_abort = true;
