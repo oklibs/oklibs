@@ -18,7 +18,7 @@ set_languages("c++20")
 
 target("oktest", function()
     set_kind(has_config("use_modules") and "moduleonly" or "static")
-    add_deps("okutils", "okbitflag")
+    add_deps("okbase", "okbitflag", "okutils")
     add_packages("fmt", {public = true})
 
     set_configdir("$(builddir)/.configs/oktest")

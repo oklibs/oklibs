@@ -1,7 +1,7 @@
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_CORE_DEFINES_HPP
-#define OKUTILS_CORE_DEFINES_HPP
+#ifndef OKBASE_CORE_DEFINES_HPP
+#define OKBASE_CORE_DEFINES_HPP
 
 // Can't use quotes for the literals here :(
 // https://github.com/llvm/llvm-project/issues/88896

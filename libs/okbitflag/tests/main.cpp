@@ -1,15 +1,15 @@
 ﻿// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
 #if !defined(OKL_USE_MODULES)
+	#include <okbase/types.hpp>
 	#include <okbitflag/okbitflag.hpp>
-	#include <okutils/types.hpp>
 #endif
+#include <okbase/defines.hpp>
 #include <oktest/oktest_short.hpp>
-#include <okutils/defines.hpp>
 
 #if defined(OKL_USE_MODULES)
+import okl.base;
 import okl.bitflag;
-import okl.utils;
 #endif
 
 using TestEnumUnderlyingType = Okl::uint8;

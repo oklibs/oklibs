@@ -1,11 +1,11 @@
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
 #if !defined(OKL_USE_MODULES)
-	#include "okutils/types.hpp"
+	#include "okbase/types.hpp"
 #endif
 
 #if defined(OKL_USE_MODULES)
-import okl.utils;
+import okl.base;
 #endif
 
 static_assert(sizeof(Okl::int8) == 1);

@@ -6,13 +6,13 @@ module;
 #endif
 
 // We need to put all used headers into the global module fragment.
-#include "okutils/defines.hpp"
+#include "okbase/defines.hpp"
 
 // Compilers seem to only properly handle mixed includes and imports for std headers.
+#define OKBASE_TYPES_HPP
+#include "okbase/types.hpp"
 #define OKBITFLAG_OKBITFLAG_HPP
 #include "okbitflag/okbitflag.hpp"
-#define OKUTILS_TYPES_HPP
-#include "okutils/types.hpp"
 #define OKUTILS_UTILS_HPP
 #include "okutils/utils.hpp"
 
@@ -41,6 +41,7 @@ module;
 #include <utility>
 
 export module okl.test;
+import okl.base;
 import okl.bitflag;
 import okl.utils;
 #if defined(OKL_USE_STD_MODULE)

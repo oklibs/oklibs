@@ -3,7 +3,7 @@
 #ifndef OKTEST_CONFIG_HPP
 #define OKTEST_CONFIG_HPP
 
-#include "okutils/core_defines.hpp"
+#include "okbase/core_defines.hpp"
 
 #if !defined(OKTEST_MAX_NESTED_NODES)
 	#define OKTEST_MAX_NESTED_NODES ${MAX_NESTED}

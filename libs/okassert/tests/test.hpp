@@ -8,8 +8,8 @@
 #endif
 #include <fmt/base.h>
 #include <fmt/format.h>
+#include <okbase/defines.hpp>
 #include <oktest/oktest_short.hpp>
-#include <okutils/defines.hpp>
 
 #if !defined(OKL_USE_STD_MODULE)
 	#include <cstdint>

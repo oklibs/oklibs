@@ -5,7 +5,7 @@
 
 #include "oktest/get_runner.hpp"
 #include "oktest/test_context.hpp"
-#include "okutils/defines.hpp"
+#include "okbase/defines.hpp"
 
 namespace Okl::Test::Detail
 {

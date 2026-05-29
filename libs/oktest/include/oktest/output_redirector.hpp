@@ -4,8 +4,8 @@
 #define OKTEST_OUTPUT_REDIRECTOR_HPP
 
 #include "oktest/config.hpp"
-#include "okutils/defines.hpp"
-#include "okutils/types.hpp"
+#include "okbase/defines.hpp"
+#include "okbase/types.hpp"
 
 #include <fmt/os.h>
 

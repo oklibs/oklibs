@@ -3,7 +3,7 @@
 #ifndef OKTEST_DETAIL_EXPRESSION_HPP
 #define OKTEST_DETAIL_EXPRESSION_HPP
 
-#include "okutils/defines.hpp"
+#include "okbase/defines.hpp"
 
 #include <fmt/base.h>
 #include <fmt/format.h>

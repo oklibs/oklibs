@@ -3,7 +3,7 @@
 #ifndef OKUTILS_CONFIG_HPP
 #define OKUTILS_CONFIG_HPP
 
-#include "okutils/core_defines.hpp"
+#include "okbase/core_defines.hpp"
 
 #define OKUTILS_VERSION_MAJOR ${VERSION_MAJOR}
 #define OKUTILS_VERSION_MINOR ${VERSION_MINOR}
@@ -14,28 +14,6 @@
  * @see OKL_ENCODE_VERSION
  */
 #define OKUTILS_VERSION OKL_ENCODE_VERSION(OKUTILS_VERSION_MAJOR, OKUTILS_VERSION_MINOR, OKUTILS_VERSION_PATCH)
-
-#define OKL_BUILD_${MODE} 1
-#if !defined(OKL_BUILD_DEBUG)
-    #define OKL_BUILD_DEBUG 0
-#endif
-#if !defined(OKL_BUILD_RELEASEDBG)
-    #define OKL_BUILD_RELEASEDBG 0
-#endif
-#if !defined(OKL_BUILD_RELEASE)
-    #define OKL_BUILD_RELEASE 0
-#endif
-#if OKL_BUILD_DEBUG + OKL_BUILD_RELEASEDBG + OKL_BUILD_RELEASE != 1
-	#error "okutils: Exactly one build define should be defined to 1!"
-#endif
-
-#if !defined(OKL_INTERNAL_WITH_EXCEPTIONS)
-	#if !defined(__cpp_exceptions) || __cpp_exceptions == 0
-		#define OKL_INTERNAL_WITH_EXCEPTIONS 0
-	#else
-		#define OKL_INTERNAL_WITH_EXCEPTIONS ${WITH_EXCEPTIONS}
-	#endif
-#endif
 
 ${define_export OKUTILS}
 

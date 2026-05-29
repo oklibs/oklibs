@@ -3,7 +3,7 @@
 #ifndef %{LIBNAME}_CONFIG_HPP
 #define %{LIBNAME}_CONFIG_HPP
 
-#include "okutils/defines.hpp"
+#include "okbase/defines.hpp"
 
 namespace Okl {};
 

@@ -3,7 +3,7 @@
 #ifndef OKTEST_THEME_HPP
 #define OKTEST_THEME_HPP
 
-#include "okutils/defines.hpp"
+#include "okbase/defines.hpp"
 
 #include <fmt/color.h>
 

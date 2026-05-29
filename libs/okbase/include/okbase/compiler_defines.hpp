@@ -1,9 +1,9 @@
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_COMPILER_DEFINES_HPP
-#define OKUTILS_COMPILER_DEFINES_HPP
+#ifndef OKBASE_COMPILER_DEFINES_HPP
+#define OKBASE_COMPILER_DEFINES_HPP
 
-#include "okutils/core_defines.hpp"
+#include "okbase/core_defines.hpp"
 
 #if defined(__clang__) && defined(__apple_build_version__)
 	#define OKL_COMPILER_APPLE_CLANG_AVAILABLE 1
@@ -72,7 +72,7 @@
 
 #if (OKL_COMPILER_INTEL_AVAILABLE + OKL_COMPILER_APPLE_CLANG_AVAILABLE + OKL_COMPILER_CLANG_AVAILABLE + \
      OKL_COMPILER_GCC_AVAILABLE + OKL_COMPILER_MSVC_AVAILABLE + OKL_COMPILER_EMSCRIPTEN_AVAILABLE) <= 0
-	#error "okutils: No compiler detected."
+	#error "okbase: No compiler detected."
 #endif
 
 // Detect the main compiler.
@@ -84,7 +84,7 @@
 	#define OKL_DISABLE_WARNING_INTEL(warningName, ...) OKL_DISABLE_WARNING(, warningName)
 #elif OKL_COMPILER_EMSCRIPTEN_AVAILABLE
 	#if OKL_COMPILER_EMSCRIPTEN_VERSION < OKL_ENCODE_VERSION(3, 1, 41)
-		#error "okutils: Requires Emscripten version 3.1.41 or later."
+		#error "okbase: Requires Emscripten version 3.1.41 or later."
 	#endif
 	#define OKL_COMPILER_EMSCRIPTEN 1
 	#define OKL_WARNING_PUSH_EMSCRIPTEN() _Pragma("clang diagnostic push")
@@ -92,7 +92,7 @@
 	#define OKL_DISABLE_WARNING_EMSCRIPTEN(warningName, ...) OKL_DISABLE_WARNING(, warningName)
 #elif OKL_COMPILER_APPLE_CLANG_AVAILABLE
 	#if OKL_COMPILER_APPLE_CLANG_VERSION < OKL_ENCODE_VERSION(16, 0, 0)
-		#error "okutils: Requires Apple Clang version 16.0.0 or later."
+		#error "okbase: Requires Apple Clang version 16.0.0 or later."
 	#endif
 	#define OKL_COMPILER_APPLE_CLANG 1
 	#define OKL_WARNING_PUSH_APPLE_CLANG() _Pragma("clang diagnostic push")
@@ -101,10 +101,10 @@
 #elif OKL_COMPILER_CLANG_AVAILABLE
 	#if defined(OKL_USE_MODULES)
 		#if (OKL_COMPILER_CLANG_VERSION < OKL_ENCODE_VERSION(21, 0, 0))
-			#error "okutils: Modules require Clang version 21.0.0 or later."
+			#error "okbase: Modules require Clang version 21.0.0 or later."
 		#endif
 	#elif OKL_COMPILER_CLANG_VERSION < OKL_ENCODE_VERSION(19, 0, 0)
-		#error "okutils: Requires Clang version 19.0.0 or later."
+		#error "okbase: Requires Clang version 19.0.0 or later."
 	#endif
 	#define OKL_COMPILER_CLANG 1
 	#define OKL_WARNING_PUSH_CLANG() _Pragma("clang diagnostic push")
@@ -113,7 +113,7 @@
 #elif OKL_COMPILER_GCC_AVAILABLE
 	// Modules currently work with GCC 11.0.0 or later.
 	#if OKL_COMPILER_GCC_VERSION < OKL_ENCODE_VERSION(11, 0, 0)
-		#error "okutils: Requires GCC version 11.0.0 or later."
+		#error "okbase: Requires GCC version 11.0.0 or later."
 	#endif
 	#define OKL_COMPILER_GCC 1
 	#define OKL_WARNING_PUSH_GCC() _Pragma("GCC diagnostic push")
@@ -122,10 +122,10 @@
 #elif OKL_COMPILER_MSVC_AVAILABLE
 	#if defined(OKL_USE_MODULES)
 		#if (OKL_COMPILER_MSVC_VERSION < OKL_ENCODE_VERSION(19, 39, 0))
-			#error "okutils: Modules require MSVC version 19.39 (VS 2022 17.10) or later."
+			#error "okbase: Modules require MSVC version 19.39 (VS 2022 17.10) or later."
 		#endif
 	#elif (OKL_COMPILER_MSVC_VERSION < OKL_ENCODE_VERSION(19, 29, 30129))
-		#error "okutils: Requires MSVC version 19.29 (VS 2019 16.11) or later."
+		#error "okbase: Requires MSVC version 19.29 (VS 2019 16.11) or later."
 	#endif
 	#define OKL_COMPILER_MSVC 1
 	#define OKL_WARNING_PUSH_MSVC() __pragma(warning(push))
@@ -174,7 +174,7 @@
 
 #if (OKL_COMPILER_INTEL + OKL_COMPILER_APPLE_CLANG + OKL_COMPILER_CLANG + OKL_COMPILER_GCC + OKL_COMPILER_MSVC + \
      OKL_COMPILER_EMSCRIPTEN) != 1
-	#error "okutils: Exactly one main compiler must be defined."
+	#error "okbase: Exactly one main compiler must be defined."
 #endif
 
 #endif

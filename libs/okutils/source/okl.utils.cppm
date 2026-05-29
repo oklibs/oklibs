@@ -6,23 +6,20 @@ module;
 #endif
 
 // We need to put all used headers into the global module fragment.
-#include "okutils/defines.hpp"
+#include "okbase/defines.hpp"
+
+#define OKBASE_TYPES_HPP
+#include "okbase/types.hpp"
 
 #include <array>
 #include <cassert>
 #include <climits>
-#include <concepts>
-#include <cstdint>
 #include <ranges>
-#include <string_view>
-#include <type_traits>
-#include <utility>
 
 export module okl.utils;
+import okl.base;
 #if defined(OKL_USE_STD_MODULE)
 import std;
 #endif
 
-#include "okutils/concepts.hpp"
-#include "okutils/types.hpp"
 #include "okutils/utils.hpp"

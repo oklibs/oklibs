@@ -3,7 +3,7 @@
 #ifndef %{LIBNAME}_CONFIG_HPP
 #define %{LIBNAME}_CONFIG_HPP
 
-#include "okutils/core_defines.hpp"
+#include "okbase/core_defines.hpp"
 
 #define %{LIBNAME}_VERSION_MAJOR ${VERSION_MAJOR}
 #define %{LIBNAME}_VERSION_MINOR ${VERSION_MINOR}

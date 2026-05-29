@@ -3,12 +3,12 @@
 #ifndef OKBITFLAG_OKBITFLAG_HPP
 #define OKBITFLAG_OKBITFLAG_HPP
 
+#include "okbase/concepts.hpp"
+#include "okbase/defines.hpp"
 #include "okbitflag/detail/reflect_utils.hpp"
-#include "okutils/concepts.hpp"
-#include "okutils/defines.hpp"
-#include "okutils/utils.hpp"
 
 #include <bit>
+#include <climits>
 #include <concepts>
 #include <type_traits>
 #include <utility>
@@ -120,11 +120,13 @@ template<CUnsignedEnum T>
 		UnderlyingType result{};
 		UnderlyingType flag_index{};
 		bool is_valid{true};
+		OKL_SUPPRESS_GSL("bounds.2") // "Only index into arrays using constant expressions".
+		OKL_SUPPRESS_GSL("bounds.4") // "Prefer to use gsl::at()".
 		for (size_t i{Detail::TEnumNameInfo::begin}; i < end; ++i) {
-			if (at(names, i) == '(' && at(names, i + 1) != ')') {
+			if (names[i] == '(' && names[i + 1] != ')') {
 				is_valid = false;
 			}
-			else if (at(names, i) == ',' || i == end - 1) {
+			else if (names[i] == ',' || i == end - 1) {
 				if (is_valid) {
 					OKL_SUPPRESS_GSL("type.1") // "Don't use a static_cast for arithmetic conversions".
 					result |= static_cast<UnderlyingType>(UnderlyingType{1u} << flag_index);
@@ -134,7 +136,7 @@ template<CUnsignedEnum T>
 			}
 		}
 		return Bitflag{static_cast<T>(result)};
-	}(std::make_index_sequence<bit_size_of<T>()>{})};
+	}(std::make_index_sequence<sizeof(T) * CHAR_BIT>{})};
 	return valid_flags;
 }
 

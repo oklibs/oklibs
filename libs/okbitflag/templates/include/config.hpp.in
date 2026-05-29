@@ -3,7 +3,7 @@
 #ifndef OKBITFLAG_CONFIG_HPP
 #define OKBITFLAG_CONFIG_HPP
 
-#include "okutils/core_defines.hpp"
+#include "okbase/core_defines.hpp"
 
 #define OKBITFLAG_VERSION_MAJOR ${VERSION_MAJOR}
 #define OKBITFLAG_VERSION_MINOR ${VERSION_MINOR}

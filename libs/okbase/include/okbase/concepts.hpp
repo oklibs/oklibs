@@ -1,10 +1,10 @@
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_CONCEPTS_HPP
-#define OKUTILS_CONCEPTS_HPP
+#ifndef OKBASE_CONCEPTS_HPP
+#define OKBASE_CONCEPTS_HPP
 
-#include "okutils/defines.hpp"
-#include "okutils/types.hpp"
+#include "okbase/defines.hpp"
+#include "okbase/types.hpp"
 
 #include <concepts>
 #include <string_view>
@@ -68,14 +68,14 @@ concept CInteger = CAnyOf<
     long,
     long long>;
 
-/** 
+/**
  * True if @a T is a signed integer arithmetic type.
  * @see CInteger
  */
 template<class T>
 concept CSignedInteger = CAnyOf<std::remove_cv_t<T>, signed char, short, int, long, long long>;
 
-/** 
+/**
  * True if @a T is an unsigned integer arithmetic type.
  * @see CInteger
  */

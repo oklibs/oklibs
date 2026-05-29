@@ -1,14 +1,14 @@
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_DEFINES_HPP
-#define OKUTILS_DEFINES_HPP
+#ifndef OKBASE_DEFINES_HPP
+#define OKBASE_DEFINES_HPP
 
-#include "okutils/architecture_defines.hpp" // IWYU pragma: export
-#include "okutils/compiler_defines.hpp" // IWYU pragma: export
-#include "okutils/config.hpp" // IWYU pragma: export
-#include "okutils/core_defines.hpp" // IWYU pragma: export
-#include "okutils/macro_utils.hpp" // IWYU pragma: export
-#include "okutils/os_defines.hpp" // IWYU pragma: export
+#include "okbase/architecture_defines.hpp" // IWYU pragma: export
+#include "okbase/compiler_defines.hpp" // IWYU pragma: export
+#include "okbase/config.hpp" // IWYU pragma: export
+#include "okbase/core_defines.hpp" // IWYU pragma: export
+#include "okbase/macro_utils.hpp" // IWYU pragma: export
+#include "okbase/os_defines.hpp" // IWYU pragma: export
 
 #include <type_traits>
 #include <version>
