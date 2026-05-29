@@ -3,6 +3,7 @@
 import("core.base.option")
 import("core.base.semver")
 import("core.base.task")
+import("core.project.config")
 import("core.project.project")
 import("lib.detect.find_file")
 import("lib.detect.find_tool")
@@ -275,6 +276,7 @@ function main()
     end
 
     task.run("config", {}, {disable_dump = false, loadonly = true})
+    assert(not config.get("ccache"), "mull will not work with ccache enabled, please disable it (`xmake f --ccache=n`)!")
     project.lock()
 
     local tests = _get_tests()
