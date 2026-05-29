@@ -48,6 +48,10 @@ jobs:
           - { plat: windows, os: windows-latest, arch: x64, toolchain: msvc, mode: debug, args: --dev=n }
           - { plat: windows, os: windows-latest, arch: x64, toolchain: msvc, mode: releasedbg, args: --dev=n }
 
+          - { plat: macosx, os: macos-latest, arch: arm64, toolchain: xcode, mode: release, compiler: apple-clang-16.0.0, args: --dev=n }
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang-19, mode: release, compiler: llvm-19.0.0, args: --dev=n }
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: gcc-12, mode: release, compiler: gcc-12, args: --dev=n }
+
           - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg, compiler: llvm-21, args: --use_modules=y --dev=n }
 #          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg, compiler: llvm-21, args: --use_modules=y  --use_std_module=y }
 
