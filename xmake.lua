@@ -18,11 +18,11 @@ option("use_std_module", {description = "Use std module instead of includes (req
 
 option("dev", {description = "Enable developer mode.", default = true})
 option("coverage", {description = "Enable code coverage data generation (clang-based only).", default = false})
+option("cxx_version", {description = "C++ language version to use.", default = "c++20", values = {"c++20", "c++23", "c++latest"}})
 option("with_exceptions", {description = "Allow exception usage.", default = true})
 
 -- Not all toolchain packages can detect system installations.
 option("setup_toolchains", {description = "Install required toolchains as packages if not found.", default = false})
-
 option("asan", {description = "Enable address sanitizer if supported.", category = "sanitizers", default = false})
 option("lsan", {description = "Enable leak sanitizer if supported.", category = "sanitizers", default = false})
 option("msan", {description = "Enable memory sanitizer if supported.", category = "sanitizers", default = false})
@@ -41,7 +41,7 @@ add_rules("mode.debug", "mode.releasedbg", "mode.release")
 set_allowedmodes("debug", "releasedbg", "release")
 set_defaultmode("releasedbg")
 
-set_languages("c++20")
+set_languages(get_config("cxx_version"))
 
 set_encodings("utf-8")
 add_cxflags("/Zc:preprocessor", {tools = "cl"})
