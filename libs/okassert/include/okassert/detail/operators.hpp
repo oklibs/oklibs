@@ -3,7 +3,7 @@
 #ifndef OKASSERT_DETAIL_OPERATORS_HPP
 #define OKASSERT_DETAIL_OPERATORS_HPP
 
-#include "okutils/defines.hpp"
+#include "okbase/defines.hpp"
 
 #include <string_view>
 #include <utility>

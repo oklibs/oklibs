@@ -1,9 +1,9 @@
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_OS_DEFINES_HPP
-#define OKUTILS_OS_DEFINES_HPP
+#ifndef OKBASE_OS_DEFINES_HPP
+#define OKBASE_OS_DEFINES_HPP
 
-#include "okutils/core_defines.hpp"
+#include "okbase/core_defines.hpp"
 
 #if defined(__ANDROID__)
 	#define OKL_OS_ANDROID_AVAILABLE 1
@@ -65,7 +65,7 @@
 
 #if (OKL_OS_ANDROID_AVAILABLE + OKL_OS_LINUX_AVAILABLE + OKL_OS_APPLE_AVAILABLE + OKL_OS_WINDOWS_AVAILABLE + \
      OKL_OS_WASM_AVAILABLE) <= 0
-	#error "okutils: No OS detected."
+	#error "okbase: No OS detected."
 #endif
 
 // Detect the main OS.
@@ -98,7 +98,7 @@
 #endif
 
 #if (OKL_OS_ANDROID + OKL_OS_LINUX + OKL_OS_APPLE + OKL_OS_WINDOWS + OKL_OS_WASM) != 1
-	#error "okutils: Exactly one main OS must be defined."
+	#error "okbase: Exactly one main OS must be defined."
 #endif
 
 #endif

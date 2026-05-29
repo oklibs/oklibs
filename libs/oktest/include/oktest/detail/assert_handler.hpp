@@ -7,7 +7,7 @@
 #include "oktest/detail/expression.hpp"
 #include "oktest/get_runner.hpp"
 #include "oktest/test_context.hpp"
-#include "okutils/defines.hpp"
+#include "okbase/defines.hpp"
 
 #include <fmt/format.h>
 

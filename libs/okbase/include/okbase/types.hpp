@@ -1,9 +1,9 @@
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_TYPES_HPP
-#define OKUTILS_TYPES_HPP
+#ifndef OKBASE_TYPES_HPP
+#define OKBASE_TYPES_HPP
 
-#include "okutils/defines.hpp"
+#include "okbase/defines.hpp"
 
 #include <cstdint>
 #include <type_traits>

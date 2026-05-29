@@ -6,7 +6,7 @@
 
 #include <fmt/base.h>
 #include <oktest/oktest_short.hpp>
-#include <okutils/defines.hpp>
+#include <okbase/defines.hpp>
 
 using namespace Okl::Test;
 

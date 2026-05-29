@@ -7,7 +7,7 @@
 	#include "okassert/base.hpp" // IWYU pragma: export
 	#include "okassert/detail/expression.hpp" // IWYU pragma: export
 #endif
-#include "okutils/defines.hpp"
+#include "okbase/defines.hpp"
 
 #include <fmt/base.h>
 

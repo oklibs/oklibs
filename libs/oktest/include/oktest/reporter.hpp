@@ -7,7 +7,7 @@
 #include "oktest/config.hpp"
 #include "oktest/core_types.hpp"
 #include "oktest/test_context.hpp"
-#include "okutils/types.hpp"
+#include "okbase/types.hpp"
 
 #include <fmt/base.h>
 

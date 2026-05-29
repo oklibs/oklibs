@@ -78,7 +78,7 @@ CONSTEXPR_TEST_CASE("Compile-time and runtime test") {
 
 * **C++20 compatible Compiler** (Clang, GCC, MSVC, ...)
 * **[fmt](https://github.com/fmtlib/fmt)** 12.0.0 or above
-* **[okutils](../okutils)**, **[okbitflag](../okbitflag)** (internal dependencies)
+* **[okbase](../okbase)**, **[okbitflag](../okbitflag)**, **[okutils](../okutils)** (internal dependencies)
 
 ## Integration
 

@@ -7,7 +7,7 @@
 #include "oktest/config.hpp"
 #include "oktest/test_context.hpp"
 #include "oktest/theme.hpp"
-#include "okutils/types.hpp"
+#include "okbase/types.hpp"
 
 #include <array>
 

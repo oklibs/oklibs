@@ -3,9 +3,8 @@
 #ifndef OKBITFLAG_DETAIL_REFLECT_UTILS_HPP
 #define OKBITFLAG_DETAIL_REFLECT_UTILS_HPP
 
-#include "okutils/concepts.hpp"
-#include "okutils/types.hpp"
-#include "okutils/utils.hpp"
+#include "okbase/concepts.hpp"
+#include "okbase/types.hpp"
 
 #include <source_location>
 #include <string_view>

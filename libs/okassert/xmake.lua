@@ -18,7 +18,7 @@ set_languages("c++20")
 target("okassert", function()
     set_kind(has_config("use_modules") and "moduleonly" or "headeronly")
     set_group("okassert")
-    add_deps("okutils", "okbitflag")
+    add_deps("okbitflag")
     add_packages("fmt", {public = true})
 
     set_configdir("$(builddir)/.configs/okassert")

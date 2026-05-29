@@ -1,0 +1,42 @@
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
+
+#ifndef OKBASE_CONFIG_HPP
+#define OKBASE_CONFIG_HPP
+
+#include "okbase/core_defines.hpp"
+
+#define OKBASE_VERSION_MAJOR ${VERSION_MAJOR}
+#define OKBASE_VERSION_MINOR ${VERSION_MINOR}
+#define OKBASE_VERSION_PATCH ${VERSION_ALTER}
+
+/**
+ * Encoded version of okbase as 'MajorMinorPatch'.
+ * @see OKL_ENCODE_VERSION
+ */
+#define OKBASE_VERSION OKL_ENCODE_VERSION(OKBASE_VERSION_MAJOR, OKBASE_VERSION_MINOR, OKBASE_VERSION_PATCH)
+
+#define OKL_BUILD_${MODE} 1
+#if !defined(OKL_BUILD_DEBUG)
+    #define OKL_BUILD_DEBUG 0
+#endif
+#if !defined(OKL_BUILD_RELEASEDBG)
+    #define OKL_BUILD_RELEASEDBG 0
+#endif
+#if !defined(OKL_BUILD_RELEASE)
+    #define OKL_BUILD_RELEASE 0
+#endif
+#if OKL_BUILD_DEBUG + OKL_BUILD_RELEASEDBG + OKL_BUILD_RELEASE != 1
+	#error "okbase: Exactly one build define should be defined to 1!"
+#endif
+
+#if !defined(OKL_INTERNAL_WITH_EXCEPTIONS)
+	#if !defined(__cpp_exceptions) || __cpp_exceptions == 0
+		#define OKL_INTERNAL_WITH_EXCEPTIONS 0
+	#else
+		#define OKL_INTERNAL_WITH_EXCEPTIONS ${WITH_EXCEPTIONS}
+	#endif
+#endif
+
+${define_export OKBASE}
+
+#endif

@@ -1,9 +1,9 @@
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_ARCHITECTURE_DEFINES_HPP
-#define OKUTILS_ARCHITECTURE_DEFINES_HPP
+#ifndef OKBASE_ARCHITECTURE_DEFINES_HPP
+#define OKBASE_ARCHITECTURE_DEFINES_HPP
 
-#include "okutils/core_defines.hpp"
+#include "okbase/core_defines.hpp"
 
 #if defined(__ARM_ARCH) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB) || defined(_M_ARM) || \
     defined(__arm__) || defined(__arm64) || defined(__thumb__) || defined(_M_ARM64) || defined(__aarch64__) || \
@@ -80,7 +80,7 @@
 #endif
 
 #if (OKL_ARCH_ARM_AVAILABLE + OKL_ARCH_X86_AVAILABLE + OKL_ARCH_RISCV_AVAILABLE + OKL_ARCH_WASM_AVAILABLE) <= 0
-	#error "okutils: No architecture detected."
+	#error "okbase: No architecture detected."
 #endif
 
 // Detect the main architecture.

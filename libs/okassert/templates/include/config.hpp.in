@@ -3,7 +3,7 @@
 #ifndef OKASSERT_CONFIG_HPP
 #define OKASSERT_CONFIG_HPP
 
-#include "okutils/core_defines.hpp"
+#include "okbase/core_defines.hpp"
 
 #define OKASSERT_VERSION_MAJOR ${VERSION_MAJOR}
 #define OKASSERT_VERSION_MINOR ${VERSION_MINOR}

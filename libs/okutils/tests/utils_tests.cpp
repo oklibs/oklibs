@@ -1,17 +1,18 @@
 // Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
 #if !defined(OKL_USE_MODULES)
-	#include <okutils/types.hpp>
+	#include <okbase/types.hpp>
 	#include <okutils/utils.hpp>
 #endif
+#include <oktest/oktest_short.hpp>
 
 #if !defined(OKL_USE_STD_MODULE)
 	#include <array>
 	#include <vector>
 #endif
 
-#include <oktest/oktest_short.hpp>
 #if defined(OKL_USE_MODULES)
+import okl.base;
 import okl.utils;
 #endif
 #if defined(OKL_USE_STD_MODULE)

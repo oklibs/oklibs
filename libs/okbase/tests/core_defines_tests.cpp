@@ -1,13 +1,13 @@
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
 #if !defined(OKL_USE_MODULES)
-	#include <okutils/core_defines.hpp>
-	#include <okutils/types.hpp>
+	#include <okbase/core_defines.hpp>
+	#include <okbase/types.hpp>
 #endif
 
 #include <oktest/oktest_short.hpp>
 #if defined(OKL_USE_MODULES)
-import okl.utils;
+import okl.base;
 #endif
 
 CONSTEXPR_TEST_CASE("version_encoding")

@@ -3,8 +3,8 @@
 #ifndef OKUTILS_UTILS_HPP
 #define OKUTILS_UTILS_HPP
 
-#include "okutils/defines.hpp"
-#include "okutils/types.hpp"
+#include "okbase/defines.hpp"
+#include "okbase/types.hpp"
 
 #include <array>
 #include <cassert>

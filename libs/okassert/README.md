@@ -32,7 +32,7 @@ messages.
 
 * **C++20 compatible Compiler** (Clang, GCC, MSVC, ...)
 * **[fmt](https://github.com/fmtlib/fmt)** 12.0.0 or above
-* **[okutils](../okutils)**, **[okbitflag](../okbitflag)** (internal dependencies)
+* **[okbase](../okbase)**, **[okbitflag](../okbitflag)** (internal dependencies)
 
 ## Integration
 
@@ -214,7 +214,7 @@ behavior (whether to abort) is the reporter's responsibility, see `Okl::Detail::
 
 `OKASSERT_SHOULD_DO_ASSERT(severity)` decides whether an assertion is compiled in. It defaults to
 `::Okl::should_do_assert(severity)`, which gates `debug`/`releasedbg`/`release` against the build-mode macros from
-okutils. Define it before including the header to replace the policy entirely.
+okbase. Define it before including the header to replace the policy entirely.
 
 The macro must expand to a constant expression (it is evaluated inside `if constexpr` / `consteval`). It receives a
 `Okl::AssertSeverity` so any of the flag predicates in [base.hpp](include/okassert/base.hpp) are available.

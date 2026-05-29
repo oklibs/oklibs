@@ -4,9 +4,9 @@
 #define OKASSERT_BASE_HPP
 
 #include "okassert/config.hpp"
+#include "okbase/defines.hpp"
+#include "okbase/types.hpp"
 #include "okbitflag/okbitflag.hpp"
-#include "okutils/defines.hpp"
-#include "okutils/types.hpp"
 
 #include <fmt/base.h>
 #include <fmt/color.h>

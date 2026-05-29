@@ -6,8 +6,8 @@
 #include "oktest/core_types.hpp"
 #include "oktest/test_context.hpp"
 #include "oktest/theme.hpp"
-#include "okutils/defines.hpp"
-#include "okutils/types.hpp"
+#include "okbase/defines.hpp"
+#include "okbase/types.hpp"
 
 #include <fmt/base.h>
 #include <fmt/color.h>

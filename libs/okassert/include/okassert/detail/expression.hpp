@@ -4,7 +4,7 @@
 #define OKASSERT_DETAIL_EXPRESSION_HPP
 
 #include "okassert/detail/operators.hpp"
-#include "okutils/defines.hpp"
+#include "okbase/defines.hpp"
 
 #include <fmt/base.h>
 #include <fmt/format.h>
