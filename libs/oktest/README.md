@@ -86,7 +86,14 @@ CONSTEXPR_TEST_CASE("Compile-time and runtime test") {
 
 ```lua
 add_repositories("okl-repo https://github.com/oklibs/xmake-repo")
-add_requires("oktest")
+add_requires("oklibs")
+```
+
+Or to only enable `oktest`
+
+```lua
+add_repositories("okl-repo https://github.com/oklibs/xmake-repo")
+add_requires("oklibs", {configs = {oktest = true}})
 ```
 
 ## Command-line options

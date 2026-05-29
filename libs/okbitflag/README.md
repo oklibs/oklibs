@@ -30,5 +30,12 @@ flags.remove_flags(MyFlags::FlagA);
 
 ```lua
 add_repositories("okl-repo https://github.com/oklibs/xmake-repo")
-add_requires("okbitflag")
+add_requires("oklibs")
+```
+
+Or to only enable `okbitflag`
+
+```lua
+add_repositories("okl-repo https://github.com/oklibs/xmake-repo")
+add_requires("oklibs", {configs = {okbitflag = true}})
 ```
