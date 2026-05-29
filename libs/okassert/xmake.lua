@@ -8,11 +8,6 @@ set_version("0.1.0")
 option("assert_color_mode", {description = "Color output mode for assertion messages.", default = "detect", values = {"detect", "always", "never"}})
 
 ----------------------------------------------------------------------------------------------------
---- Build settings
-
-set_languages("c++20")
-
-----------------------------------------------------------------------------------------------------
 --- Targets
 
 target("okassert", function()

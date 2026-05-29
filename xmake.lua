@@ -41,6 +41,8 @@ add_rules("mode.debug", "mode.releasedbg", "mode.release")
 set_allowedmodes("debug", "releasedbg", "release")
 set_defaultmode("releasedbg")
 
+set_languages("c++20")
+
 set_encodings("utf-8")
 add_cxflags("/Zc:preprocessor", {tools = "cl"})
 

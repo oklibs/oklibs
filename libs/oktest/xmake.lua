@@ -9,11 +9,6 @@ option("test_max_nested", {description = "Maximum nesting level for test cases a
 option("test_link_main", {description = "Provide a main function in a separate source file.", default = true})
 
 ----------------------------------------------------------------------------------------------------
---- Build settings
-
-set_languages("c++20")
-
-----------------------------------------------------------------------------------------------------
 --- Targets
 
 target("oktest", function()
