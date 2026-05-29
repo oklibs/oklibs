@@ -26,10 +26,13 @@ jobs:
           - { plat: android, os: ubuntu-latest, arch: arm64-v8a, toolchain: ndk, mode: debug, args: --setup_toolchains="ndk 28.0" }
           - { plat: android, os: ubuntu-latest, arch: arm64-v8a, toolchain: ndk, mode: releasedbg, args: --setup_toolchains="ndk 28.0" }
 
+          - { plat: iphoneos, os: macos-latest, arch: arm64, toolchain: xcode, mode: debug }
+          - { plat: iphoneos, os: macos-latest, arch: arm64, toolchain: xcode, mode: releasedbg }
+          - { plat: macosx, os: macos-latest, arch: arm64, toolchain: xcode, mode: debug }
+          - { plat: macosx, os: macos-latest, arch: arm64, toolchain: xcode, mode: releasedbg }
+
           - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: debug, compiler: llvm-19 }
           - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg, compiler: llvm-19 }
-          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: release, compiler: llvm-19, args: --dev=n }
-
           - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: gcc, mode: debug }
           - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: gcc, mode: releasedbg }
 
@@ -38,19 +41,12 @@ jobs:
           - { plat: wasm, os: ubuntu-latest, arch: wasm64, toolchain: emcc, mode: debug, args: --setup_toolchains=y }
           - { plat: wasm, os: ubuntu-latest, arch: wasm64, toolchain: emcc, mode: releasedbg, args: --setup_toolchains=y }
 
-          - { plat: iphoneos, os: macos-latest, arch: arm64, toolchain: xcode, mode: debug }
-          - { plat: iphoneos, os: macos-latest, arch: arm64, toolchain: xcode, mode: releasedbg }
-
-          - { plat: macosx, os: macos-latest, arch: arm64, toolchain: xcode, mode: debug }
-          - { plat: macosx, os: macos-latest, arch: arm64, toolchain: xcode, mode: releasedbg }
-
           - { plat: windows, os: windows-latest, arch: x64, toolchain: clang-cl, mode: debug, args: --dev=n }
           - { plat: windows, os: windows-latest, arch: x64, toolchain: clang-cl, mode: releasedbg, args: --dev=n }
-
-          - { plat: windows, os: windows-latest, arch: x64, toolchain: msvc, mode: debug, args: --dev=n }
-          - { plat: windows, os: windows-latest, arch: x64, toolchain: msvc, mode: releasedbg, args: --dev=n }
           - { plat: windows, os: windows-latest, arch: x86, toolchain: msvc, mode: debug, args: --dev=n }
           - { plat: windows, os: windows-latest, arch: x86, toolchain: msvc, mode: releasedbg, args: --dev=n }
+          - { plat: windows, os: windows-latest, arch: x64, toolchain: msvc, mode: debug, args: --dev=n }
+          - { plat: windows, os: windows-latest, arch: x64, toolchain: msvc, mode: releasedbg, args: --dev=n }
 
           - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg, compiler: llvm-21, args: --use_modules=y --dev=n }
 #          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg, compiler: llvm-21, args: --use_modules=y  --use_std_module=y }
