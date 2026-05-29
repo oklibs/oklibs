@@ -168,7 +168,7 @@ import std;
 	\
 		static_assert(::Okl::has_unique_build_severity(OKL_ASSERT_severity), \
 			"OKL_ASSERT/_VERIFY requires exactly one build severity: disabled, debug, releasedbg, or release."); \
-		__VA_OPT__(decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
+		__VA_OPT__(OKL_SUPPRESS_GSL("f.6", "compile-time only") decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
 	\
 		return OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_severity); \
 	}()
