@@ -13,6 +13,7 @@
 #include <array>
 #include <iostream>
 #include <optional>
+#include <span>
 #include <ranges>
 #include <string_view>
 

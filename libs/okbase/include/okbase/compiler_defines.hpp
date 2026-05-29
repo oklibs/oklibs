@@ -111,8 +111,8 @@
 	#define OKL_WARNING_POP_CLANG() _Pragma("clang diagnostic pop")
 	#define OKL_DISABLE_WARNING_CLANG(warningName, ...) OKL_DISABLE_WARNING(, warningName)
 #elif OKL_COMPILER_GCC_AVAILABLE
-	// Modules currently work with GCC 11.0.0 or later.
-	#if OKL_COMPILER_GCC_VERSION < OKL_ENCODE_VERSION(11, 0, 0)
+	// Modules currently work with GCC 12.0.0 or later.
+	#if OKL_COMPILER_GCC_VERSION < OKL_ENCODE_VERSION(12, 0, 0)
 		#error "okbase: Requires GCC version 11.0.0 or later."
 	#endif
 	#define OKL_COMPILER_GCC 1
