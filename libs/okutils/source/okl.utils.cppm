@@ -17,6 +17,7 @@ module;
 
 #include <array>
 #include <climits>
+#include <cmath>
 #include <concepts>
 #include <limits>
 #include <ranges>
@@ -32,5 +33,6 @@ import std;
 #endif
 
 #include "okutils/math.hpp"
+#include "okutils/safe_casts.hpp"
 #include "okutils/type_traits.hpp"
 #include "okutils/utils.hpp"
