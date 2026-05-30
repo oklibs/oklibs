@@ -12,7 +12,6 @@ module;
 #include "okbase/types.hpp"
 
 #include <array>
-#include <cassert>
 #include <climits>
 #include <ranges>
 
