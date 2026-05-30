@@ -20,6 +20,9 @@ module;
 #include <concepts>
 #include <limits>
 #include <ranges>
+#include <tuple>
+#include <type_traits>
+#include <utility>
 
 export module okl.utils;
 import okl.assert;
@@ -29,4 +32,5 @@ import std;
 #endif
 
 #include "okutils/math.hpp"
+#include "okutils/type_traits.hpp"
 #include "okutils/utils.hpp"
