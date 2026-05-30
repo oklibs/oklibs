@@ -48,7 +48,7 @@ import std;
 	\
 		return false; \
 	OKL_WARNING_POP_CLANG() \
-	}.operator()<::std::to_array(OKASSERT_FUNCTION)>((::Okl::Detail::ExpressionExtractor{} <=> assertExpression)) /* NOLINT(bugprone-chained-comparison) */ \
+	}.template operator()<::std::to_array(OKASSERT_FUNCTION)>((::Okl::Detail::ExpressionExtractor{} <=> assertExpression)) /* NOLINT(bugprone-chained-comparison) */ \
 )
 
 /**
@@ -75,7 +75,7 @@ import std;
 	\
 		return OKL_ASSERT_result; \
 	OKL_WARNING_POP_CLANG() \
-	}.operator()<::std::to_array(OKASSERT_FUNCTION)>((::Okl::Detail::ExpressionExtractor{} <=> assertExpression)) \
+	}.template operator()<::std::to_array(OKASSERT_FUNCTION)>((::Okl::Detail::ExpressionExtractor{} <=> assertExpression)) \
 	OKL_WARNING_PUSH_CLANG() \
 	OKL_DISABLE_WARNING_CLANG("-Wunreachable-code") \
 	OKL_SUPPRESS_WARNING_MSVC(4702) \
