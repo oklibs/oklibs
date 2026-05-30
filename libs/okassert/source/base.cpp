@@ -99,7 +99,7 @@ bool is_debugger_present() noexcept(OKL_OS_ANDROID + OKL_OS_LINUX + OKL_OS_APPLE
 #endif
 }
 
-OKL_NOINLINE OKL_DEBUG_SECTION bool report_assertion_failure(
+OKL_NOINLINE OKASSERT_PRIVATE_DEBUG_SECTION bool report_assertion_failure(
     const StaticAssertData& assert_data, const fmt::format_args expr_args, const fmt::format_args message_args)
 {
 	static const auto text_style_error{assert_error_text_style()};

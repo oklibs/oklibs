@@ -14,6 +14,12 @@
 #include <string_view>
 #include <utility>
 
+#if OKL_COMPILER_MSVC && defined(OKL_USE_MODULES)
+	#define OKASSERT_PRIVATE_DEBUG_SECTION
+#else
+	#define OKASSERT_PRIVATE_DEBUG_SECTION OKL_DEBUG_SECTION
+#endif
+
 namespace Okl
 {
 OKL_EXPORT_BEGIN
@@ -67,7 +73,7 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 
 [[nodiscard]] bool is_debugger_present() noexcept(OKL_OS_ANDROID + OKL_OS_LINUX + OKL_OS_APPLE == 0);
 
-[[nodiscard]] OKL_NOINLINE OKL_DEBUG_SECTION bool
+[[nodiscard]] OKL_NOINLINE OKASSERT_PRIVATE_DEBUG_SECTION bool
 report_assertion_failure(const StaticAssertData&, fmt::format_args expr_args, fmt::format_args message_args);
 } // namespace Detail
 OKL_EXPORT_END
