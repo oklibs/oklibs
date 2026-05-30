@@ -13,6 +13,8 @@ module;
 
 #include <array>
 #include <climits>
+#include <concepts>
+#include <limits>
 #include <ranges>
 
 export module okl.utils;
@@ -21,4 +23,5 @@ import okl.base;
 import std;
 #endif
 
+#include "okutils/math.hpp"
 #include "okutils/utils.hpp"

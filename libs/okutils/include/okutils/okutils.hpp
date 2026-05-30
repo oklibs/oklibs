@@ -3,6 +3,7 @@
 #ifndef OKUTILS_OKUTILS_HPP
 #define OKUTILS_OKUTILS_HPP
 
+#include "okutils/math.hpp"
 #include "okutils/utils.hpp"
 
 #endif
