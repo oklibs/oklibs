@@ -2,31 +2,52 @@
 
 #include "oktest/logger.hpp"
 
+#include "okbase/defines.hpp"
+#include "okbase/types.hpp"
 #include "oktest/cli.hpp"
 #include "oktest/core_types.hpp"
 #include "oktest/test_context.hpp"
 #include "oktest/theme.hpp"
-#include "okbase/defines.hpp"
-#include "okbase/types.hpp"
 
 #include <fmt/base.h>
 #include <fmt/color.h>
 #include <fmt/format.h>
 #include <fmt/ranges.h>
 
+#if OKL_OS_WINDOWS
+	#include <io.h>
+#else
+	#include <unistd.h>
+#endif
+
 #include <cstdint>
+#include <cstdio>
 #include <iterator>
 #include <ranges>
 #include <string_view>
 
 namespace Okl::Test
 {
+[[nodiscard]] static Theme auto_theme() noexcept
+{
+	const bool is_tty{
+#if OKL_OS_WINDOWS
+	    _isatty(_fileno(stdout)) != 0
+#else
+	    ::isatty(::fileno(stdout)) != 0
+#endif
+	};
+	return is_tty ? Themes::default_theme : Themes::no_color;
+}
+
 void Logger::update_configs(const CliArgs& cli_args)
 {
 	const auto theme_arg{cli_args.get("theme")};
 	if (theme_arg.has_value()) {
 		const auto value{theme_arg.value()};
-		if (value == "auto") {}
+		if (value == "auto") {
+			m_config.theme = auto_theme();
+		}
 		else if (value == "no_color" || value == "no-color") {
 			m_config.theme = Themes::no_color;
 		}
