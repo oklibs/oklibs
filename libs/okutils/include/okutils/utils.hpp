@@ -3,11 +3,11 @@
 #ifndef OKUTILS_UTILS_HPP
 #define OKUTILS_UTILS_HPP
 
+#include "okassert/okassert.hpp"
 #include "okbase/defines.hpp"
 #include "okbase/types.hpp"
 
 #include <array>
-#include <cassert>
 #include <climits>
 #include <ranges>
 
@@ -68,7 +68,8 @@ constexpr auto size_of_n(const size_t count) noexcept -> size_t
 template<std::ranges::range RangeT>
 constexpr auto at(RangeT&& range, const std::ranges::range_size_t<RangeT> index) -> decltype(auto)
 {
-	assert(index >= 0 && index < std::ranges::size(range));
+	OKL_ASSERT(debug, (index >= 0 && index < std::ranges::size(range)), "index = {}, ranges.size = {}", index,
+	           std::ranges::size(range));
 
 	OKL_SUPPRESS_GSL("bounds.2") // "Only index into arrays using constant expressions".
 	OKL_SUPPRESS_GSL("bounds.4") // "Prefer to use gsl::at()".
