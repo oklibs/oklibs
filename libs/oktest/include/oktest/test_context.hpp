@@ -132,7 +132,7 @@ constexpr bool TestContext<MaxDepth>::next_section()
 
 			OKL_SUPPRESS_GSL("type.1") // "Don't use a static_cast for arithmetic conversions".
 			const size_t offset{depth_index + 1};
-			std::ranges::fill(std::span{node_counts}.first(offset), 0);
+			std::ranges::fill(std::span{node_counts}.first(offset), size_t{0});
 
 			return true;
 		}
