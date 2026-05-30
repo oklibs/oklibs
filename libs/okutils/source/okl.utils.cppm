@@ -6,8 +6,12 @@ module;
 #endif
 
 // We need to put all used headers into the global module fragment.
+#define OKASSERT_PRIVATE_NO_IMPORT
+#include "okassert/okassert.hpp"
 #include "okbase/defines.hpp"
 
+#define OKBASE_CONCEPTS_HPP
+#include "okbase/concepts.hpp"
 #define OKBASE_TYPES_HPP
 #include "okbase/types.hpp"
 
@@ -18,6 +22,7 @@ module;
 #include <ranges>
 
 export module okl.utils;
+import okl.assert;
 import okl.base;
 #if defined(OKL_USE_STD_MODULE)
 import std;
