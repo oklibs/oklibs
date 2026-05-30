@@ -55,3 +55,7 @@ import std;
 #include "okassert/base.hpp"
 #include "okassert/detail/expression.hpp"
 #include "okassert/detail/operators.hpp"
+
+module :private;
+
+#include "base.cpp"

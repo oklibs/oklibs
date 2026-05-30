@@ -11,7 +11,7 @@ option("assert_color_mode", {description = "Color output mode for assertion mess
 --- Targets
 
 target("okassert", function()
-    set_kind(has_config("use_modules") and "moduleonly" or "headeronly")
+    set_kind(has_config("use_modules") and "moduleonly" or "static")
     set_group("okassert")
     add_deps("okbitflag")
     add_packages("fmt", {public = true})
@@ -24,8 +24,10 @@ target("okassert", function()
     add_includedirs("include", "$(builddir)/.configs/okassert/include", {public = true})
     add_headerfiles("include/(**.hpp)", "$(builddir)/.configs/okassert/include/(okassert/**.hpp)")
     if has_config("use_modules") then
+        add_extrafiles("source/**.cpp")
         add_files("source/okl.*.cppm")
     else
+        add_files("source/**.cpp")
         add_extrafiles("source/okl.*.cppm")
     end
 
@@ -43,8 +45,8 @@ target("okassert_tests", function()
         add_tests("fail_compile_" .. path.basename(testfile), {kind = "binary", files = testfile, build_should_fail = true})
     end
     if not is_plat("wasm") then
-        add_tests("output_assert", {kind = "binary", files = "tests/output/assert.cpp", defines = "OKASSERT_COLOR_MODE=0", runargs = {"--theme=no_color"}, pass_output_files = "tests/output/outputs/assert.txt", build_should_pass = is_cross()})
-        add_tests("output_verify", {kind = "binary", files = "tests/output/verify.cpp", defines = "OKASSERT_COLOR_MODE=0", runargs = {"--theme=no_color"}, pass_output_files = "tests/output/outputs/verify.txt", build_should_pass = is_cross()})
+        add_tests("output_assert", {kind = "binary", files = "tests/output/assert.cpp", runargs = {"--theme=no_color"}, pass_output_files = "tests/output/outputs/assert.txt", build_should_pass = is_cross()})
+        add_tests("output_verify", {kind = "binary", files = "tests/output/verify.cpp", runargs = {"--theme=no_color"}, pass_output_files = "tests/output/outputs/verify.txt", build_should_pass = is_cross()})
     end
     add_tests("assert", {kind = "binary", files = "tests/assert.cpp", build_should_pass = is_cross()})
     add_tests("verify", {kind = "binary", files = "tests/verify.cpp", build_should_pass = is_cross()})
