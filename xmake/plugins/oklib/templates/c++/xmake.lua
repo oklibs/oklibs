@@ -22,7 +22,7 @@ target("%{libname}", function()
         add_extrafiles("source/okl.*.cppm")
     end
 
-    add_extrafiles("*|xmake.lua", "templates/**", "tests/**")
+    add_extrafiles("*|xmake.lua", "templates/**")
 end)
 
 target("%{libname}_tests", function()
@@ -30,5 +30,7 @@ target("%{libname}_tests", function()
     set_group("%{libname}")
     add_deps("okbase", "%{libname}", "oktest")
     add_extrafiles("tests/**")
-    add_tests("tests", {kind = "binary", files = "tests/**.cpp", build_should_pass = is_cross()})
+
+    set_values("windows.subsystem", "console")
+    add_tests("tests", {kind = "binary", files = "tests/*.cpp", build_should_pass = is_cross()})
 end)
