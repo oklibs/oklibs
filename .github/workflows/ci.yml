@@ -57,8 +57,8 @@ jobs:
           - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg, compiler: llvm-21, args: --use_modules=y --dev=n }
 #          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: releasedbg, compiler: llvm-21, args: --use_modules=y  --use_std_module=y }
 
-          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: debug, compiler: llvm-19, san: asan, args: --asan=y --lsan=y --ubsan=y }
-          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: debug, compiler: llvm-19, san: tsan, args: --tsan=y }
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: debug, compiler: llvm-19, args: --asan=y --lsan=y --ubsan=y }
+          - { plat: linux, os: ubuntu-latest, arch: x86_64, toolchain: clang, mode: debug, compiler: llvm-19, args: --tsan=y }
 
     steps:
       - name: Checkout
@@ -72,9 +72,9 @@ jobs:
           xmake-version: 3.0.7
           actions-cache-folder: .xmake-cache
           package-cache: true
-          package-cache-key: ${{ matrix.plat }}_${{ matrix.arch }}_${{ matrix.toolchain }}_${{ matrix.mode }}_${{ matrix.san }}
+          package-cache-key: ${{ join(matrix.*, '_') }}
           build-cache: true
-          build-cache-key: ${{ matrix.plat }}_${{ matrix.arch }}_${{ matrix.toolchain }}_${{ matrix.mode }}_${{ matrix.san }}
+          build-cache-key: ${{ join(matrix.*, '_') }}
 
       - name: Setup Cpp
         if: matrix.compiler
