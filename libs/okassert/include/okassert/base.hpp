@@ -97,12 +97,15 @@ constexpr std::string severity_to_string(const AssertSeverity severity)
 	     {EAssertSeverity::release, "|release"}}};
 
 	std::string result{severity.has_flags(EAssertSeverity::non_fatal) ? "non-fatal" : "fatal"};
+	OKL_WARNING_PUSH_GCC()
+	OKL_DISABLE_WARNING_GCC("-Wrange-loop-construct", "gcc, clang, and msvc disagree on this.")
 	OKL_SUPPRESS_GSL("gsl.view") // "Do not assign gsl::span or std::string_view to a reference".
 	for (const auto [flag, flag_name] : flags) {
 		if (severity.has_flags(flag)) {
 			result += flag_name;
 		}
 	}
+	OKL_WARNING_POP_GCC()
 	return result;
 }
 
