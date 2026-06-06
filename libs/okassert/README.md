@@ -152,22 +152,25 @@ feature is silently skipped, so no extra configuration is required.
 
 ### Failure reporting function
 
-Define `OKASSERT_REPORT_FAILURE_FUNCTION` before including `okassert.hpp` to replace the default reporter (which formats
-to `stderr` and aborts on fatal failures). The macro is called as
-`OKASSERT_REPORT_FAILURE_FUNCTION(assert_data, expr_args, message_args)`:
+Define `OKASSERT_REPORT_FAILURE_FUNCTION` before including `okassert.hpp` to replace the default reporter  (which
+applies log-once gating, formats to `stderr`, and aborts on fatal failures). The macro is called as
+`OKASSERT_REPORT_FAILURE_FUNCTION(assert_data, executed, expr_args, message_args)`:
 
 * `assert_data` &mdash; `const Okl::StaticAssertData&` with severity, file, line, function, expression string, and the
   unformatted message.
+* `executed` &mdash; `std::atomic<bool>*` shared by this callsite, or `nullptr` when the assertion should always be
+  reported. When non-null, the handler is responsible for reporting only the first failure (see the reference
+  implementation).
 * `expr_args` &mdash; `fmt::format_args` for the decomposed expression (`lhs`, `op`, `rhs`, or just the raw expression).
 * `message_args` &mdash; `fmt::format_args` for the user message arguments. Use with
   `fmt::vformat_to(out, assert_data.message, message_args)`.
 
-The function must return `bool`: return `true` to trigger a debug break at the callsite, `false` to skip it. Fatal
-behavior (whether to abort) is the reporter's responsibility, see `Okl::Detail::report_assertion_failure` in
-[base.hpp](include/okassert/base.hpp) for a reference implementation.
+The function must return `bool`: return `true` to trigger a debug break at the callsite, `false` to skip it. Log-once
+gating and fatal behavior (whether to abort) are the reporter's responsibility, see `Okl::Detail::report_assertion_failure`
+in [base.hpp](include/okassert/base.hpp) for a reference implementation.
 
 ```c++
-#define OKASSERT_REPORT_FAILURE_FUNCTION(data, expr_args, msg_args) my_reporter(data, expr_args, msg_args)
+#define OKASSERT_REPORT_FAILURE_FUNCTION(data, executed, expr_args, msg_args) my_handler(data, executed, expr_args, msg_args)
 #include <okassert/okassert.hpp>
 ```
 
@@ -280,10 +283,10 @@ function aswell.
 
 ## ToDos
 
+- [x] optimize non-fatal asserts
 - [ ] add tags (setting enabled severity per library or module)
 - [ ] add better color schemes
 - [ ] add better customization
 - [ ] benchmark compile-times
-- [ ] optimize non-fatal asserts
 - [ ] add an option to disable decomposition?
 - [ ] use different error handler for fatal and non-fatal asserts for better codegen?

@@ -100,8 +100,16 @@ bool is_debugger_present() noexcept(OKL_OS_ANDROID + OKL_OS_LINUX + OKL_OS_APPLE
 }
 
 OKL_NOINLINE OKASSERT_PRIVATE_DEBUG_SECTION bool report_assertion_failure(
-    const StaticAssertData& assert_data, const fmt::format_args expr_args, const fmt::format_args message_args)
+    const StaticAssertData& assert_data,
+    std::atomic<bool>* executed,
+    const fmt::format_args expr_args,
+    const fmt::format_args message_args)
 {
+	if (executed != nullptr &&
+	    (executed->load(std::memory_order_relaxed) || executed->exchange(true, std::memory_order_relaxed))) {
+		return false;
+	}
+
 	static const auto text_style_error{assert_error_text_style()};
 	bool always_abort{false};
 

@@ -12,6 +12,7 @@
 #include <oktest/oktest_short.hpp>
 
 #if !defined(OKL_USE_STD_MODULE)
+	#include <atomic>
 	#include <cstdint>
 	#include <string>
 #endif
@@ -52,9 +53,15 @@ static CapturedReport& last() noexcept
 static void reset() noexcept { last() = CapturedReport{}; }
 
 static bool capture(const Okl::StaticAssertData& assert_data,
+                    std::atomic<bool>* executed,
                     const fmt::format_args expr_args,
                     const fmt::format_args message_args)
 {
+	if (executed != nullptr &&
+	    (executed->load(std::memory_order_relaxed) || executed->exchange(true, std::memory_order_relaxed))) {
+		return false;
+	}
+
 	auto& data{last()};
 	data.severity = assert_data.severity;
 	data.line = assert_data.line;

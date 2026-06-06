@@ -45,22 +45,9 @@ import std;
 	\
 		if constexpr (OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_assert_data.severity)) { \
 			[&](const auto OKL_ASSERT_expression) { \
-				if (OKL_ASSERT_expression.eval()) [[likely]] { \
-					return; \
+				if (!OKL_ASSERT_expression.eval()) [[unlikely]] { \
+					OKASSERT_PRIVATE_HANDLE_FAILURE(__VA_ARGS__); \
 				} \
-			\
-				[&](const auto&... OKL_ASSERT_args) OKL_NOINLINE OKL_DEBUG_SECTION { \
-					if constexpr (::Okl::should_assert_log_once(OKL_ASSERT_assert_data.severity)) { \
-						static constinit ::std::atomic<bool> OKL_ASSERT_executed{false}; \
-						if (OKL_ASSERT_executed.load(::std::memory_order_relaxed) || OKL_ASSERT_executed.exchange(true, ::std::memory_order_relaxed)) { \
-							return; \
-						} \
-					} \
-				\
-					if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
-						OKL_DEBUG_BREAK(); \
-					} \
-				}(__VA_OPT__(OKL_VA_CONSUME_1(__VA_ARGS__))); \
 			}((::Okl::Detail::ExpressionExtractor{} <=> assertExpression)); /* NOLINT(bugprone-chained-comparison) */ \
 		} \
 		else if constexpr (::Okl::should_assert_assume(OKL_ASSERT_assert_data.severity)) { \
@@ -93,22 +80,9 @@ import std;
 	\
 		if constexpr (OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_assert_data.severity)) { \
 			[&](const auto OKL_ASSERT_expression) { \
-				if (OKL_ASSERT_expression.eval()) [[likely]] { \
-					return; \
+				if (!OKL_ASSERT_expression.eval()) [[unlikely]] { \
+					OKASSERT_PRIVATE_HANDLE_FAILURE(__VA_ARGS__); \
 				} \
-			\
-				[&](const auto&... OKL_ASSERT_args) OKL_NOINLINE OKL_DEBUG_SECTION { \
-					if constexpr (::Okl::should_assert_log_once(OKL_ASSERT_assert_data.severity)) { \
-						static constinit ::std::atomic<bool> OKL_ASSERT_executed{false}; \
-						if (OKL_ASSERT_executed.load(::std::memory_order_relaxed) || OKL_ASSERT_executed.exchange(true, ::std::memory_order_relaxed)) { \
-							return; \
-						} \
-					} \
-				\
-					if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
-						OKL_DEBUG_BREAK(); \
-					} \
-				}(__VA_OPT__(OKL_VA_CONSUME_1(__VA_ARGS__))); \
 			}((::Okl::Detail::ExpressionExtractor{} <=> assertExpression)); /* NOLINT(bugprone-chained-comparison) */ \
 		} \
 		else { \
@@ -134,35 +108,22 @@ import std;
  * @return The result of the expression.
  */
 #define OKL_VERIFY_VAL(assertSeverity, assertExpression, ...) \
-	[&]<auto OKL_ASSERT_Function>() { \
+	[&]<auto OKL_ASSERT_Function>() -> decltype(auto) { \
 		OKL_STATIC_VAR constexpr ::Okl::StaticAssertData OKL_ASSERT_assert_data{[]() consteval noexcept { \
 			using enum ::Okl::EAssertSeverity; \
 			return ::Okl::AssertSeverity{} | assertSeverity; /* NOLINT(bugprone-macro-parentheses) */ \
 		}(), OKASSERT_LINE, OKASSERT_FILE, OKL_ASSERT_Function.data(), #assertExpression __VA_OPT__(, OKL_VA_AT_0(__VA_ARGS__))}; \
 	\
-		static_assert(::Okl::has_unique_build_severity(OKL_ASSERT_assert_data.severity), "OKL_VERIFY requires exactly one build severity: disabled, debug, releasedbg, or release."); \
+		static_assert(::Okl::has_unique_build_severity(OKL_ASSERT_assert_data.severity), "OKL_VERIFY_VAL requires exactly one build severity: disabled, debug, releasedbg, or release."); \
+		static_assert(!OKL_ASSERT_assert_data.severity.has_flags(::Okl::EAssertSeverity::assume), "OKL_VERIFY_VAL does not support `assume`."); \
 		__VA_OPT__(OKL_SUPPRESS_GSL("f.6", "compile-time only") decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
 	\
 		if constexpr (OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_assert_data.severity)) { \
-			return [&](const auto OKL_ASSERT_expression) { \
+			return [&](const auto OKL_ASSERT_expression) -> decltype(auto) { \
 				OKL_SUPPRESS_GSL("con.4") decltype(auto) OKL_ASSERT_result{OKL_ASSERT_expression.eval()}; \
-				if (OKL_ASSERT_result) [[likely]] { \
-					return OKL_ASSERT_result; \
+				if (!OKL_ASSERT_result) [[unlikely]] { \
+					OKASSERT_PRIVATE_HANDLE_FAILURE(__VA_ARGS__); \
 				} \
-			\
-				[&](const auto&... OKL_ASSERT_args) OKL_NOINLINE OKL_DEBUG_SECTION { \
-					if constexpr (::Okl::should_assert_log_once(OKL_ASSERT_assert_data.severity)) { \
-						static constinit ::std::atomic<bool> OKL_ASSERT_executed{false}; \
-						if (OKL_ASSERT_executed.load(::std::memory_order_relaxed) || OKL_ASSERT_executed.exchange(true, ::std::memory_order_relaxed)) { \
-							return; \
-						} \
-					} \
-				\
-					if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
-						OKL_DEBUG_BREAK(); \
-					} \
-				}(__VA_OPT__(OKL_VA_CONSUME_1(__VA_ARGS__))); \
-			\
 				return OKL_ASSERT_result; \
 			}((::Okl::Detail::ExpressionExtractor{} <=> assertExpression)); /* NOLINT(bugprone-chained-comparison) */ \
 		} \
@@ -206,5 +167,21 @@ import std;
 		#define OKASSERT_FUNCTION "unknown"
 	#endif
 #endif
+
+
+#define OKASSERT_PRIVATE_HANDLE_FAILURE(...) \
+	[&](const auto&... OKL_ASSERT_args) OKL_NOINLINE OKL_DEBUG_SECTION { \
+		if constexpr (::Okl::should_assert_log_once(OKL_ASSERT_assert_data.severity)) { \
+			static constinit ::std::atomic<bool> OKL_ASSERT_executed{false}; \
+			if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, &OKL_ASSERT_executed, \
+			        OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
+				OKL_DEBUG_BREAK(); \
+			} \
+		} \
+		else if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, nullptr, \
+		             OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
+			OKL_DEBUG_BREAK(); \
+		} \
+	}(__VA_OPT__(OKL_VA_CONSUME_1(__VA_ARGS__)))
 
 #endif
