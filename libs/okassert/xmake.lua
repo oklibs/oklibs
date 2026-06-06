@@ -50,5 +50,4 @@ target("okassert_tests", function()
     end
     add_tests("assert", {kind = "binary", files = "tests/assert.cpp", build_should_pass = is_cross()})
     add_tests("verify", {kind = "binary", files = "tests/verify.cpp", build_should_pass = is_cross()})
-    add_tests("assume", {kind = "binary", files = "tests/assume.cpp", build_should_pass = is_cross()})
 end)

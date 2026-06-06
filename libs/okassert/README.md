@@ -18,7 +18,6 @@ messages.
     - [`OKL_ASSERT` vs `OKL_VERIFY`](#okl_assert-vs-okl_verify)
     - [Expression decomposition](#expression-decomposition)
     - [Stacktrace](#stacktrace)
-    - [Assume-hint](#assume-hint)
 - [Customization](#customization)
     - [Failure reporting function](#failure-reporting-function)
     - [Active build severities](#Active-build-severities)
@@ -82,11 +81,14 @@ Combine a build-severity with any of these flags using `|`:
 
 * `non_fatal` &mdash; report the failure but do not abort.
 * `log_always` &mdash; always log on failure (non-fatal asserts log once by default).
+* `assume` &mdash; when the assertion is disabled, hint to the optimizer that the expression is true (`__assume` /
+  `__builtin_assume`).
 
 ```c++
 void process(const std::span<const int> data)
 {
     OKL_ASSERT(release | non_fatal, !data.empty(), "skipping empty batch");
+    OKL_ASSERT(debug | assume, data.size() < 1024);
     // ...
 }
 ```
@@ -104,21 +106,13 @@ The format string is validated at compile time against the argument types.
 
 ### Return value
 
-Both macros can be used as part of an expression:
+The `OKL_VERIFY_VAL` macro can be used as part of an expression:
 
-`OKL_ASSERT` returns the expression's result contextually converted to `bool`, or `true` when the assertion is disabled.
-
-```c++
-if (!OKL_ASSERT(release | non_fatal, ptr != nullptr, "ptr was null")) {
-    return ErrorCode::NullPointer;
-}
-```
-
-`OKL_VERIFY` returns the expression's result unchanged (preserving its type and value category), both when the assertion
+`OKL_VERIFY_VAL` returns the expression's result (preserving its type and value category), both when the assertion
 is active and when it is disabled.
 
 ```c++
-if (auto* node = OKL_VERIFY(release | non_fatal, tree.find(key), "missing key {}", key)) {
+if (auto* node = OKL_VERIFY_VAL(release | non_fatal, tree.find(key), "missing key {}", key)) {
     use(*node);
 }
 ```
@@ -153,39 +147,6 @@ Types that are not formattable with `fmt` are reported as `?`; raw pointers use`
 When the standard library provides `<stacktrace>` (C++23, `__cpp_lib_stacktrace >= 202011L`), a stacktrace of the
 failing callsite is appended to the failure output automatically. On toolchains without `<stacktrace>` support the
 feature is silently skipped, so no extra configuration is required.
-
-### Assume-hint
-
-`OKASSERT_ASSUME(severity, expression)` emits a compiler hint for `expression` to be true, but only
-when an assertion with the same severity would be compiled out. When an equivalent assertion is active, the macro
-expands to nothing.
-
-Pair it with `OKL_ASSERT` / `OKL_VERIFY` to keep the invariant available to the optimizer in builds where the runtime
-check is disabled:
-
-```c++
-int read(const std::span<const std::byte> buffer, const std::size_t offset)
-{
-    OKL_ASSERT(debug, offset < buffer.size());
-    OKASSERT_ASSUME(debug, offset < buffer.size());
-    return std::to_integer<int>(buffer[offset]);
-}
-```
-
-If we want to prevent drifting, we can wrap them in a user-defined macro so the expression is
-only written once. The trade-off is that the wrapper is a statement, so it can no longer be used as part of an
-expression (the `bool` result of `OKL_ASSERT` is not forwarded):
-
-```c++
-#define MY_ASSERT_ASSUME(severity, expression) \
-    do { \
-        OKL_ASSERT(severity, expression); \
-        OKASSERT_ASSUME(severity, expression); \
-    } while (false)
-```
-
-We can't add the `assume` functionality to `OKL_ASSERT`/`OKL_VERIFY` directly because most compilers will not optimize
-based on an `assume` in a previous lambda.
 
 ## Customization
 

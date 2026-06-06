@@ -17,7 +17,6 @@
 #if defined(OKL_USE_MODULES)
 import okl.base;
 #endif
-
 #if defined(OKL_USE_STD_MODULE)
 import std;
 #endif
@@ -34,38 +33,6 @@ CONSTEXPR_TEST_CASE("assert: basic compilation surface")
 	OKL_ASSERT(disabled, false, "User Message {}", AssertTest::fail_test());
 
 	OKL_ASSERT(disabled, AssertTest::UnformattableType{}, "User Message");
-};
-
-TEST_CASE("assert: return value")
-{
-	AssertTest::reset();
-
-	SECTION("disabled returns true regardless of expression value")
-	{
-		CHECK(OKL_ASSERT(disabled, true));
-		CHECK(OKL_ASSERT(disabled, false));
-	}
-	SECTION("enabled with truthy expression returns true")
-	{
-		CHECK(OKL_ASSERT(release, true));
-		CHECK(OKL_ASSERT(release | non_fatal, true));
-	}
-	SECTION("enabled with falsy expression returns false")
-	{
-		CHECK_NOT(OKL_ASSERT(release | non_fatal | log_always, false));
-	}
-	SECTION("non-bool truthy expression returns true") { CHECK(OKL_ASSERT(release, 42)); }
-	SECTION("non-bool zero expression returns false") { CHECK_NOT(OKL_ASSERT(release | non_fatal | log_always, 0)); }
-	SECTION("non-null pointer returns true")
-	{
-		constexpr int value{0};
-		CHECK(OKL_ASSERT(release, &value));
-	}
-	SECTION("null pointer returns false")
-	{
-		const int* ptr{nullptr};
-		CHECK_NOT(OKL_ASSERT(release | non_fatal | log_always, ptr));
-	}
 };
 
 CONSTEXPR_TEST_CASE("assert: no evaluation when disabled")
@@ -261,6 +228,12 @@ CONSTEXPR_TEST_CASE("assert: severity build conditional execution")
 		OKL_ASSERT(disabled, ++counter > 0);
 		CHECK(counter == 0);
 	}
+	SECTION("disabled | assume does not evaluate expression")
+	{
+		OKL_SUPPRESS_GSL("con.4") int counter{0};
+		OKL_ASSERT(disabled | assume, ++counter > 0);
+		CHECK(counter == 0);
+	}
 };
 
 TEST_CASE("assert: message formatting variants")
@@ -302,12 +275,6 @@ TEST_CASE("assert: message formatting variants")
 		CHECK(counter == 0);
 		CHECK(AssertTest::last().call_count == 0);
 	}
-};
-
-TEST_CASE("assert: usable as a boolean expression")
-{
-	CHECK(OKL_ASSERT(release, true));
-	CHECK_NOT(OKL_ASSERT(release | non_fatal | log_always, false));
 };
 
 TEST_CASE("assert: expression with side effects on lhs/rhs evaluated once on failure")
