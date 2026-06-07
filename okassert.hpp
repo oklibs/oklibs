@@ -1,7 +1,7 @@
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_CORE_DEFINES_HPP
-#define OKUTILS_CORE_DEFINES_HPP
+#ifndef OKBASE_CORE_DEFINES_HPP
+#define OKBASE_CORE_DEFINES_HPP
 
 // Can't use quotes for the literals here :(
 // https://github.com/llvm/llvm-project/issues/88896
@@ -73,8 +73,8 @@
 #endif
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_OS_DEFINES_HPP
-#define OKUTILS_OS_DEFINES_HPP
+#ifndef OKBASE_OS_DEFINES_HPP
+#define OKBASE_OS_DEFINES_HPP
 
 
 #if defined(__ANDROID__)
@@ -137,7 +137,7 @@
 
 #if (OKL_OS_ANDROID_AVAILABLE + OKL_OS_LINUX_AVAILABLE + OKL_OS_APPLE_AVAILABLE + OKL_OS_WINDOWS_AVAILABLE + \
      OKL_OS_WASM_AVAILABLE) <= 0
-	#error "okutils: No OS detected."
+	#error "okbase: No OS detected."
 #endif
 
 // Detect the main OS.
@@ -170,14 +170,14 @@
 #endif
 
 #if (OKL_OS_ANDROID + OKL_OS_LINUX + OKL_OS_APPLE + OKL_OS_WINDOWS + OKL_OS_WASM) != 1
-	#error "okutils: Exactly one main OS must be defined."
+	#error "okbase: Exactly one main OS must be defined."
 #endif
 
 #endif
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_MACRO_UTILS_HPP
-#define OKUTILS_MACRO_UTILS_HPP
+#ifndef OKBASE_MACRO_UTILS_HPP
+#define OKBASE_MACRO_UTILS_HPP
 
 /**
  * Avoids errors in certain situations when using macros that
@@ -198,8 +198,8 @@
  * this macro allows its argument to expand before it is turned into a string.
  * @param x The preprocessor token to turn into a string.
  */
-#define OKL_STRINGIFY(...) OKUTILS_PRIVATE_STRINGIFY(__VA_ARGS__)
-#define OKUTILS_PRIVATE_STRINGIFY(...) #__VA_ARGS__
+#define OKL_STRINGIFY(...) OKBASE_PRIVATE_STRINGIFY(__VA_ARGS__)
+#define OKBASE_PRIVATE_STRINGIFY(...) #__VA_ARGS__
 
 /**
  * Concatenates two preprocessor tokens.
@@ -208,8 +208,8 @@
  * @param x The first preprocessor token to concatenate.
  * @param y The second preprocessor token to concatenate.
  */
-#define OKL_CONCAT(x, y) OKUTILS_PRIVATE_CONCAT(x, y)
-#define OKUTILS_PRIVATE_CONCAT(x, y) x ## y
+#define OKL_CONCAT(x, y) OKBASE_PRIVATE_CONCAT(x, y)
+#define OKBASE_PRIVATE_CONCAT(x, y) x ## y
 
 /**
  * Expands macro arguments before they are used.
@@ -263,14 +263,14 @@
  * Expands to the number of variadic arguments.
  * @param ... The variadic arguments to count. [va_size >= 0, va_size <= 10]
  */
-#define OKL_VA_SIZE(...) OKUTILS_PRIVATE_VA_COUNT(__VA_OPT__(__VA_ARGS__,) 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
-#define OKUTILS_PRIVATE_VA_COUNT(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, num, ...) num
+#define OKL_VA_SIZE(...) OKBASE_PRIVATE_VA_COUNT(__VA_OPT__(__VA_ARGS__,) 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
+#define OKBASE_PRIVATE_VA_COUNT(a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, num, ...) num
 
 /**
  * Expands to the last index of the variadic arguments, or nothing if va args are empty.
  * @param ... The variadic arguments to get the last index of. [va_size >= 0, va_size <= 10]
  */
-#define OKL_VA_LAST_INDEX(...) __VA_OPT__(OKUTILS_PRIVATE_VA_COUNT(__VA_ARGS__, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
+#define OKL_VA_LAST_INDEX(...) __VA_OPT__(OKBASE_PRIVATE_VA_COUNT(__VA_ARGS__, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0))
 
 /**
  * Expands to the last variadic argument.
@@ -294,26 +294,26 @@
  * @param trueValue The value to return if the condition is 1.
  * @param falseValue The value to return if the condition is 0.
  */
-#define OKL_IF(condition, trueValue, falseValue) OKL_EXPAND(OKL_CONCAT(OKUTILS_PRIVATE_IF_, condition)(trueValue, falseValue))
-#define OKUTILS_PRIVATE_IF_0(trueValue, falseValue) falseValue
-#define OKUTILS_PRIVATE_IF_1(trueValue, falseValue) trueValue
+#define OKL_IF(condition, trueValue, falseValue) OKL_EXPAND(OKL_CONCAT(OKBASE_PRIVATE_IF_, condition)(trueValue, falseValue))
+#define OKBASE_PRIVATE_IF_0(trueValue, falseValue) falseValue
+#define OKBASE_PRIVATE_IF_1(trueValue, falseValue) trueValue
 
 #endif
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_CONFIG_HPP
-#define OKUTILS_CONFIG_HPP
+#ifndef OKBASE_CONFIG_HPP
+#define OKBASE_CONFIG_HPP
 
 
-#define OKUTILS_VERSION_MAJOR 0
-#define OKUTILS_VERSION_MINOR 1
-#define OKUTILS_VERSION_PATCH 0
+#define OKBASE_VERSION_MAJOR 0
+#define OKBASE_VERSION_MINOR 1
+#define OKBASE_VERSION_PATCH 0
 
 /**
- * Encoded version of okutils as 'MajorMinorPatch'.
+ * Encoded version of okbase as 'MajorMinorPatch'.
  * @see OKL_ENCODE_VERSION
  */
-#define OKUTILS_VERSION OKL_ENCODE_VERSION(OKUTILS_VERSION_MAJOR, OKUTILS_VERSION_MINOR, OKUTILS_VERSION_PATCH)
+#define OKBASE_VERSION OKL_ENCODE_VERSION(OKBASE_VERSION_MAJOR, OKBASE_VERSION_MINOR, OKBASE_VERSION_PATCH)
 
 #define OKL_BUILD_RELEASE 1
 #if !defined(OKL_BUILD_DEBUG)
@@ -326,7 +326,7 @@
     #define OKL_BUILD_RELEASE 0
 #endif
 #if OKL_BUILD_DEBUG + OKL_BUILD_RELEASEDBG + OKL_BUILD_RELEASE != 1
-	#error "okutils: Exactly one build define should be defined to 1!"
+	#error "okbase: Exactly one build define should be defined to 1!"
 #endif
 
 #if !defined(OKL_INTERNAL_WITH_EXCEPTIONS)
@@ -337,24 +337,24 @@
 	#endif
 #endif
 
-#ifdef OKUTILS_STATIC
-#  define OKUTILS_EXPORT
+#ifdef OKBASE_STATIC
+#  define OKBASE_EXPORT
 #else
 #  if defined(_WIN32)
-#    define OKUTILS_EXPORT __declspec(dllexport)
+#    define OKBASE_EXPORT __declspec(dllexport)
 #  elif defined(__GNUC__) && ((__GNUC__ >= 4) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 3))
-#    define OKUTILS_EXPORT __attribute__((visibility("default")))
+#    define OKBASE_EXPORT __attribute__((visibility("default")))
 #  else
-#    define OKUTILS_EXPORT
+#    define OKBASE_EXPORT
 #  endif
 #endif
 
 
 #endif
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_COMPILER_DEFINES_HPP
-#define OKUTILS_COMPILER_DEFINES_HPP
+#ifndef OKBASE_COMPILER_DEFINES_HPP
+#define OKBASE_COMPILER_DEFINES_HPP
 
 
 #if defined(__clang__) && defined(__apple_build_version__)
@@ -424,7 +424,7 @@
 
 #if (OKL_COMPILER_INTEL_AVAILABLE + OKL_COMPILER_APPLE_CLANG_AVAILABLE + OKL_COMPILER_CLANG_AVAILABLE + \
      OKL_COMPILER_GCC_AVAILABLE + OKL_COMPILER_MSVC_AVAILABLE + OKL_COMPILER_EMSCRIPTEN_AVAILABLE) <= 0
-	#error "okutils: No compiler detected."
+	#error "okbase: No compiler detected."
 #endif
 
 // Detect the main compiler.
@@ -436,7 +436,7 @@
 	#define OKL_DISABLE_WARNING_INTEL(warningName, ...) OKL_DISABLE_WARNING(, warningName)
 #elif OKL_COMPILER_EMSCRIPTEN_AVAILABLE
 	#if OKL_COMPILER_EMSCRIPTEN_VERSION < OKL_ENCODE_VERSION(3, 1, 41)
-		#error "okutils: Requires Emscripten version 3.1.41 or later."
+		#error "okbase: Requires Emscripten version 3.1.41 or later."
 	#endif
 	#define OKL_COMPILER_EMSCRIPTEN 1
 	#define OKL_WARNING_PUSH_EMSCRIPTEN() _Pragma("clang diagnostic push")
@@ -444,7 +444,7 @@
 	#define OKL_DISABLE_WARNING_EMSCRIPTEN(warningName, ...) OKL_DISABLE_WARNING(, warningName)
 #elif OKL_COMPILER_APPLE_CLANG_AVAILABLE
 	#if OKL_COMPILER_APPLE_CLANG_VERSION < OKL_ENCODE_VERSION(16, 0, 0)
-		#error "okutils: Requires Apple Clang version 16.0.0 or later."
+		#error "okbase: Requires Apple Clang version 16.0.0 or later."
 	#endif
 	#define OKL_COMPILER_APPLE_CLANG 1
 	#define OKL_WARNING_PUSH_APPLE_CLANG() _Pragma("clang diagnostic push")
@@ -453,19 +453,19 @@
 #elif OKL_COMPILER_CLANG_AVAILABLE
 	#if defined(OKL_USE_MODULES)
 		#if (OKL_COMPILER_CLANG_VERSION < OKL_ENCODE_VERSION(21, 0, 0))
-			#error "okutils: Modules require Clang version 21.0.0 or later."
+			#error "okbase: Modules require Clang version 21.0.0 or later."
 		#endif
 	#elif OKL_COMPILER_CLANG_VERSION < OKL_ENCODE_VERSION(19, 0, 0)
-		#error "okutils: Requires Clang version 19.0.0 or later."
+		#error "okbase: Requires Clang version 19.0.0 or later."
 	#endif
 	#define OKL_COMPILER_CLANG 1
 	#define OKL_WARNING_PUSH_CLANG() _Pragma("clang diagnostic push")
 	#define OKL_WARNING_POP_CLANG() _Pragma("clang diagnostic pop")
 	#define OKL_DISABLE_WARNING_CLANG(warningName, ...) OKL_DISABLE_WARNING(, warningName)
 #elif OKL_COMPILER_GCC_AVAILABLE
-	// Modules currently work with GCC 11.0.0 or later.
-	#if OKL_COMPILER_GCC_VERSION < OKL_ENCODE_VERSION(11, 0, 0)
-		#error "okutils: Requires GCC version 11.0.0 or later."
+	// Modules currently work with GCC 12.0.0 or later.
+	#if OKL_COMPILER_GCC_VERSION < OKL_ENCODE_VERSION(12, 0, 0)
+		#error "okbase: Requires GCC version 11.0.0 or later."
 	#endif
 	#define OKL_COMPILER_GCC 1
 	#define OKL_WARNING_PUSH_GCC() _Pragma("GCC diagnostic push")
@@ -474,10 +474,10 @@
 #elif OKL_COMPILER_MSVC_AVAILABLE
 	#if defined(OKL_USE_MODULES)
 		#if (OKL_COMPILER_MSVC_VERSION < OKL_ENCODE_VERSION(19, 39, 0))
-			#error "okutils: Modules require MSVC version 19.39 (VS 2022 17.10) or later."
+			#error "okbase: Modules require MSVC version 19.39 (VS 2022 17.10) or later."
 		#endif
 	#elif (OKL_COMPILER_MSVC_VERSION < OKL_ENCODE_VERSION(19, 29, 30129))
-		#error "okutils: Requires MSVC version 19.29 (VS 2019 16.11) or later."
+		#error "okbase: Requires MSVC version 19.29 (VS 2019 16.11) or later."
 	#endif
 	#define OKL_COMPILER_MSVC 1
 	#define OKL_WARNING_PUSH_MSVC() __pragma(warning(push))
@@ -526,14 +526,14 @@
 
 #if (OKL_COMPILER_INTEL + OKL_COMPILER_APPLE_CLANG + OKL_COMPILER_CLANG + OKL_COMPILER_GCC + OKL_COMPILER_MSVC + \
      OKL_COMPILER_EMSCRIPTEN) != 1
-	#error "okutils: Exactly one main compiler must be defined."
+	#error "okbase: Exactly one main compiler must be defined."
 #endif
 
 #endif
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_ARCHITECTURE_DEFINES_HPP
-#define OKUTILS_ARCHITECTURE_DEFINES_HPP
+#ifndef OKBASE_ARCHITECTURE_DEFINES_HPP
+#define OKBASE_ARCHITECTURE_DEFINES_HPP
 
 
 #if defined(__ARM_ARCH) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB) || defined(_M_ARM) || \
@@ -611,7 +611,7 @@
 #endif
 
 #if (OKL_ARCH_ARM_AVAILABLE + OKL_ARCH_X86_AVAILABLE + OKL_ARCH_RISCV_AVAILABLE + OKL_ARCH_WASM_AVAILABLE) <= 0
-	#error "okutils: No architecture detected."
+	#error "okbase: No architecture detected."
 #endif
 
 // Detect the main architecture.
@@ -643,10 +643,10 @@
 #endif
 
 #endif
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_DEFINES_HPP
-#define OKUTILS_DEFINES_HPP
+#ifndef OKBASE_DEFINES_HPP
+#define OKBASE_DEFINES_HPP
 
 
 #include <type_traits>
@@ -982,10 +982,10 @@
 #endif
 
 #endif
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_TYPES_HPP
-#define OKUTILS_TYPES_HPP
+#ifndef OKBASE_TYPES_HPP
+#define OKBASE_TYPES_HPP
 
 
 #include <cstdint>
@@ -1048,131 +1048,10 @@ OKL_EXPORT_END
 } // namespace Okl
 
 #endif
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKUTILS_UTILS_HPP
-#define OKUTILS_UTILS_HPP
-
-
-#include <array>
-#include <cassert>
-#include <climits>
-#include <ranges>
-
-namespace Okl
-{
-OKL_EXPORT_BEGIN
-consteval auto as_constant(auto value) noexcept;
-template<class T> [[nodiscard]] constexpr size_t bit_size_of() noexcept;
-template<class T> [[nodiscard]] constexpr size_t size_of_n(size_t count) noexcept;
-
-template<std::ranges::range RangeT>
-[[nodiscard]] constexpr decltype(auto) at(RangeT&&, std::ranges::range_size_t<RangeT> index);
-
-template<size_t Index, class T, size_t Size> requires(Index < Size)
-[[nodiscard]] constexpr const T& at(const RawArray<T, Size>&) noexcept;
-
-template<size_t Index, class T, size_t Size> requires(Index < Size)
-[[nodiscard]] constexpr T& at(RawArray<T, Size>&) noexcept;
-
-template<size_t Index, class T, size_t Size> requires(Index < Size)
-[[nodiscard]] constexpr const T& at(const std::array<T, Size>&) noexcept;
-
-template<size_t Index, class T, size_t Size> requires(Index < Size)
-[[nodiscard]] constexpr T& at(std::array<T, Size>&) noexcept;
-OKL_EXPORT_END
-
-
-/**
- * Forces the compiler to evaluate the given input at compile time.
- * @param value The expression to be evaluated at compile time.
- * @returns The result of the input, if any.
- * @note The destructor of the result type must be constexpr.
- */
-consteval auto as_constant(auto value) noexcept { return value; }
-
-/**
- * Calculates the size of the given type in bits.
- * @tparam T The type to measure.
- * @return The size of @a T in bits.
- */
-template<class T>
-constexpr auto bit_size_of() noexcept -> size_t
-{
-	return sizeof(T) * CHAR_BIT;
-}
-
-/**
- * Calculates the total byte size for @a count elements of a given type.
- * @param count The number of elements.
- * @return The total size in bytes.
- */
-template<class T>
-constexpr auto size_of_n(const size_t count) noexcept -> size_t
-{
-	return sizeof(T) * count;
-}
-
-template<std::ranges::range RangeT>
-constexpr auto at(RangeT&& range, const std::ranges::range_size_t<RangeT> index) -> decltype(auto)
-{
-	assert(index >= 0 && index < std::ranges::size(range));
-
-	OKL_SUPPRESS_GSL("bounds.2") // "Only index into arrays using constant expressions".
-	OKL_SUPPRESS_GSL("bounds.4") // "Prefer to use gsl::at()".
-	return std::forward<RangeT>(range)[index];
-}
-
-template<size_t Index, class T, size_t Size> requires(Index < Size)
-constexpr auto at(const RawArray<T, Size>& array) noexcept -> const T&
-{
-#if OKL_COMPILER_CLANG_AVAILABLE
-	#pragma clang unsafe_buffer_usage begin // Compile time index.
-#endif
-
-	OKL_SUPPRESS_GSL("bounds.4") // "Prefer to use gsl::at()".
-	return array[Index];
-
-#if OKL_COMPILER_CLANG_AVAILABLE
-	#pragma clang unsafe_buffer_usage end
-#endif
-}
-
-template<size_t Index, class T, size_t Size> requires(Index < Size)
-constexpr auto at(RawArray<T, Size>& array) noexcept -> T&
-{
-#if OKL_COMPILER_CLANG_AVAILABLE
-	#pragma clang unsafe_buffer_usage begin // Compile time index.
-#endif
-
-	OKL_SUPPRESS_GSL("bounds.4") // "Prefer to use gsl::at()".
-	return array[Index];
-
-#if OKL_COMPILER_CLANG_AVAILABLE
-	#pragma clang unsafe_buffer_usage end
-#endif
-}
-
-template<size_t Index, class T, size_t Size> requires(Index < Size)
-constexpr auto at(const std::array<T, Size>& array) noexcept -> const T&
-{
-	OKL_SUPPRESS_GSL("bounds.4") // "Prefer to use gsl::at()".
-	return array[Index];
-}
-
-template<size_t Index, class T, size_t Size> requires(Index < Size)
-constexpr auto at(std::array<T, Size>& array) noexcept -> T&
-{
-	OKL_SUPPRESS_GSL("bounds.4") // "Prefer to use gsl::at()".
-	return array[Index];
-}
-} // namespace Okl
-
-#endif
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
-
-#ifndef OKUTILS_CONCEPTS_HPP
-#define OKUTILS_CONCEPTS_HPP
+#ifndef OKBASE_CONCEPTS_HPP
+#define OKBASE_CONCEPTS_HPP
 
 
 #include <concepts>
@@ -1237,14 +1116,14 @@ concept CInteger = CAnyOf<
     long,
     long long>;
 
-/** 
+/**
  * True if @a T is a signed integer arithmetic type.
  * @see CInteger
  */
 template<class T>
 concept CSignedInteger = CAnyOf<std::remove_cv_t<T>, signed char, short, int, long, long long>;
 
-/** 
+/**
  * True if @a T is an unsigned integer arithmetic type.
  * @see CInteger
  */
@@ -1467,98 +1346,6 @@ struct TEnumNameInfo {
 } // namespace Okl::Detail
 
 #endif
-// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
-
-#ifndef OKASSERT_DETAIL_OPERATORS_HPP
-#define OKASSERT_DETAIL_OPERATORS_HPP
-
-
-#include <string_view>
-#include <utility>
-
-namespace Okl::Detail
-{
-OKL_EXPORT_BEGIN
-struct OperatorLess {
-	static constexpr std::string_view string{"<"};
-
-	template<class LhsT, class RhsT>
-	[[nodiscard]] OKL_STATIC_CALL_OP constexpr decltype(auto) operator()(LhsT&& lhs, RhsT&& rhs)
-	    noexcept(noexcept(std::forward<LhsT>(lhs) < std::forward<RhsT>(rhs)))
-	{
-		return std::forward<LhsT>(lhs) < std::forward<RhsT>(rhs);
-	}
-};
-
-struct OperatorGreater {
-	static constexpr std::string_view string{">"};
-
-	template<class LhsT, class RhsT>
-	[[nodiscard]] OKL_STATIC_CALL_OP constexpr decltype(auto) operator()(LhsT&& lhs, RhsT&& rhs)
-	    noexcept(noexcept(std::forward<LhsT>(lhs) > std::forward<RhsT>(rhs)))
-	{
-		return std::forward<LhsT>(lhs) > std::forward<RhsT>(rhs);
-	}
-};
-
-struct OperatorLessEqual {
-	static constexpr std::string_view string{"<="};
-
-	template<class LhsT, class RhsT>
-	[[nodiscard]] OKL_STATIC_CALL_OP constexpr decltype(auto) operator()(LhsT&& lhs, RhsT&& rhs)
-	    noexcept(noexcept(std::forward<LhsT>(lhs) <= std::forward<RhsT>(rhs)))
-	{
-		return std::forward<LhsT>(lhs) <= std::forward<RhsT>(rhs);
-	}
-};
-
-struct OperatorGreaterEqual {
-	static constexpr std::string_view string{">="};
-
-	template<class LhsT, class RhsT>
-	[[nodiscard]] OKL_STATIC_CALL_OP constexpr decltype(auto) operator()(LhsT&& lhs, RhsT&& rhs)
-	    noexcept(noexcept(std::forward<LhsT>(lhs) >= std::forward<RhsT>(rhs)))
-	{
-		return std::forward<LhsT>(lhs) >= std::forward<RhsT>(rhs);
-	}
-};
-
-struct OperatorEqual {
-	static constexpr std::string_view string{"=="};
-
-	template<class LhsT, class RhsT>
-	[[nodiscard]] OKL_STATIC_CALL_OP constexpr decltype(auto) operator()(LhsT&& lhs, RhsT&& rhs)
-	    noexcept(noexcept(std::forward<LhsT>(lhs) == std::forward<RhsT>(rhs)))
-	{
-		return std::forward<LhsT>(lhs) == std::forward<RhsT>(rhs);
-	}
-};
-
-struct OperatorNotEqual {
-	static constexpr std::string_view string{"!="};
-
-	template<class LhsT, class RhsT>
-	[[nodiscard]] OKL_STATIC_CALL_OP constexpr decltype(auto) operator()(LhsT&& lhs, RhsT&& rhs)
-	    noexcept(noexcept(std::forward<LhsT>(lhs) != std::forward<RhsT>(rhs)))
-	{
-		return std::forward<LhsT>(lhs) != std::forward<RhsT>(rhs);
-	}
-};
-
-struct OperatorThreeWay {
-	static constexpr std::string_view string{"<=>"};
-
-	template<class LhsT, class RhsT>
-	[[nodiscard]] OKL_STATIC_CALL_OP constexpr decltype(auto) operator()(LhsT&& lhs, RhsT&& rhs)
-	    noexcept(noexcept(std::forward<LhsT>(lhs) <=> std::forward<RhsT>(rhs)))
-	{
-		return std::forward<LhsT>(lhs) <=> std::forward<RhsT>(rhs);
-	}
-};
-OKL_EXPORT_END
-} // namespace Okl::Detail
-
-#endif
 // Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
 #ifndef OKBITFLAG_OKBITFLAG_HPP
@@ -1566,6 +1353,7 @@ OKL_EXPORT_END
 
 
 #include <bit>
+#include <climits>
 #include <concepts>
 #include <type_traits>
 #include <utility>
@@ -1677,11 +1465,13 @@ template<CUnsignedEnum T>
 		UnderlyingType result{};
 		UnderlyingType flag_index{};
 		bool is_valid{true};
+		OKL_SUPPRESS_GSL("bounds.2") // "Only index into arrays using constant expressions".
+		OKL_SUPPRESS_GSL("bounds.4") // "Prefer to use gsl::at()".
 		for (size_t i{Detail::TEnumNameInfo::begin}; i < end; ++i) {
-			if (at(names, i) == '(' && at(names, i + 1) != ')') {
+			if (names[i] == '(' && names[i + 1] != ')') {
 				is_valid = false;
 			}
-			else if (at(names, i) == ',' || i == end - 1) {
+			else if (names[i] == ',' || i == end - 1) {
 				if (is_valid) {
 					OKL_SUPPRESS_GSL("type.1") // "Don't use a static_cast for arithmetic conversions".
 					result |= static_cast<UnderlyingType>(UnderlyingType{1u} << flag_index);
@@ -1691,7 +1481,7 @@ template<CUnsignedEnum T>
 			}
 		}
 		return Bitflag{static_cast<T>(result)};
-	}(std::make_index_sequence<bit_size_of<T>()>{})};
+	}(std::make_index_sequence<sizeof(T) * CHAR_BIT>{})};
 	return valid_flags;
 }
 
@@ -1963,6 +1753,98 @@ constexpr auto operator^(T lhs, Bitflag<T> rhs) noexcept -> Bitflag<T>
 #endif
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
+#ifndef OKASSERT_DETAIL_OPERATORS_HPP
+#define OKASSERT_DETAIL_OPERATORS_HPP
+
+
+#include <string_view>
+#include <utility>
+
+namespace Okl::Detail
+{
+OKL_EXPORT_BEGIN
+struct OperatorLess {
+	static constexpr std::string_view string{"<"};
+
+	template<class LhsT, class RhsT>
+	[[nodiscard]] OKL_STATIC_CALL_OP constexpr decltype(auto) operator()(LhsT&& lhs, RhsT&& rhs)
+	    noexcept(noexcept(std::forward<LhsT>(lhs) < std::forward<RhsT>(rhs)))
+	{
+		return std::forward<LhsT>(lhs) < std::forward<RhsT>(rhs);
+	}
+};
+
+struct OperatorGreater {
+	static constexpr std::string_view string{">"};
+
+	template<class LhsT, class RhsT>
+	[[nodiscard]] OKL_STATIC_CALL_OP constexpr decltype(auto) operator()(LhsT&& lhs, RhsT&& rhs)
+	    noexcept(noexcept(std::forward<LhsT>(lhs) > std::forward<RhsT>(rhs)))
+	{
+		return std::forward<LhsT>(lhs) > std::forward<RhsT>(rhs);
+	}
+};
+
+struct OperatorLessEqual {
+	static constexpr std::string_view string{"<="};
+
+	template<class LhsT, class RhsT>
+	[[nodiscard]] OKL_STATIC_CALL_OP constexpr decltype(auto) operator()(LhsT&& lhs, RhsT&& rhs)
+	    noexcept(noexcept(std::forward<LhsT>(lhs) <= std::forward<RhsT>(rhs)))
+	{
+		return std::forward<LhsT>(lhs) <= std::forward<RhsT>(rhs);
+	}
+};
+
+struct OperatorGreaterEqual {
+	static constexpr std::string_view string{">="};
+
+	template<class LhsT, class RhsT>
+	[[nodiscard]] OKL_STATIC_CALL_OP constexpr decltype(auto) operator()(LhsT&& lhs, RhsT&& rhs)
+	    noexcept(noexcept(std::forward<LhsT>(lhs) >= std::forward<RhsT>(rhs)))
+	{
+		return std::forward<LhsT>(lhs) >= std::forward<RhsT>(rhs);
+	}
+};
+
+struct OperatorEqual {
+	static constexpr std::string_view string{"=="};
+
+	template<class LhsT, class RhsT>
+	[[nodiscard]] OKL_STATIC_CALL_OP constexpr decltype(auto) operator()(LhsT&& lhs, RhsT&& rhs)
+	    noexcept(noexcept(std::forward<LhsT>(lhs) == std::forward<RhsT>(rhs)))
+	{
+		return std::forward<LhsT>(lhs) == std::forward<RhsT>(rhs);
+	}
+};
+
+struct OperatorNotEqual {
+	static constexpr std::string_view string{"!="};
+
+	template<class LhsT, class RhsT>
+	[[nodiscard]] OKL_STATIC_CALL_OP constexpr decltype(auto) operator()(LhsT&& lhs, RhsT&& rhs)
+	    noexcept(noexcept(std::forward<LhsT>(lhs) != std::forward<RhsT>(rhs)))
+	{
+		return std::forward<LhsT>(lhs) != std::forward<RhsT>(rhs);
+	}
+};
+
+struct OperatorThreeWay {
+	static constexpr std::string_view string{"<=>"};
+
+	template<class LhsT, class RhsT>
+	[[nodiscard]] OKL_STATIC_CALL_OP constexpr decltype(auto) operator()(LhsT&& lhs, RhsT&& rhs)
+	    noexcept(noexcept(std::forward<LhsT>(lhs) <=> std::forward<RhsT>(rhs)))
+	{
+		return std::forward<LhsT>(lhs) <=> std::forward<RhsT>(rhs);
+	}
+};
+OKL_EXPORT_END
+} // namespace Okl::Detail
+
+#endif
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
+
 #ifndef OKASSERT_CONFIG_HPP
 #define OKASSERT_CONFIG_HPP
 
@@ -1997,6 +1879,153 @@ constexpr auto operator^(T lhs, Bitflag<T> rhs) noexcept -> Bitflag<T>
 #  endif
 #endif
 
+
+#endif
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
+
+#ifndef OKASSERT_BASE_HPP
+#define OKASSERT_BASE_HPP
+
+
+#include <fmt/base.h>
+
+#include <array>
+#include <atomic>
+#include <string>
+#include <string_view>
+#include <utility>
+
+#if OKL_COMPILER_MSVC && defined(OKL_USE_MODULES)
+	#define OKASSERT_PRIVATE_DEBUG_SECTION
+#else
+	#define OKASSERT_PRIVATE_DEBUG_SECTION OKL_DEBUG_SECTION
+#endif
+
+namespace Okl
+{
+OKL_EXPORT_BEGIN
+enum class EAssertSeverity : uint8 {
+	/**
+	 * Marks an assertion as non-fatal.
+	 * The application will continue to run even if the assertion fails.
+	 */
+	non_fatal = 1 << 0,
+
+	/** The expression will be assumed as true when the assertion is disabled. */
+	assume = 1 << 1,
+
+	/**
+	 * Assertion will always be logged on failure.
+	 * By default, non-fatal assertions are logged only once.
+	 */
+	log_always = 1 << 2,
+
+	disabled = 1 << 3, /* Do not enable assertion in any build. */
+	debug = 1 << 4, /* Enable assertion only in debug builds. */
+	releasedbg = 1 << 5, /* Enable assertion only in debug and releasedbg builds. */
+	release = 1 << 6, /* Enable assertion in all builds. */
+};
+using AssertSeverity = Bitflag<EAssertSeverity>;
+
+struct StaticAssertData {
+	AssertSeverity severity{};
+	uint_least32_t line{};
+	const char* file_name{""};
+	const char* function_name{""};
+	const char* expr_string{""};
+	const char* message{""};
+};
+
+[[nodiscard]] constexpr std::string severity_to_string(AssertSeverity severity);
+[[nodiscard]] constexpr bool has_unique_build_severity(AssertSeverity severity) noexcept;
+[[nodiscard]] constexpr bool should_do_assert(AssertSeverity severity) noexcept;
+[[nodiscard]] constexpr bool should_assert_log_once(AssertSeverity severity) noexcept;
+[[nodiscard]] constexpr bool should_assert_assume(AssertSeverity severity) noexcept;
+[[nodiscard]] constexpr bool is_assert_fatal(AssertSeverity severity) noexcept;
+
+namespace Detail
+{
+template<class... ArgsT>
+struct AssertArgTypes {
+	explicit consteval AssertArgTypes(ArgsT...) noexcept {}
+	static consteval void verify_format_string(fmt::format_string<ArgsT...>) noexcept {}
+};
+template<class... ArgsT> AssertArgTypes(ArgsT...) -> AssertArgTypes<ArgsT...>;
+
+#if OKL_OS_WINDOWS
+extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
+#endif
+
+[[nodiscard]] bool is_debugger_present() noexcept(OKL_OS_ANDROID + OKL_OS_LINUX + OKL_OS_APPLE == 0);
+
+[[nodiscard]] OKL_NOINLINE OKASSERT_PRIVATE_DEBUG_SECTION bool report_assertion_failure(
+    const StaticAssertData&, std::atomic<bool>* executed, fmt::format_args expr_args, fmt::format_args message_args);
+
+[[noreturn]] void assertion_terminate() noexcept;
+} // namespace Detail
+OKL_EXPORT_END
+
+
+constexpr std::string severity_to_string(const AssertSeverity severity)
+{
+	OKL_STATIC_VAR constexpr std::array<std::pair<EAssertSeverity, std::string_view>, 5> flags{
+	    {{EAssertSeverity::assume, "|assume"},
+	     {EAssertSeverity::log_always, "|log_always"},
+	     {EAssertSeverity::debug, "|debug"},
+	     {EAssertSeverity::releasedbg, "|releasedbg"},
+	     {EAssertSeverity::release, "|release"}}};
+
+	std::string result{severity.has_flags(EAssertSeverity::non_fatal) ? "non-fatal" : "fatal"};
+	OKL_WARNING_PUSH_GCC()
+	OKL_DISABLE_WARNING_GCC("-Wrange-loop-construct", "gcc, clang, and msvc disagree on this.")
+	OKL_SUPPRESS_GSL("gsl.view") // "Do not assign gsl::span or std::string_view to a reference".
+	for (const auto [flag, flag_name] : flags) {
+		if (severity.has_flags(flag)) {
+			result += flag_name;
+		}
+	}
+	OKL_WARNING_POP_GCC()
+	return result;
+}
+
+constexpr bool has_unique_build_severity(const AssertSeverity severity) noexcept
+{
+	return severity.has_exactly_one_of(EAssertSeverity::disabled, EAssertSeverity::debug, EAssertSeverity::releasedbg,
+	                                   EAssertSeverity::release);
+}
+
+constexpr bool should_do_assert(const AssertSeverity severity) noexcept
+{
+	if (severity.has_flags(EAssertSeverity::disabled)) {
+		return false;
+	}
+	if (severity.has_flags(EAssertSeverity::release)) {
+		return true;
+	}
+	if (severity.has_flags(EAssertSeverity::releasedbg)) {
+		return OKL_BUILD_DEBUG + OKL_BUILD_RELEASEDBG;
+	}
+	if (severity.has_flags(EAssertSeverity::debug)) {
+		return OKL_BUILD_DEBUG;
+	}
+	return false;
+}
+
+constexpr bool should_assert_log_once(const AssertSeverity severity) noexcept
+{
+	return !is_assert_fatal(severity) && !severity.has_flags(EAssertSeverity::log_always);
+}
+
+constexpr bool should_assert_assume(const AssertSeverity severity) noexcept
+{
+	return severity.has_flags(EAssertSeverity::assume);
+}
+
+constexpr bool is_assert_fatal(const AssertSeverity severity) noexcept
+{
+	return !severity.has_flags(EAssertSeverity::non_fatal);
+}
+} // namespace Okl
 
 #endif
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
@@ -2163,10 +2192,45 @@ constexpr auto ExtractedBinaryExpression<LhsT, RhsT, OpT>::make_format_args() co
 } // namespace Okl::Detail
 
 #endif
+// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+
+#ifndef OKBITFLAG_CONFIG_HPP
+#define OKBITFLAG_CONFIG_HPP
+
+
+#define OKBITFLAG_VERSION_MAJOR 0
+#define OKBITFLAG_VERSION_MINOR 1
+#define OKBITFLAG_VERSION_PATCH 0
+
+/**
+ * Encoded version of okbitflag as 'MajorMinorPatch'.
+ * @see OKL_ENCODE_VERSION
+ */
+#define OKBITFLAG_VERSION OKL_ENCODE_VERSION(OKBITFLAG_VERSION_MAJOR, OKBITFLAG_VERSION_MINOR, OKBITFLAG_VERSION_PATCH)
+
+#ifdef OKBITFLAG_STATIC
+#  define OKBITFLAG_EXPORT
+#else
+#  if defined(_WIN32)
+#    define OKBITFLAG_EXPORT __declspec(dllexport)
+#  elif defined(__GNUC__) && ((__GNUC__ >= 4) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 3))
+#    define OKBITFLAG_EXPORT __attribute__((visibility("default")))
+#  else
+#    define OKBITFLAG_EXPORT
+#  endif
+#endif
+
+
+#endif
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#ifndef OKASSERT_BASE_HPP
-#define OKASSERT_BASE_HPP
+#ifndef OKBASE_OKBASE_HPP
+#define OKBASE_OKBASE_HPP
+
+
+#endif
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
+
 
 
 #include <fmt/base.h>
@@ -2186,131 +2250,39 @@ constexpr auto ExtractedBinaryExpression<LhsT, RhsT, OpT>::make_format_args() co
 
 #include <array>
 #include <cstdio>
+#include <cstdlib>
 #if OKL_HAS_CPP23 && __has_include(<stacktrace>)
 	#include <stacktrace>
 #endif
 #include <string>
 #include <string_view>
-#include <utility>
 #if OKL_OS_ANDROID || OKL_OS_LINUX
 	#include <fstream>
 #elif OKL_OS_APPLE
 	#include <algorithm>
 #endif
 
-namespace Okl
+namespace Okl::Detail
 {
-OKL_EXPORT_BEGIN
-enum class EAssertSeverity : uint8 {
-	/**
-	 * Marks an assertion as non-fatal.
-	 * The application will continue to run even if the assertion fails.
-	 */
-	non_fatal = 1 << 0,
-
-	/**
-	 * Assertion will always be logged on failure.
-	 * By default, non-fatal assertions are logged only once.
-	 */
-	log_always = 1 << 1,
-
-	disabled = 1 << 2, /* Do not enable assertion in any build. */
-	debug = 1 << 3, /* Enable assertion only in debug builds. */
-	releasedbg = 1 << 4, /* Enable assertion only in debug and releasedbg builds. */
-	release = 1 << 5, /* Enable assertion in all builds. */
-};
-using AssertSeverity = Bitflag<EAssertSeverity>;
-
-struct StaticAssertData {
-	AssertSeverity severity{};
-	uint_least32_t line{};
-	const char* file_name{""};
-	const char* function_name{""};
-	const char* expr_string{""};
-	const char* message{""};
-};
-
-[[nodiscard]] constexpr std::string severity_to_string(AssertSeverity severity);
-[[nodiscard]] constexpr bool has_unique_build_severity(AssertSeverity severity) noexcept;
-[[nodiscard]] constexpr bool should_do_assert(AssertSeverity severity) noexcept;
-[[nodiscard]] constexpr bool should_assert_log_once(AssertSeverity severity) noexcept;
-[[nodiscard]] constexpr bool is_assert_fatal(AssertSeverity severity) noexcept;
-
-namespace Detail
+[[nodiscard]] static fmt::text_style assert_error_text_style() noexcept
 {
-template<class... ArgsT>
-struct AssertArgTypes {
-	explicit consteval AssertArgTypes(ArgsT...) noexcept {}
-	static consteval void verify_format_string(fmt::format_string<ArgsT...>) noexcept {}
-};
-template<class... ArgsT> AssertArgTypes(ArgsT...) -> AssertArgTypes<ArgsT...>;
-
-#if OKL_OS_WINDOWS
-extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
+#if OKASSERT_COLOR_MODE == OKASSERT_COLOR_MODE_NEVER
+	return fmt::text_style{};
+#elif OKASSERT_COLOR_MODE == OKASSERT_COLOR_MODE_ALWAYS
+	return fmt::fg(fmt::terminal_color::red);
+#else
+	const bool is_tty{
+	#if OKL_OS_WINDOWS
+	    _isatty(_fileno(stderr)) != 0
+	#else
+	    ::isatty(::fileno(stderr)) != 0
+	#endif
+	};
+	return is_tty ? fmt::fg(fmt::terminal_color::red) : fmt::text_style{};
 #endif
-
-[[nodiscard]] bool is_debugger_present() noexcept(OKL_OS_ANDROID + OKL_OS_LINUX + OKL_OS_APPLE == 0);
-
-[[nodiscard]] OKL_NOINLINE OKL_DEBUG_SECTION bool
-report_assertion_failure(const StaticAssertData&, fmt::format_args expr_args, fmt::format_args message_args);
-} // namespace Detail
-OKL_EXPORT_END
-
-
-constexpr std::string severity_to_string(const AssertSeverity severity)
-{
-	OKL_STATIC_VAR constexpr std::array<std::pair<EAssertSeverity, std::string_view>, 4> flags{
-	    {{EAssertSeverity::log_always, "|log_always"},
-	     {EAssertSeverity::debug, "|debug"},
-	     {EAssertSeverity::releasedbg, "|releasedbg"},
-	     {EAssertSeverity::release, "|release"}}};
-
-	std::string result{severity.has_flags(EAssertSeverity::non_fatal) ? "non-fatal" : "fatal"};
-	OKL_SUPPRESS_GSL("gsl.view") // "Do not assign gsl::span or std::string_view to a reference".
-	for (const auto [flag, flag_name] : flags) {
-		if (severity.has_flags(flag)) {
-			result += flag_name;
-		}
-	}
-	return result;
 }
 
-constexpr bool has_unique_build_severity(const AssertSeverity severity) noexcept
-{
-	return severity.has_exactly_one_of(EAssertSeverity::disabled, EAssertSeverity::debug, EAssertSeverity::releasedbg,
-	                                   EAssertSeverity::release);
-}
-
-constexpr bool should_do_assert(const AssertSeverity severity) noexcept
-{
-	if (severity.has_flags(EAssertSeverity::disabled)) {
-		return false;
-	}
-	if (severity.has_flags(EAssertSeverity::release)) {
-		return true;
-	}
-	if (severity.has_flags(EAssertSeverity::releasedbg)) {
-		return OKL_BUILD_DEBUG + OKL_BUILD_RELEASEDBG;
-	}
-	if (severity.has_flags(EAssertSeverity::debug)) {
-		return OKL_BUILD_DEBUG;
-	}
-	return false;
-}
-
-constexpr bool should_assert_log_once(const AssertSeverity severity) noexcept
-{
-	return !is_assert_fatal(severity) && !severity.has_flags(EAssertSeverity::log_always);
-}
-
-constexpr bool is_assert_fatal(const AssertSeverity severity) noexcept
-{
-	return !severity.has_flags(EAssertSeverity::non_fatal);
-}
-
-namespace Detail
-{
-inline bool is_debugger_present() noexcept(OKL_OS_ANDROID + OKL_OS_LINUX + OKL_OS_APPLE == 0)
+bool is_debugger_present() noexcept(OKL_OS_ANDROID + OKL_OS_LINUX + OKL_OS_APPLE == 0)
 {
 #if OKL_OS_ANDROID || OKL_OS_LINUX
 	// If a process is tracing this, then tracer_pid in /proc/self/status will be
@@ -2355,30 +2327,19 @@ inline bool is_debugger_present() noexcept(OKL_OS_ANDROID + OKL_OS_LINUX + OKL_O
 #endif
 }
 
-[[nodiscard]] inline fmt::text_style assert_error_text_style() noexcept
+OKL_NOINLINE OKASSERT_PRIVATE_DEBUG_SECTION bool report_assertion_failure(
+    const StaticAssertData& assert_data,
+    std::atomic<bool>* executed,
+    const fmt::format_args expr_args,
+    const fmt::format_args message_args)
 {
-#if OKASSERT_COLOR_MODE == OKASSERT_COLOR_MODE_NEVER
-	return fmt::text_style{};
-#elif OKASSERT_COLOR_MODE == OKASSERT_COLOR_MODE_ALWAYS
-	return fmt::fg(fmt::terminal_color::red);
-#else
+	if (executed != nullptr &&
+	    (executed->load(std::memory_order_relaxed) || executed->exchange(true, std::memory_order_relaxed))) {
+		return false;
+	}
 
-	const bool is_tty{
-	#if OKL_OS_WINDOWS
-	    _isatty(_fileno(stderr)) != 0
-	#else
-	    ::isatty(::fileno(stderr)) != 0
-	#endif
-	};
-	return is_tty ? fmt::fg(fmt::terminal_color::red) : fmt::text_style{};
-#endif
-}
-
-OKL_NOINLINE OKL_DEBUG_SECTION bool report_assertion_failure(
-    const StaticAssertData& assert_data, const fmt::format_args expr_args, const fmt::format_args message_args)
-{
 	static const auto text_style_error{assert_error_text_style()};
-	bool always_abort{false};
+	bool format_failed{false};
 
 	OKL_INTERNAL_TRY {
 		fmt::basic_memory_buffer<char, 2048> assert_msg_buffer{};
@@ -2415,67 +2376,25 @@ OKL_NOINLINE OKL_DEBUG_SECTION bool report_assertion_failure(
 #endif
 		}
 		OKL_INTERNAL_CATCH(...) {
-			always_abort = true;
+			format_failed = true;
 		}
 
 		fmt::print(stderr, "{}", fmt::string_view{assert_msg_buffer.data(), assert_msg_buffer.size()});
-		std::ignore = std::fflush(stderr);
+		static_cast<void>(std::fflush(stderr));
 	}
 	OKL_INTERNAL_CATCH(...) {
-		always_abort = true;
+		format_failed = true;
 	}
 
-	if (is_debugger_present()) {
-		return true;
-	}
-
-	if (is_assert_fatal(assert_data.severity) || always_abort) {
+	if (format_failed) {
 		std::abort();
 	}
 
-	return false;
+	return is_debugger_present();
 }
-} // namespace Detail
-} // namespace Okl
 
-#endif
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
-
-#ifndef OKBITFLAG_CONFIG_HPP
-#define OKBITFLAG_CONFIG_HPP
-
-
-#define OKBITFLAG_VERSION_MAJOR 0
-#define OKBITFLAG_VERSION_MINOR 1
-#define OKBITFLAG_VERSION_PATCH 0
-
-/**
- * Encoded version of okbitflag as 'MajorMinorPatch'.
- * @see OKL_ENCODE_VERSION
- */
-#define OKBITFLAG_VERSION OKL_ENCODE_VERSION(OKBITFLAG_VERSION_MAJOR, OKBITFLAG_VERSION_MINOR, OKBITFLAG_VERSION_PATCH)
-
-#ifdef OKBITFLAG_STATIC
-#  define OKBITFLAG_EXPORT
-#else
-#  if defined(_WIN32)
-#    define OKBITFLAG_EXPORT __declspec(dllexport)
-#  elif defined(__GNUC__) && ((__GNUC__ >= 4) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 3))
-#    define OKBITFLAG_EXPORT __attribute__((visibility("default")))
-#  else
-#    define OKBITFLAG_EXPORT
-#  endif
-#endif
-
-
-#endif
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
-
-#ifndef OKUTILS_OKUTILS_HPP
-#define OKUTILS_OKUTILS_HPP
-
-
-#endif
+[[noreturn]] void assertion_terminate() noexcept { std::abort(); }
+} // namespace Okl::Detail
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
 #ifndef OKASSERT_OKASSERT_HPP
@@ -2507,24 +2426,71 @@ import std;
  * @param expression The expression to assert.
  * @param ... [Optional] Message to display if the assertion fails.
  * @param ... [Optional] Additional arguments to format the message with.
- * @return The result of the expression as a bool or `true` if disabled.
  */
-#define OKL_ASSERT(assertSeverity, assertExpression, ...) ( \
-	!OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, __VA_ARGS__) \
-	OKL_WARNING_PUSH_CLANG() \
-	OKL_DISABLE_WARNING_CLANG("-Wunreachable-code") \
-	OKL_SUPPRESS_WARNING_MSVC(4702) \
-	|| [&]<auto OKL_ASSERT_Function>(const auto OKL_ASSERT_expression) { \
-		if (OKL_ASSERT_expression.eval()) [[likely]] { \
-			return true; \
+#define OKL_ASSERT(assertSeverity, assertExpression, ...) \
+	do { \
+		OKL_STATIC_VAR constexpr ::Okl::StaticAssertData OKL_ASSERT_assert_data{[]() consteval noexcept { \
+			using enum ::Okl::EAssertSeverity; \
+			return ::Okl::AssertSeverity{} | assertSeverity; /* NOLINT(bugprone-macro-parentheses) */ \
+		}(), OKASSERT_LINE, OKASSERT_FILE, OKASSERT_FUNCTION, #assertExpression __VA_OPT__(, OKL_VA_AT_0(__VA_ARGS__))}; \
+	\
+		static_assert(::Okl::has_unique_build_severity(OKL_ASSERT_assert_data.severity), "OKL_ASSERT requires exactly one build severity: disabled, debug, releasedbg, or release."); \
+		__VA_OPT__(OKL_SUPPRESS_GSL("f.6", "compile-time only") decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
+	\
+		if constexpr (OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_assert_data.severity)) { \
+			[&](const auto OKL_ASSERT_expression) { \
+				if (!OKL_ASSERT_expression.eval()) [[unlikely]] { \
+					OKASSERT_PRIVATE_HANDLE_FAILURE(__VA_ARGS__); \
+				} \
+			}((::Okl::Detail::ExpressionExtractor{} <=> assertExpression)); /* NOLINT(bugprone-chained-comparison) */ \
 		} \
+		else if constexpr (::Okl::should_assert_assume(OKL_ASSERT_assert_data.severity)) { \
+			if OKL_IS_NOT_CONSTEVAL { /* MSVC evaluates `__assume()` expressions when executed at compile time. */ \
+				OKL_WARNING_PUSH_MSVC() OKL_DISABLE_WARNING_MSVC(4557) /* "'__assume' contains effect ...". */\
+				OKL_WARNING_PUSH_CLANG() OKL_DISABLE_WARNING_CLANG("-Wassume") \
+				OKL_ASSUME(static_cast<bool>(assertExpression)); \
+				OKL_WARNING_POP_MSVC() OKL_WARNING_POP_CLANG() \
+			} \
+		} \
+	} while (false)
+
+/**
+ * Asserts that a given expression evaluates to true.
+ * If the assertion is disabled, the expression will still be evaluated.
+ * @param severity Used to change the behavior of the assertion. @see Okl::EAssertSeverity
+ * @param expression The expression to assert.
+ * @param ... [Optional] Message to display if the assertion fails.
+ * @param ... [Optional] Additional arguments to format the message with.
+ */
+#define OKL_VERIFY(assertSeverity, assertExpression, ...) \
+	do { \
+		OKL_STATIC_VAR constexpr ::Okl::StaticAssertData OKL_ASSERT_assert_data{[]() consteval noexcept { \
+			using enum ::Okl::EAssertSeverity; \
+			return ::Okl::AssertSeverity{} | assertSeverity; /* NOLINT(bugprone-macro-parentheses) */ \
+		}(), OKASSERT_LINE, OKASSERT_FILE, OKASSERT_FUNCTION, #assertExpression __VA_OPT__(, OKL_VA_AT_0(__VA_ARGS__))}; \
 	\
-		OKASSERT_PRIVATE_HANDLE_FAILURE(assertSeverity, assertExpression, __VA_ARGS__); \
+		static_assert(::Okl::has_unique_build_severity(OKL_ASSERT_assert_data.severity), "OKL_VERIFY requires exactly one build severity: disabled, debug, releasedbg, or release."); \
+		__VA_OPT__(OKL_SUPPRESS_GSL("f.6", "compile-time only") decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
 	\
-		return false; \
-	OKL_WARNING_POP_CLANG() \
-	}.operator()<::std::to_array(OKASSERT_FUNCTION)>((::Okl::Detail::ExpressionExtractor{} <=> assertExpression)) /* NOLINT(bugprone-chained-comparison) */ \
-)
+		if constexpr (OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_assert_data.severity)) { \
+			[&](const auto OKL_ASSERT_expression) { \
+				if (!OKL_ASSERT_expression.eval()) [[unlikely]] { \
+					OKASSERT_PRIVATE_HANDLE_FAILURE(__VA_ARGS__); \
+				} \
+			}((::Okl::Detail::ExpressionExtractor{} <=> assertExpression)); /* NOLINT(bugprone-chained-comparison) */ \
+		} \
+		else { \
+			if constexpr (::Okl::should_assert_assume(OKL_ASSERT_assert_data.severity)) { \
+				if OKL_IS_NOT_CONSTEVAL { /* MSVC evaluates `__assume()` expressions when executed at compile time. */ \
+					OKL_WARNING_PUSH_MSVC() OKL_DISABLE_WARNING_MSVC(4557) /* "'__assume' contains effect ...". */\
+					OKL_WARNING_PUSH_CLANG() OKL_DISABLE_WARNING_CLANG("-Wassume") \
+					OKL_ASSUME(static_cast<bool>(assertExpression)); \
+					OKL_WARNING_POP_MSVC() OKL_WARNING_POP_CLANG() \
+				} \
+			} \
+			(assertExpression); \
+		} \
+	} while (false)
 
 /**
  * Asserts that a given expression evaluates to true.
@@ -2535,47 +2501,30 @@ import std;
  * @param ... [Optional] Additional arguments to format the message with.
  * @return The result of the expression.
  */
-#define OKL_VERIFY(assertSeverity, assertExpression, ...) ( \
-	OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, __VA_ARGS__) \
-	OKL_WARNING_PUSH_CLANG() \
-	OKL_DISABLE_WARNING_CLANG("-Wunreachable-code") \
-	OKL_SUPPRESS_WARNING_MSVC(4702) \
-	? [&]<auto OKL_ASSERT_Function>(const auto OKL_ASSERT_expression) -> decltype(auto) { \
-		OKL_SUPPRESS_GSL("con.4") decltype(auto) OKL_ASSERT_result{OKL_ASSERT_expression.eval()}; \
-		if (OKL_ASSERT_result) [[likely]] { \
-			return OKL_ASSERT_result; \
+#define OKL_VERIFY_VAL(assertSeverity, assertExpression, ...) \
+	[&]<auto OKL_ASSERT_Function>() -> decltype(auto) { \
+		OKL_STATIC_VAR constexpr ::Okl::StaticAssertData OKL_ASSERT_assert_data{[]() consteval noexcept { \
+			using enum ::Okl::EAssertSeverity; \
+			return ::Okl::AssertSeverity{} | assertSeverity; /* NOLINT(bugprone-macro-parentheses) */ \
+		}(), OKASSERT_LINE, OKASSERT_FILE, OKL_ASSERT_Function.data(), #assertExpression __VA_OPT__(, OKL_VA_AT_0(__VA_ARGS__))}; \
+	\
+		static_assert(::Okl::has_unique_build_severity(OKL_ASSERT_assert_data.severity), "OKL_VERIFY_VAL requires exactly one build severity: disabled, debug, releasedbg, or release."); \
+		static_assert(!OKL_ASSERT_assert_data.severity.has_flags(::Okl::EAssertSeverity::assume), "OKL_VERIFY_VAL does not support `assume`."); \
+		__VA_OPT__(OKL_SUPPRESS_GSL("f.6", "compile-time only") decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
+	\
+		if constexpr (OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_assert_data.severity)) { \
+			return [&](const auto OKL_ASSERT_expression) -> decltype(auto) { \
+				OKL_SUPPRESS_GSL("con.4") decltype(auto) OKL_ASSERT_result{OKL_ASSERT_expression.eval()}; \
+				if (!OKL_ASSERT_result) [[unlikely]] { \
+					OKASSERT_PRIVATE_HANDLE_FAILURE(__VA_ARGS__); \
+				} \
+				return OKL_ASSERT_result; \
+			}((::Okl::Detail::ExpressionExtractor{} <=> assertExpression)); /* NOLINT(bugprone-chained-comparison) */ \
 		} \
-	\
-		OKASSERT_PRIVATE_HANDLE_FAILURE(assertSeverity, assertExpression, __VA_ARGS__); \
-	\
-		return OKL_ASSERT_result; \
-	OKL_WARNING_POP_CLANG() \
-	}.operator()<::std::to_array(OKASSERT_FUNCTION)>((::Okl::Detail::ExpressionExtractor{} <=> assertExpression)) \
-	OKL_WARNING_PUSH_CLANG() \
-	OKL_DISABLE_WARNING_CLANG("-Wunreachable-code") \
-	OKL_SUPPRESS_WARNING_MSVC(4702) \
-	: (assertExpression) \
-	OKL_WARNING_POP_CLANG() \
-)
-
-/**
- * Emits a compiler assume hint for the given expression, but only when an assertion
- * with the supplied severity would be compiled out. Has no effect when an equivalent
- * assertion would be active.
- * @param severity @see Okl::EAssertSeverity
- * @param expression Expression to assume true.
- */
-#define OKASSERT_ASSUME(assertSeverity, assertExpression) \
-    do { \
-        if constexpr (!OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity)) { \
-            if OKL_IS_NOT_CONSTEVAL { /* MSVC evaluates `__assume()` expressions when executed at compile time. */ \
-                OKL_WARNING_PUSH_MSVC() OKL_DISABLE_WARNING_MSVC(4557) /* "'__assume' contains effect ...". */ \
-                OKL_WARNING_PUSH_CLANG() OKL_DISABLE_WARNING_CLANG("-Wassume") \
-                OKL_ASSUME(static_cast<bool>(assertExpression)); \
-                OKL_WARNING_POP_MSVC() OKL_WARNING_POP_CLANG() \
-            } \
-        } \
-    } while (false)
+		else { \
+			return (assertExpression); \
+		} \
+	}.template operator()<::std::to_array(OKASSERT_FUNCTION)>()
 
 
 #if !defined(OKASSERT_REPORT_FAILURE_FUNCTION)
@@ -2614,41 +2563,22 @@ import std;
 #endif
 
 
-#define OKASSERT_PRIVATE_HANDLE_FAILURE(assertSeverity, assertExpression, ...) \
+#define OKASSERT_PRIVATE_HANDLE_FAILURE(...) \
 	[&](const auto&... OKL_ASSERT_args) OKL_NOINLINE OKL_DEBUG_SECTION { \
-		OKL_STATIC_VAR constexpr ::Okl::StaticAssertData OKL_ASSERT_assert_data{ \
-			OKASSERT_PRIVATE_GET_ASSERT_SEVERITY(assertSeverity), \
-			OKASSERT_LINE, OKASSERT_FILE, OKL_ASSERT_Function.data(), \
-			#assertExpression __VA_OPT__(, OKL_VA_AT_0(__VA_ARGS__))}; \
-	\
 		if constexpr (::Okl::should_assert_log_once(OKL_ASSERT_assert_data.severity)) { \
 			static constinit ::std::atomic<bool> OKL_ASSERT_executed{false}; \
-			if (OKL_ASSERT_executed.load(::std::memory_order_relaxed) || OKL_ASSERT_executed.exchange(true, ::std::memory_order_relaxed)) { \
-				return; \
+			if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, &OKL_ASSERT_executed, OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
+				OKL_DEBUG_BREAK(); \
 			} \
 		} \
-	\
-		if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
-			OKL_DEBUG_BREAK(); \
+		else { \
+			if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, nullptr, OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
+				OKL_DEBUG_BREAK(); \
+			} \
+			if constexpr (::Okl::is_assert_fatal(OKL_ASSERT_assert_data.severity)) { \
+				::Okl::Detail::assertion_terminate(); \
+			} \
 		} \
 	}(__VA_OPT__(OKL_VA_CONSUME_1(__VA_ARGS__)))
-
-#define OKASSERT_PRIVATE_SHOULD_DO_ASSERT(assertSeverity, ...) \
-	[]() consteval noexcept { \
-		using enum ::Okl::EAssertSeverity; \
-		OKL_STATIC_VAR constexpr auto OKL_ASSERT_severity{::Okl::AssertSeverity{} | assertSeverity}; /* NOLINT(bugprone-macro-parentheses) */ \
-	\
-		static_assert(::Okl::has_unique_build_severity(OKL_ASSERT_severity), \
-			"OKL_ASSERT/_VERIFY requires exactly one build severity: disabled, debug, releasedbg, or release."); \
-		__VA_OPT__(decltype(::Okl::Detail::AssertArgTypes{OKL_VA_CONSUME_1(__VA_ARGS__)})::verify_format_string(OKL_VA_AT_0(__VA_ARGS__));) \
-	\
-		return OKASSERT_SHOULD_DO_ASSERT(OKL_ASSERT_severity); \
-	}()
-
-#define OKASSERT_PRIVATE_GET_ASSERT_SEVERITY(...) \
-	[]() consteval noexcept { \
-		using enum ::Okl::EAssertSeverity; \
-		return ::Okl::AssertSeverity{} | __VA_ARGS__; \
-	}()
 
 #endif
