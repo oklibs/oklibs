@@ -79,10 +79,9 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 [[nodiscard]] bool is_debugger_present() noexcept(OKL_OS_ANDROID + OKL_OS_LINUX + OKL_OS_APPLE == 0);
 
 [[nodiscard]] OKL_NOINLINE OKASSERT_PRIVATE_DEBUG_SECTION bool report_assertion_failure(
-    const StaticAssertData&,
-    std::atomic<bool>* executed,
-    fmt::format_args expr_args,
-    fmt::format_args message_args);
+    const StaticAssertData&, std::atomic<bool>* executed, fmt::format_args expr_args, fmt::format_args message_args);
+
+[[noreturn]] void assertion_terminate() noexcept;
 } // namespace Detail
 OKL_EXPORT_END
 

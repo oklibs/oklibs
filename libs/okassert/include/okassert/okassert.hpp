@@ -173,14 +173,17 @@ import std;
 	[&](const auto&... OKL_ASSERT_args) OKL_NOINLINE OKL_DEBUG_SECTION { \
 		if constexpr (::Okl::should_assert_log_once(OKL_ASSERT_assert_data.severity)) { \
 			static constinit ::std::atomic<bool> OKL_ASSERT_executed{false}; \
-			if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, &OKL_ASSERT_executed, \
-			        OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
+			if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, &OKL_ASSERT_executed, OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
 				OKL_DEBUG_BREAK(); \
 			} \
 		} \
-		else if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, nullptr, \
-		             OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
-			OKL_DEBUG_BREAK(); \
+		else { \
+			if (OKASSERT_REPORT_FAILURE_FUNCTION(OKL_ASSERT_assert_data, nullptr, OKL_ASSERT_expression.make_format_args(), ::fmt::make_format_args(OKL_ASSERT_args...))) { \
+				OKL_DEBUG_BREAK(); \
+			} \
+			if constexpr (::Okl::is_assert_fatal(OKL_ASSERT_assert_data.severity)) { \
+				::Okl::Detail::assertion_terminate(); \
+			} \
 		} \
 	}(__VA_OPT__(OKL_VA_CONSUME_1(__VA_ARGS__)))
 

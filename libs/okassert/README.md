@@ -153,7 +153,7 @@ feature is silently skipped, so no extra configuration is required.
 ### Failure reporting function
 
 Define `OKASSERT_REPORT_FAILURE_FUNCTION` before including `okassert.hpp` to replace the default reporter  (which
-applies log-once gating, formats to `stderr`, and aborts on fatal failures). The macro is called as
+applies log-once gating and formats to `stderr`). The macro is called as
 `OKASSERT_REPORT_FAILURE_FUNCTION(assert_data, executed, expr_args, message_args)`:
 
 * `assert_data` &mdash; `const Okl::StaticAssertData&` with severity, file, line, function, expression string, and the
@@ -166,7 +166,7 @@ applies log-once gating, formats to `stderr`, and aborts on fatal failures). The
   `fmt::vformat_to(out, assert_data.message, message_args)`.
 
 The function must return `bool`: return `true` to trigger a debug break at the callsite, `false` to skip it. Log-once
-gating and fatal behavior (whether to abort) are the reporter's responsibility, see `Okl::Detail::report_assertion_failure`
+gating is the reporter's responsibility, see `Okl::Detail::report_assertion_failure`
 in [base.hpp](include/okassert/base.hpp) for a reference implementation.
 
 ```c++
@@ -244,17 +244,16 @@ main:
 &nbsp;&nbsp;push rax
 &nbsp;&nbsp;call rand@PLT
 &nbsp;&nbsp;cmp eax, 9
-&nbsp;&nbsp;jle .LBB5_1
+&nbsp;&nbsp;jle .LBB5_2
 &nbsp;&nbsp;xor eax, eax
 &nbsp;&nbsp;pop rcx
 &nbsp;&nbsp;ret
-.LBB5_1:
-&nbsp;&nbsp;mov edi, eax
-&nbsp;&nbsp;mov esi, 10
-&nbsp;&nbsp;call _ZZZ4mainENK3$_0clIXtlSt5arrayIcLm1...
-&nbsp;&nbsp;xor eax, eax
-&nbsp;&nbsp;pop rcx
-&nbsp;&nbsp;ret
+.LBB5_2:
+&nbsp;&nbsp;lea rdi, [rip + .L__const.main.OKL_ASSER...
+&nbsp;&nbsp;mov esi, eax
+&nbsp;&nbsp;mov edx, 10
+&nbsp;&nbsp;call _ZZZ4mainENK3$_0clIN3Okl6Detail25Ex...
+
 </pre>
 </td><td width="400">
 <pre lang="asm">
@@ -273,20 +272,15 @@ main:
 
 [Compiler Explorer](https://godbolt.org/z/YfxnKq4en)
 
-The fail branch here could be optimized further, but this would require handling some edge cases differently or trimming
-some features. Each additional runtime format arg will add a move instruction to the fail case, compile time args will
-be optimized.
-
-It will not optimize as nicely with -O2 because we can't guarantee that the failure function will never return. We want
-to give the ability to continue the program if a debugger is present and non-fatal assertions are handled in the same
-function aswell.
+Each additional runtime format arg will add a move instruction to the fail case, (static) compile time args will be
+optimized.
 
 ## ToDos
 
 - [x] optimize non-fatal asserts
+- [x] use different error handler for fatal and non-fatal asserts for better codegen
 - [ ] add tags (setting enabled severity per library or module)
 - [ ] add better color schemes
 - [ ] add better customization
 - [ ] benchmark compile-times
 - [ ] add an option to disable decomposition?
-- [ ] use different error handler for fatal and non-fatal asserts for better codegen?

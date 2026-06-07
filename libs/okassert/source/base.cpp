@@ -111,7 +111,7 @@ OKL_NOINLINE OKASSERT_PRIVATE_DEBUG_SECTION bool report_assertion_failure(
 	}
 
 	static const auto text_style_error{assert_error_text_style()};
-	bool always_abort{false};
+	bool format_failed{false};
 
 	OKL_INTERNAL_TRY {
 		fmt::basic_memory_buffer<char, 2048> assert_msg_buffer{};
@@ -148,24 +148,22 @@ OKL_NOINLINE OKASSERT_PRIVATE_DEBUG_SECTION bool report_assertion_failure(
 #endif
 		}
 		OKL_INTERNAL_CATCH(...) {
-			always_abort = true;
+			format_failed = true;
 		}
 
 		fmt::print(stderr, "{}", fmt::string_view{assert_msg_buffer.data(), assert_msg_buffer.size()});
 		static_cast<void>(std::fflush(stderr));
 	}
 	OKL_INTERNAL_CATCH(...) {
-		always_abort = true;
+		format_failed = true;
 	}
 
-	if (is_debugger_present()) {
-		return true;
-	}
-
-	if (is_assert_fatal(assert_data.severity) || always_abort) {
+	if (format_failed) {
 		std::abort();
 	}
 
-	return false;
+	return is_debugger_present();
 }
+
+[[noreturn]] void assertion_terminate() noexcept { std::abort(); }
 } // namespace Okl::Detail
