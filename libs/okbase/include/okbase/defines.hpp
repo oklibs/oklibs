@@ -33,6 +33,14 @@
 	#endif
 #endif
 
+#if !defined(OKL_HAS_CPP26)
+	#if OKL_CPP_VERSION >= OKL_ENCODE_VERSION_YYYYMM(202400L)
+		#define OKL_HAS_CPP26 1
+	#else
+		#define OKL_HAS_CPP26 0
+	#endif
+#endif
+
 // Attribute Defines ---------------------------------------------------------------------------------------------------
 
 #if !defined(OKL_ALWAYS_DESTROY)
