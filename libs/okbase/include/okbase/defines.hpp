@@ -26,7 +26,7 @@
 #endif
 
 #if !defined(OKL_HAS_CPP23)
-	#if OKL_CPP_VERSION >= OKL_ENCODE_VERSION(53, 2, 1)
+	#if OKL_CPP_VERSION >= OKL_ENCODE_VERSION_YYYYMM(202302L)
 		#define OKL_HAS_CPP23 1
 	#else
 		#define OKL_HAS_CPP23 0
