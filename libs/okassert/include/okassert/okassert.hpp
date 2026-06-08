@@ -169,6 +169,7 @@ import std;
 #endif
 
 
+// C++23-ToDo: Add `OKL_COLD` to lambda.
 #define OKASSERT_PRIVATE_HANDLE_FAILURE(...) \
 	[&](const auto&... OKL_ASSERT_args) OKL_NOINLINE OKL_DEBUG_SECTION { \
 		if constexpr (::Okl::should_assert_log_once(OKL_ASSERT_assert_data.severity)) { \

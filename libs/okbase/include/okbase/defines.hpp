@@ -140,6 +140,13 @@
 	#endif
 #endif
 
+#if !defined(OKL_COLD)
+	#if OKL_COMPILER_GCC_AVAILABLE || OKL_COMPILER_CLANG_AVAILABLE
+		#define OKL_COLD [[gnu::cold]]
+	#else
+		#define OKL_COLD
+	#endif
+#endif
 
 // Language Features ---------------------------------------------------------------------------------------------------
 
