@@ -226,6 +226,8 @@
 	#define OKL_INTERNAL_CATCH(...) if constexpr (false)
 #endif
 
+#define OKL_FORWARD(...) static_cast<decltype(__VA_ARGS__)&&>(__VA_ARGS__)
+
 // Compiler Extensions -------------------------------------------------------------------------------------------------
 
 #if !defined(OKL_CODE_SECTION)
