@@ -5,6 +5,7 @@
 
 #include "okbase/defines.hpp"
 
-namespace Okl {};
+namespace Okl
+{};
 
 #endif
