@@ -3,8 +3,8 @@
 #ifndef OKTEST_CORE_TYPES_HPP
 #define OKTEST_CORE_TYPES_HPP
 
-#include "okbitflag/okbitflag.hpp"
 #include "okbase/types.hpp"
+#include "okbitflag/okbitflag.hpp"
 
 #include <array>
 #include <string_view>

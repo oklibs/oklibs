@@ -3,11 +3,11 @@
 #ifndef OKTEST_DETAIL_ASSERT_HANDLER_HPP
 #define OKTEST_DETAIL_ASSERT_HANDLER_HPP
 
+#include "okbase/defines.hpp"
 #include "oktest/core_types.hpp"
 #include "oktest/detail/expression.hpp"
 #include "oktest/get_runner.hpp"
 #include "oktest/test_context.hpp"
-#include "okbase/defines.hpp"
 
 #include <fmt/format.h>
 

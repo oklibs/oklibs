@@ -3,11 +3,11 @@
 #ifndef OKTEST_LOGGER_HPP
 #define OKTEST_LOGGER_HPP
 
+#include "okbase/types.hpp"
 #include "oktest/cli.hpp"
 #include "oktest/config.hpp"
 #include "oktest/test_context.hpp"
 #include "oktest/theme.hpp"
-#include "okbase/types.hpp"
 
 #include <array>
 

@@ -3,11 +3,11 @@
 #ifndef OKTEST_REPORTER_HPP
 #define OKTEST_REPORTER_HPP
 
+#include "okbase/types.hpp"
 #include "oktest/cli.hpp"
 #include "oktest/config.hpp"
 #include "oktest/core_types.hpp"
 #include "oktest/test_context.hpp"
-#include "okbase/types.hpp"
 
 #include <fmt/base.h>
 
@@ -124,8 +124,8 @@ void Reporter<LoggerT, ConfigT>::after_failed_assert(const AssertData& assert)
 }
 
 template<class LoggerT, class ConfigT>
-void Reporter<LoggerT, ConfigT>::after_uncaught_exception(const TestNodeData& test_node,
-                                                          const std::string_view exception_message)
+void Reporter<LoggerT, ConfigT>::
+    after_uncaught_exception(const TestNodeData& test_node, const std::string_view exception_message)
 {
 	++m_summary.failed_asserts;
 	m_logger.after_uncaught_exception(test_node, exception_message);

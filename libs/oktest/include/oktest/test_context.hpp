@@ -3,9 +3,9 @@
 #ifndef OKTEST_TEST_CONTEXT_HPP
 #define OKTEST_TEST_CONTEXT_HPP
 
+#include "okbase/types.hpp"
 #include "oktest/config.hpp"
 #include "oktest/core_types.hpp"
-#include "okbase/types.hpp"
 
 #include <fmt/base.h>
 

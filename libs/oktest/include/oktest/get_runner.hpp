@@ -3,11 +3,11 @@
 #ifndef OKTEST_GET_RUNNER_HPP
 #define OKTEST_GET_RUNNER_HPP
 
+#include "okbase/defines.hpp"
 #include "oktest/cli.hpp"
 #include "oktest/logger.hpp"
 #include "oktest/registry_runner.hpp"
 #include "oktest/reporter.hpp"
-#include "okbase/defines.hpp"
 
 namespace Okl::Test
 {

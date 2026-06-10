@@ -3,9 +3,9 @@
 #ifndef OKTEST_DETAIL_COMPILE_TIME_TEST_CASE_HPP
 #define OKTEST_DETAIL_COMPILE_TIME_TEST_CASE_HPP
 
+#include "okbase/defines.hpp"
 #include "oktest/get_runner.hpp"
 #include "oktest/test_context.hpp"
-#include "okbase/defines.hpp"
 
 namespace Okl::Test::Detail
 {

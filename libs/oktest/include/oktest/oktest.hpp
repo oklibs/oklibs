@@ -15,8 +15,8 @@
 	#include "oktest/output_redirector.hpp" // IWYU pragma: export
 	#include "oktest/theme.hpp" // IWYU pragma: export
 #endif
-#include "oktest/config.hpp"
 #include "okbase/defines.hpp"
+#include "oktest/config.hpp"
 
 #include <fmt/format.h>
 #if defined(OKTEST_DEFINE_MAIN)

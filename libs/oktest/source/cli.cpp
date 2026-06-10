@@ -2,19 +2,18 @@
 
 #include "oktest/cli.hpp"
 
-#include "okbitflag/okbitflag.hpp"
 #include "okbase/defines.hpp"
 #include "okbase/types.hpp"
+#include "okbitflag/okbitflag.hpp"
 #include "okutils/utils.hpp"
 
 #include <fmt/base.h>
 #include <fmt/format.h>
 
 #include <array>
-#include <iostream>
 #include <optional>
-#include <span>
 #include <ranges>
+#include <span>
 #include <string_view>
 
 namespace Okl::Test

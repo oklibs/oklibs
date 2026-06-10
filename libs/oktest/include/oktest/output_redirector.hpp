@@ -3,7 +3,6 @@
 #ifndef OKTEST_OUTPUT_REDIRECTOR_HPP
 #define OKTEST_OUTPUT_REDIRECTOR_HPP
 
-#include "oktest/config.hpp"
 #include "okbase/defines.hpp"
 #include "okbase/types.hpp"
 

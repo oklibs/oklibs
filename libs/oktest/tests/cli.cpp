@@ -7,8 +7,8 @@
 #if !defined(OKL_USE_MODULES)
 	#include <oktest/cli.hpp>
 #endif
-#include <oktest/oktest_short.hpp>
 #include <okbase/defines.hpp>
+#include <oktest/oktest_short.hpp>
 
 #if defined(OKL_USE_STD_MODULE)
 import std;
@@ -31,8 +31,7 @@ TEST_CASE("cli.no_args")
 TEST_CASE("cli.long_key_value")
 {
 	OKL_SUPPRESS_GSL("type.3") // "Don't use const_cast".
-	static constexpr char* argv[]{
-	    const_cast<char*>("test"), const_cast<char*>("--theme=default_theme")};
+	static constexpr char* argv[]{const_cast<char*>("test"), const_cast<char*>("--theme=default_theme")};
 	static constexpr int argc{sizeof(argv) / sizeof(char*)};
 	const CliArgs cli_args{argc, argv};
 
@@ -103,7 +102,8 @@ TEST_CASE("cli.mixed_args")
 {
 	OKL_SUPPRESS_GSL("type.3") // "Don't use const_cast".
 	static constexpr char* argv[]{
-	    const_cast<char*>("test"), const_cast<char*>("-h"), const_cast<char*>("--theme=default_theme"), const_cast<char*>("123")};
+	    const_cast<char*>("test"), const_cast<char*>("-h"), const_cast<char*>("--theme=default_theme"),
+	    const_cast<char*>("123")};
 	static constexpr int argc{sizeof(argv) / sizeof(char*)};
 	const CliArgs cli_args{argc, argv};
 

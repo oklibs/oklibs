@@ -9,23 +9,41 @@ TEST_CASE("sections")
 	SECTION("")
 	{
 		fmt::println("1");
-		SECTION("") { fmt::println("1.1"); }
+		SECTION("")
+		{
+			fmt::println("1.1");
+		}
 	}
 	SECTION("")
 	{
 		fmt::println("2");
-		SECTION("") { fmt::println("2.1"); }
+		SECTION("")
+		{
+			fmt::println("2.1");
+		}
 		SECTION("")
 		{
 			fmt::println("2.2");
 			SECTION("")
 			{
 				fmt::println("2.2.1");
-				SECTION("") { fmt::println("2.2.1.1"); }
-				SECTION("") { fmt::println("2.2.1.2"); }
+				SECTION("")
+				{
+					fmt::println("2.2.1.1");
+				}
+				SECTION("")
+				{
+					fmt::println("2.2.1.2");
+				}
 			}
 		}
-		SECTION("") { fmt::println("2.3"); }
-		SECTION("") { fmt::println("2.4"); }
+		SECTION("")
+		{
+			fmt::println("2.3");
+		}
+		SECTION("")
+		{
+			fmt::println("2.4");
+		}
 	}
 };

@@ -3,8 +3,8 @@
 #ifndef OKTEST_MAIN_HPP
 #define OKTEST_MAIN_HPP
 
-#include "oktest/config.hpp"
 #include "okbase/defines.hpp"
+#include "oktest/config.hpp"
 
 namespace Okl::Test
 {

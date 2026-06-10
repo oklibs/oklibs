@@ -1,7 +1,7 @@
 // Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#include <oktest/oktest_short.hpp>
 #include <okbase/defines.hpp>
+#include <oktest/oktest_short.hpp>
 
 #if !defined(OKL_USE_STD_MODULE)
 	#include <cstdint>
@@ -127,8 +127,14 @@ CONSTEXPR_TEST_CASE("Sections")
 {
 	int value{0};
 
-	SECTION("A") { value++; }
-	SECTION("B") { value++; }
+	SECTION("A")
+	{
+		value++;
+	}
+	SECTION("B")
+	{
+		value++;
+	}
 
 	CHECK(value == 1);
 };

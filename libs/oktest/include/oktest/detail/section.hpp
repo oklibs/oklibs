@@ -3,10 +3,10 @@
 #ifndef OKTEST_DETAIL_SECTION_HPP
 #define OKTEST_DETAIL_SECTION_HPP
 
+#include "okbase/defines.hpp"
 #include "oktest/core_types.hpp"
 #include "oktest/get_runner.hpp"
 #include "oktest/test_context.hpp"
-#include "okbase/defines.hpp"
 
 #include <source_location>
 #include <string_view>
