@@ -3,8 +3,8 @@
 #ifndef OKUTILS_TYPE_TRAITS_HPP
 #define OKUTILS_TYPE_TRAITS_HPP
 
-#include "okbase/concepts.hpp"
 #include "okbase/defines.hpp"
+#include "okbase/types.hpp"
 
 #include <tuple>
 #include <type_traits>
