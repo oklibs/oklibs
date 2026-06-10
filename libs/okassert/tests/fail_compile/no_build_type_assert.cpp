@@ -5,7 +5,4 @@
 
 #include <cstdlib>
 
-TEST_CASE("assert with no build type should fail to compile")
-{
-	OKL_ASSERT(non_fatal, std::rand());
-};
+TEST_CASE("assert with no build type should fail to compile") { OKL_ASSERT(non_fatal, std::rand()); };

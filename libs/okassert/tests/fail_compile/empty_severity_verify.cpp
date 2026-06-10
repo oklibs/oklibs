@@ -5,7 +5,4 @@
 
 #include <cstdlib>
 
-TEST_CASE("verify assert with empty severity should fail to compile")
-{
-	OKL_VERIFY(, std::rand());
-};
+TEST_CASE("verify assert with empty severity should fail to compile") { OKL_VERIFY(, std::rand()); };

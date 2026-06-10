@@ -3,7 +3,4 @@
 #include <okassert/okassert.hpp>
 #include <oktest/oktest_short.hpp>
 
-TEST_CASE("assert with only severity should fail to compile")
-{
-	OKL_ASSERT(release);
-};
+TEST_CASE("assert with only severity should fail to compile") { OKL_ASSERT(release); };

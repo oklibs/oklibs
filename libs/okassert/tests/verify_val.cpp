@@ -40,9 +40,18 @@ TEST_CASE("verify_val: return value preserves expression value")
 {
 	AssertTest::reset();
 
-	SECTION("disabled with true returns true") { CHECK(OKL_VERIFY_VAL(disabled, true)); }
-	SECTION("disabled with false returns false") { CHECK_NOT(OKL_VERIFY_VAL(disabled, false)); }
-	SECTION("disabled returns the int value, not just a bool") { CHECK(OKL_VERIFY_VAL(disabled, 42) == 42); }
+	SECTION("disabled with true returns true")
+	{
+		CHECK(OKL_VERIFY_VAL(disabled, true));
+	}
+	SECTION("disabled with false returns false")
+	{
+		CHECK_NOT(OKL_VERIFY_VAL(disabled, false));
+	}
+	SECTION("disabled returns the int value, not just a bool")
+	{
+		CHECK(OKL_VERIFY_VAL(disabled, 42) == 42);
+	}
 	SECTION("enabled with truthy expression returns the truthy value")
 	{
 		CHECK(OKL_VERIFY_VAL(release, true));

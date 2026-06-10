@@ -3,7 +3,4 @@
 #include <okassert/okassert.hpp>
 #include <oktest/oktest_short.hpp>
 
-TEST_CASE("verify assert with an empty expression should fail to compile")
-{
-	OKL_VERIFY(release,);
-};
+TEST_CASE("verify assert with an empty expression should fail to compile") { OKL_VERIFY(release, ); };

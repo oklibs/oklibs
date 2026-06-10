@@ -3,7 +3,4 @@
 #include <okassert/okassert.hpp>
 #include <oktest/oktest_short.hpp>
 
-TEST_CASE("assert with an invalid message type should fail to compile")
-{
-	OKL_ASSERT(release, true, 123);
-};
+TEST_CASE("assert with an invalid message type should fail to compile") { OKL_ASSERT(release, true, 123); };

@@ -3,6 +3,4 @@
 #include <okassert/okassert.hpp>
 #include <oktest/oktest_short.hpp>
 
-CONSTEVAL_TEST_CASE("assert failing at compile time should fail to compile") {
-	OKL_ASSERT(release, false);
-};
+CONSTEVAL_TEST_CASE("assert failing at compile time should fail to compile") { OKL_ASSERT(release, false); };

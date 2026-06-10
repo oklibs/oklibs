@@ -3,7 +3,4 @@
 #include <okassert/okassert.hpp>
 #include <oktest/oktest_short.hpp>
 
-TEST_CASE("empty assert should fail to compile")
-{
-	OKL_ASSERT();
-};
+TEST_CASE("empty assert should fail to compile") { OKL_ASSERT(); };

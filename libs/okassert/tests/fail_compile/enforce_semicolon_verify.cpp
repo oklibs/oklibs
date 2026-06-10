@@ -3,7 +3,4 @@
 #include <okassert/okassert.hpp>
 #include <oktest/oktest_short.hpp>
 
-TEST_CASE("verify assert without a semicolon should fail to compile")
-{
-	OKL_VERIFY(release, true)
-};
+TEST_CASE("verify assert without a semicolon should fail to compile"){OKL_VERIFY(release, true)};
