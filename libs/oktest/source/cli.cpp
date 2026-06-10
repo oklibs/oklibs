@@ -37,10 +37,10 @@ struct CliArgDefine {
 
 // clang-format off
 inline constexpr std::array cli_arg_defines{std::to_array<CliArgDefine>(
-	{{"theme", {}, {}, "auto", "Color theme to use."},
-	 {"help", 'h', ECliArgType::flag, {}, "Print help."},
-	 {"exit-zero", {}, ECliArgType::flag, {}, "Return exit code 0 even when tests fail."},
-	 {{}, {}, {}, {}, "Filters to select which tests to run, if none are provided, all tests will run."}})};
+	{{.name="theme", .short_name={}, .type={}, .default_value="auto", .description="Color theme to use."},
+	 {.name="help", .short_name='h', .type=ECliArgType::flag, .default_value={}, .description="Print help."},
+	 {.name="exit-zero", .short_name={}, .type=ECliArgType::flag, .default_value={}, .description="Return exit code 0 even when tests fail."},
+	 {.name={}, .short_name={}, .type={}, .default_value={}, .description="Filters to select which tests to run, if none are provided, all tests will run."}})};
 // clang-format on
 
 [[noreturn]] void report_error(const std::string_view message)
