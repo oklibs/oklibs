@@ -19,6 +19,8 @@
 
 namespace Okl::Test
 {
+namespace
+{
 enum class OKL_FLAG_ENUM ECliArgType : uint8 {
 	flag = 1 << 0
 };
@@ -31,6 +33,7 @@ struct CliArgDefine {
 	std::string_view default_value{};
 	std::string_view description{};
 };
+} // namespace
 
 // clang-format off
 inline constexpr std::array cli_arg_defines{std::to_array<CliArgDefine>(
