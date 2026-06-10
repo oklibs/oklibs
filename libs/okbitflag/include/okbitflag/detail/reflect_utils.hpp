@@ -3,7 +3,6 @@
 #ifndef OKBITFLAG_DETAIL_REFLECT_UTILS_HPP
 #define OKBITFLAG_DETAIL_REFLECT_UTILS_HPP
 
-#include "okbase/concepts.hpp"
 #include "okbase/types.hpp"
 
 #include <source_location>
