@@ -3,9 +3,9 @@
 #ifndef OKUTILS_OKUTILS_HPP
 #define OKUTILS_OKUTILS_HPP
 
-#include "okutils/math.hpp"
-#include "okutils/safe_casts.hpp"
-#include "okutils/type_traits.hpp"
-#include "okutils/utils.hpp"
+#include "okutils/math.hpp" // IWYU pragma: export
+#include "okutils/safe_casts.hpp" // IWYU pragma: export
+#include "okutils/type_traits.hpp" // IWYU pragma: export
+#include "okutils/utils.hpp" // IWYU pragma: export
 
 #endif
