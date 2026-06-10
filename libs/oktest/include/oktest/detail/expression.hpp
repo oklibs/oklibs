@@ -151,32 +151,138 @@ constexpr ExtractedUnaryExpression<ExpectedValue, LhsT>::operator Expression() c
 	return expr;
 }
 
-#define OKL_DEFINE_UNARY_EXPRESSION(op) \
-	template<auto ExpectedValue, class LhsT> \
-	constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator op(const auto& rhs) const \
-		requires std::convertible_to<decltype(lhs op rhs), decltype(ExpectedValue)> \
-	{ \
-		Expression expr{}; \
-		OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */ \
-		expr.success = static_cast<decltype(ExpectedValue)>(lhs op rhs) == ExpectedValue; \
-		if OKL_IS_NOT_CONSTEVAL { \
-			if (!expr.success) { \
-				expr.append_value(lhs); \
-				expr.append_value(std::string_view{" " OKL_STRINGIFY(op) " "}); \
-				expr.append_value(rhs); \
-			} \
-		} \
-		return expr; \
-	}
+template<auto ExpectedValue, class LhsT>
+constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator<=>(const auto& rhs) const
+    requires std::convertible_to<decltype(lhs <=> rhs), decltype(ExpectedValue)>
+{
+	OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */
+	const auto result{static_cast<decltype(ExpectedValue)>(lhs <=> rhs)};
 
-OKL_DEFINE_UNARY_EXPRESSION(<=>)
-OKL_DEFINE_UNARY_EXPRESSION(<)
-OKL_DEFINE_UNARY_EXPRESSION(>)
-OKL_DEFINE_UNARY_EXPRESSION(<=)
-OKL_DEFINE_UNARY_EXPRESSION(>=)
-OKL_DEFINE_UNARY_EXPRESSION(==)
-OKL_DEFINE_UNARY_EXPRESSION(!=)
-#undef OKL_DEFINE_UNARY_EXPRESSION
+	Expression expr{};
+	expr.success = result == ExpectedValue;
+	if OKL_IS_NOT_CONSTEVAL {
+		if (!expr.success) {
+			expr.append_value(lhs);
+			expr.append_value(std::string_view{" <=> "});
+			expr.append_value(rhs);
+		}
+	}
+	return expr;
+}
+
+template<auto ExpectedValue, class LhsT>
+constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator<(const auto& rhs) const
+    requires std::convertible_to<decltype(lhs < rhs), decltype(ExpectedValue)>
+{
+	OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */
+	const auto result{static_cast<decltype(ExpectedValue)>(lhs < rhs)};
+
+	Expression expr{};
+	expr.success = result == ExpectedValue;
+	if OKL_IS_NOT_CONSTEVAL {
+		if (!expr.success) {
+			expr.append_value(lhs);
+			expr.append_value(std::string_view{" < "});
+			expr.append_value(rhs);
+		}
+	}
+	return expr;
+}
+
+template<auto ExpectedValue, class LhsT>
+constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator>(const auto& rhs) const
+    requires std::convertible_to<decltype(lhs > rhs), decltype(ExpectedValue)>
+{
+	OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */
+	const auto result{static_cast<decltype(ExpectedValue)>(lhs > rhs)};
+
+	Expression expr{};
+	expr.success = result == ExpectedValue;
+	if OKL_IS_NOT_CONSTEVAL {
+		if (!expr.success) {
+			expr.append_value(lhs);
+			expr.append_value(std::string_view{" > "});
+			expr.append_value(rhs);
+		}
+	}
+	return expr;
+}
+
+template<auto ExpectedValue, class LhsT>
+constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator<=(const auto& rhs) const
+    requires std::convertible_to<decltype(lhs <= rhs), decltype(ExpectedValue)>
+{
+	OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */
+	const auto result{static_cast<decltype(ExpectedValue)>(lhs <= rhs)};
+
+	Expression expr{};
+	expr.success = result == ExpectedValue;
+	if OKL_IS_NOT_CONSTEVAL {
+		if (!expr.success) {
+			expr.append_value(lhs);
+			expr.append_value(std::string_view{" <= "});
+			expr.append_value(rhs);
+		}
+	}
+	return expr;
+}
+
+template<auto ExpectedValue, class LhsT>
+constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator>=(const auto& rhs) const
+    requires std::convertible_to<decltype(lhs >= rhs), decltype(ExpectedValue)>
+{
+	OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */
+	const auto result{static_cast<decltype(ExpectedValue)>(lhs >= rhs)};
+
+	Expression expr{};
+	expr.success = result == ExpectedValue;
+	if OKL_IS_NOT_CONSTEVAL {
+		if (!expr.success) {
+			expr.append_value(lhs);
+			expr.append_value(std::string_view{" >= "});
+			expr.append_value(rhs);
+		}
+	}
+	return expr;
+}
+
+template<auto ExpectedValue, class LhsT>
+constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator==(const auto& rhs) const
+    requires std::convertible_to<decltype(lhs == rhs), decltype(ExpectedValue)>
+{
+	OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */
+	const auto result{static_cast<decltype(ExpectedValue)>(lhs == rhs)};
+
+	Expression expr{};
+	expr.success = result == ExpectedValue;
+	if OKL_IS_NOT_CONSTEVAL {
+		if (!expr.success) {
+			expr.append_value(lhs);
+			expr.append_value(std::string_view{" == "});
+			expr.append_value(rhs);
+		}
+	}
+	return expr;
+}
+
+template<auto ExpectedValue, class LhsT>
+constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator!=(const auto& rhs) const
+    requires std::convertible_to<decltype(lhs != rhs), decltype(ExpectedValue)>
+{
+	OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */
+	const auto result{static_cast<decltype(ExpectedValue)>(lhs != rhs)};
+
+	Expression expr{};
+	expr.success = result == ExpectedValue;
+	if OKL_IS_NOT_CONSTEVAL {
+		if (!expr.success) {
+			expr.append_value(lhs);
+			expr.append_value(std::string_view{" != "});
+			expr.append_value(rhs);
+		}
+	}
+	return expr;
+}
 } // namespace Okl::Test::Detail
 
 #endif
