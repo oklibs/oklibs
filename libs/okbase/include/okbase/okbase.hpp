@@ -3,8 +3,8 @@
 #ifndef OKBASE_OKBASE_HPP
 #define OKBASE_OKBASE_HPP
 
-#include "okbase/concepts.hpp"
-#include "okbase/defines.hpp"
-#include "okbase/types.hpp"
+#include "okbase/concepts.hpp" // IWYU pragma: export
+#include "okbase/defines.hpp" // IWYU pragma: export
+#include "okbase/types.hpp" // IWYU pragma: export
 
 #endif
