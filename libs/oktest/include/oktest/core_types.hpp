@@ -142,7 +142,7 @@ constexpr std::string_view get_type_name() noexcept
 
 	if constexpr (!prefix.empty()) {
 		OKL_STATIC_VAR constexpr auto start{function.find(prefix) + prefix.size()};
-		OKL_STATIC_VAR constexpr auto end{function.find(suffix)};
+		OKL_STATIC_VAR constexpr auto end{function.rfind(suffix)};
 		return function.substr(start, end - start);
 	}
 	else {
