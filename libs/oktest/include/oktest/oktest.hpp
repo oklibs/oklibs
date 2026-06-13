@@ -446,7 +446,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 	 * @param ... The expression to evaluate.
 	 */
 	#define OKL_REQUIRE_NOTHROW(...) OKTEST_PRIVATE_CHECK_THROW(require, nothrow, runtime_mode, #__VA_ARGS__,, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
-	#define OKL_CONSTEXPR_REQUIRE_NOTHROW(...) OKTEST_PRIVATE_CHECK_THROW(require, nothrow, runtime_mode, #__VA_ARGS__, static_assert(!::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }));, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
+	#define OKL_CONSTEXPR_REQUIRE_NOTHROW(...) OKTEST_PRIVATE_CHECK_THROW(require, nothrow, constexpr_mode, #__VA_ARGS__, static_assert(!::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }));, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
 	#define OKL_CONSTEVAL_REQUIRE_NOTHROW(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(require, nothrow, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
 
 	/**
