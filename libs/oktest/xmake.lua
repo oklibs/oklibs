@@ -39,6 +39,7 @@ target("oktest", function()
         add_tests("fail_main_assert", {kind = "binary", files = "tests/fail_main_assert.cpp", remove_files = "source/main.cpp", runargs = {"--exit-zero", "--theme=no_color"}, pass_output_files = "tests/outputs/fail_main_assert.txt", build_should_pass = is_cross()})
         add_tests("success", {kind = "binary", files = "tests/success.cpp", remove_files = "source/main.cpp", plain = true, pass_output_files = "tests/outputs/success.txt", build_should_pass = is_cross()})
     end
+    add_tests("expression", {kind = "binary", files = "tests/expression.cpp", build_should_pass = is_cross()})
     add_tests("fail_compile_time_assert", { kind = "binary", files = "tests/fail_compile_time_assert.cpp", build_should_fail = true})
     add_tests("fail_compile_time_test", { kind = "binary", files = "tests/fail_compile_time_test.cpp", build_should_fail = true})
     add_tests("fail_test", { kind = "binary", files = "tests/fail_test.cpp", runargs = {"--exit-zero", "--theme=no_color"}, pass_output_files = "tests/outputs/fail_test.txt", build_should_pass = is_cross()})
