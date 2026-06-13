@@ -10,6 +10,7 @@
 #if OKL_INTERNAL_WITH_EXCEPTIONS
 	#include <exception>
 #else
+	#include <cstdio>
 	#include <cstdlib>
 #endif
 
@@ -82,6 +83,7 @@ void Runner<ReporterT, ConfigT>::after_failed_assert(const AssertData& assert_da
 #if OKL_INTERNAL_WITH_EXCEPTIONS
 		throw AssertFailureException{}; // NOLINT(hicpp-exception-baseclass)
 #else
+		static_cast<void>(std::fflush(nullptr));
 		std::quick_exit(m_exit_zero ? 0 : 1);
 #endif
 	}
