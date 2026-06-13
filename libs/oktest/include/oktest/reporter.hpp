@@ -41,7 +41,7 @@ public:
 	void after_uncaught_exception(const TestNodeData&, std::string_view exception_message);
 
 protected:
-	static constexpr size_t max_depth{OKTEST_MAX_NESTED_NODES};
+	static constexpr size_t max_depth{OKTEST_MAX_NESTED_NODES + 1};
 	RunData m_summary{};
 	std::array<size_t, max_depth> m_asserts_failed{};
 	size_t m_current_assert{0};
@@ -75,13 +75,11 @@ void Reporter<LoggerT, ConfigT>::update_configs(const CliArgs& cli_args)
 template<class LoggerT, class ConfigT>
 void Reporter<LoggerT, ConfigT>::before_test_node(const TestNodeData& test_node)
 {
-	if (test_node.type == ETestNodeType::test_case) {
-		if (m_current_assert >= m_asserts_failed.size()) {
-			fmt::print(stderr, "\nerror: test cases can only be nested {} times.\n", m_asserts_failed.size());
-			std::terminate();
-		}
-		m_asserts_failed.at(m_current_assert++) = m_summary.failed_asserts;
+	if (m_current_assert >= m_asserts_failed.size()) {
+		fmt::print(stderr, "\nerror: test nodes can only be nested {} times.\n", m_asserts_failed.size());
+		std::terminate();
 	}
+	m_asserts_failed.at(m_current_assert++) = m_summary.failed_asserts;
 
 	m_logger.before_test_node(test_node);
 }
@@ -97,15 +95,11 @@ void Reporter<LoggerT, ConfigT>::after_test_node(const TestNodeData& test_node)
 	}
 
 	if (test_node.mode.has_flags(EMode::run_time)) {
+		const bool passed{m_summary.failed_asserts == m_asserts_failed.at(--m_current_assert)};
 		if (test_node.type == ETestNodeType::test_case) {
-			const bool passed{m_summary.failed_asserts == m_asserts_failed.at(--m_current_assert)};
 			passed ? ++m_summary.passed_test_cases : ++m_summary.failed_test_cases;
-			m_logger.after_runtime_test_node(test_node, passed);
 		}
-		else {
-			const bool passed{m_summary.failed_asserts == m_asserts_failed.at(m_current_assert)};
-			m_logger.after_runtime_test_node(test_node, passed);
-		}
+		m_logger.after_runtime_test_node(test_node, passed);
 	}
 }
 
