@@ -45,7 +45,7 @@ inline constexpr std::array cli_arg_defines{std::to_array<CliArgDefine>(
 [[noreturn]] void report_error(const std::string_view message)
 {
 	fmt::print(stderr, "Error: {}\n", message);
-	std::terminate();
+	std::exit(1);
 }
 
 CliArgs::CliArgs(const int argc, char* const argv[])
@@ -61,7 +61,7 @@ CliArgs::CliArgs(const int argc, char* const argv[])
 
 		if (token.starts_with("--")) {
 			if (expects_value) {
-				report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size).name));
+				report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size - 1).name));
 			}
 
 			const std::string_view name_and_value{token.substr(2)};
@@ -69,6 +69,7 @@ CliArgs::CliArgs(const int argc, char* const argv[])
 
 			const std::string_view name{name_and_value.substr(0, split_index)};
 			const std::string_view value{name_and_value.substr(name.size() + (split_index != std::string_view::npos))};
+			bool handled{false};
 			for (const CliArgDefine& define : cli_arg_defines) {
 				if (name == define.name) {
 					if (define.type.has_flags(ECliArgType::flag)) {
@@ -77,6 +78,7 @@ CliArgs::CliArgs(const int argc, char* const argv[])
 						}
 
 						at(m_args, m_args_size++) = CliArg{define.name};
+						handled = true;
 						break;
 					}
 
@@ -84,26 +86,37 @@ CliArgs::CliArgs(const int argc, char* const argv[])
 						report_error(fmt::format("Argument '{}' is missing a value", define.name));
 					}
 					at(m_args, m_args_size++) = CliArg{define.name, value};
+					handled = true;
 					break;
 				}
+			}
+
+			if (!handled) {
+				report_error(fmt::format("Unknown argument '--{}'", name));
 			}
 		}
 		else if (token.starts_with('-')) {
 			if (expects_value) {
-				report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size).name));
+				report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size - 1).name));
 			}
 
 			const std::string_view name{token.substr(1)};
+			bool handled{false};
 			for (const CliArgDefine& define : cli_arg_defines) {
 				if (name == std::string_view{&define.short_name, 1}) {
 					at(m_args, m_args_size++) = CliArg{define.name};
 					expects_value = not define.type.has_flags(ECliArgType::flag);
+					handled = true;
 					break;
 				}
 			}
+
+			if (!handled) {
+				report_error(fmt::format("Unknown argument '-{}'", name));
+			}
 		}
 		else if (expects_value) {
-			at(m_args, m_args_size).value = token;
+			at(m_args, m_args_size - 1).value = token;
 			expects_value = false;
 		}
 		else {
@@ -123,7 +136,7 @@ CliArgs::CliArgs(const int argc, char* const argv[])
 		}
 	}
 	if (expects_value) {
-		report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size).name));
+		report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size - 1).name));
 	}
 }
 

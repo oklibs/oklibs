@@ -48,6 +48,8 @@ target("oktest", function()
     add_tests("short_macros", {kind = "binary", files = "tests/short_macros.cpp", runargs = {"--theme=no_color"}, plain = true, pass_output_files = "tests/outputs/macros.txt", build_should_pass = is_cross()})
     add_tests("sections", {kind = "binary", files = "tests/sections.cpp", runargs = {"--theme=no_color"}, plain = true, pass_output_files = "tests/outputs/sections.txt", build_should_pass = is_cross()})
     add_tests("cli", {kind = "binary", files = "tests/cli.cpp", build_should_pass = is_cross()})
+    add_tests("cli_unknown_long_arg", {kind = "binary", files = "tests/benchmarks/include.cpp", runargs = {"--unknown-option"}, should_fail = true, build_should_pass = is_cross()})
+    add_tests("cli_unknown_short_arg", {kind = "binary", files = "tests/benchmarks/include.cpp", runargs = {"-z"}, should_fail = true, build_should_pass = is_cross()})
     add_tests("cli_help", {kind = "binary", files = "tests/benchmarks/include.cpp", runargs = {"--help"}, build_should_pass = is_cross()})
     add_tests("logger", {kind = "binary", files = "tests/logger.cpp", runargs = {"--theme=no_color"}, plain = true, pass_output_files = "tests/outputs/logger.txt", build_should_pass = is_cross()})
     if not is_plat("wasm") then
