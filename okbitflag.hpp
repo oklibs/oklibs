@@ -665,10 +665,18 @@
 #endif
 
 #if !defined(OKL_HAS_CPP23)
-	#if OKL_CPP_VERSION >= OKL_ENCODE_VERSION(53, 2, 1)
+	#if OKL_CPP_VERSION >= OKL_ENCODE_VERSION_YYYYMM(202302L)
 		#define OKL_HAS_CPP23 1
 	#else
 		#define OKL_HAS_CPP23 0
+	#endif
+#endif
+
+#if !defined(OKL_HAS_CPP26)
+	#if OKL_CPP_VERSION >= OKL_ENCODE_VERSION_YYYYMM(202400L)
+		#define OKL_HAS_CPP26 1
+	#else
+		#define OKL_HAS_CPP26 0
 	#endif
 #endif
 
@@ -779,6 +787,13 @@
 	#endif
 #endif
 
+#if !defined(OKL_COLD)
+	#if OKL_COMPILER_GCC_AVAILABLE || OKL_COMPILER_CLANG_AVAILABLE
+		#define OKL_COLD [[gnu::cold]]
+	#else
+		#define OKL_COLD
+	#endif
+#endif
 
 // Language Features ---------------------------------------------------------------------------------------------------
 
@@ -849,6 +864,8 @@
 	#define OKL_INTERNAL_TRY
 	#define OKL_INTERNAL_CATCH(...) if constexpr (false)
 #endif
+
+#define OKL_FORWARD(...) static_cast<decltype(__VA_ARGS__)&&>(__VA_ARGS__)
 
 // Compiler Extensions -------------------------------------------------------------------------------------------------
 

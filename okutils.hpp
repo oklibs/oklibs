@@ -665,10 +665,18 @@
 #endif
 
 #if !defined(OKL_HAS_CPP23)
-	#if OKL_CPP_VERSION >= OKL_ENCODE_VERSION(53, 2, 1)
+	#if OKL_CPP_VERSION >= OKL_ENCODE_VERSION_YYYYMM(202302L)
 		#define OKL_HAS_CPP23 1
 	#else
 		#define OKL_HAS_CPP23 0
+	#endif
+#endif
+
+#if !defined(OKL_HAS_CPP26)
+	#if OKL_CPP_VERSION >= OKL_ENCODE_VERSION_YYYYMM(202400L)
+		#define OKL_HAS_CPP26 1
+	#else
+		#define OKL_HAS_CPP26 0
 	#endif
 #endif
 
@@ -779,6 +787,13 @@
 	#endif
 #endif
 
+#if !defined(OKL_COLD)
+	#if OKL_COMPILER_GCC_AVAILABLE || OKL_COMPILER_CLANG_AVAILABLE
+		#define OKL_COLD [[gnu::cold]]
+	#else
+		#define OKL_COLD
+	#endif
+#endif
 
 // Language Features ---------------------------------------------------------------------------------------------------
 
@@ -849,6 +864,8 @@
 	#define OKL_INTERNAL_TRY
 	#define OKL_INTERNAL_CATCH(...) if constexpr (false)
 #endif
+
+#define OKL_FORWARD(...) static_cast<decltype(__VA_ARGS__)&&>(__VA_ARGS__)
 
 // Compiler Extensions -------------------------------------------------------------------------------------------------
 
@@ -1046,6 +1063,42 @@ template<class ResultT, class... ArgTs>
 using FunctionPtr = ResultT (*)(ArgTs...);
 OKL_EXPORT_END
 } // namespace Okl
+
+#endif
+// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+
+#ifndef OKBITFLAG_DETAIL_REFLECT_UTILS_HPP
+#define OKBITFLAG_DETAIL_REFLECT_UTILS_HPP
+
+
+#include <source_location>
+#include <string_view>
+
+// Needs to be in global namespace.
+struct OklBitflagReflectStruct {
+	void* m_member;
+	enum class EEnum : Okl::uint8 {
+		value
+	};
+};
+
+namespace Okl::Detail
+{
+template<auto... Vs>
+[[nodiscard]] constexpr std::string_view function_name() noexcept
+{
+	return std::source_location::current().function_name();
+}
+
+struct TEnumNameInfo {
+	static constexpr std::string_view func_name{function_name<OklBitflagReflectStruct::EEnum::value>()};
+	static constexpr size_t begin{func_name.find("OklBitflagReflectStruct::EEnum::value")};
+	static constexpr size_t end{
+	    func_name.size() -
+	    (func_name.find("OklBitflagReflectStruct::EEnum::value") +
+	     std::string_view{"OklBitflagReflectStruct::EEnum::value"}.size())};
+};
+} // namespace Okl::Detail
 
 #endif
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
@@ -1308,42 +1361,6 @@ template<class T>
 concept CThreeWayComparable = requires(T value) { value <=> value; };
 OKL_EXPORT_END
 } // namespace Okl
-
-#endif
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
-
-#ifndef OKBITFLAG_DETAIL_REFLECT_UTILS_HPP
-#define OKBITFLAG_DETAIL_REFLECT_UTILS_HPP
-
-
-#include <source_location>
-#include <string_view>
-
-// Needs to be in global namespace.
-struct OklBitflagReflectStruct {
-	void* m_member;
-	enum class EEnum : Okl::uint8 {
-		value
-	};
-};
-
-namespace Okl::Detail
-{
-template<auto... Vs>
-[[nodiscard]] constexpr std::string_view function_name() noexcept
-{
-	return std::source_location::current().function_name();
-}
-
-struct TEnumNameInfo {
-	static constexpr std::string_view func_name{function_name<OklBitflagReflectStruct::EEnum::value>()};
-	static constexpr size_t begin{func_name.find("OklBitflagReflectStruct::EEnum::value")};
-	static constexpr size_t end{
-	    func_name.size() -
-	    (func_name.find("OklBitflagReflectStruct::EEnum::value") +
-	     std::string_view{"OklBitflagReflectStruct::EEnum::value"}.size())};
-};
-} // namespace Okl::Detail
 
 #endif
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
@@ -2322,6 +2339,7 @@ import std;
 #endif
 
 
+// C++23-ToDo: Add `OKL_COLD` to lambda.
 #define OKASSERT_PRIVATE_HANDLE_FAILURE(...) \
 	[&](const auto&... OKL_ASSERT_args) OKL_NOINLINE OKL_DEBUG_SECTION { \
 		if constexpr (::Okl::should_assert_log_once(OKL_ASSERT_assert_data.severity)) { \

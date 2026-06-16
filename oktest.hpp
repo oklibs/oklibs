@@ -665,10 +665,18 @@
 #endif
 
 #if !defined(OKL_HAS_CPP23)
-	#if OKL_CPP_VERSION >= OKL_ENCODE_VERSION(53, 2, 1)
+	#if OKL_CPP_VERSION >= OKL_ENCODE_VERSION_YYYYMM(202302L)
 		#define OKL_HAS_CPP23 1
 	#else
 		#define OKL_HAS_CPP23 0
+	#endif
+#endif
+
+#if !defined(OKL_HAS_CPP26)
+	#if OKL_CPP_VERSION >= OKL_ENCODE_VERSION_YYYYMM(202400L)
+		#define OKL_HAS_CPP26 1
+	#else
+		#define OKL_HAS_CPP26 0
 	#endif
 #endif
 
@@ -779,6 +787,13 @@
 	#endif
 #endif
 
+#if !defined(OKL_COLD)
+	#if OKL_COMPILER_GCC_AVAILABLE || OKL_COMPILER_CLANG_AVAILABLE
+		#define OKL_COLD [[gnu::cold]]
+	#else
+		#define OKL_COLD
+	#endif
+#endif
 
 // Language Features ---------------------------------------------------------------------------------------------------
 
@@ -849,6 +864,8 @@
 	#define OKL_INTERNAL_TRY
 	#define OKL_INTERNAL_CATCH(...) if constexpr (false)
 #endif
+
+#define OKL_FORWARD(...) static_cast<decltype(__VA_ARGS__)&&>(__VA_ARGS__)
 
 // Compiler Extensions -------------------------------------------------------------------------------------------------
 
@@ -1046,6 +1063,42 @@ template<class ResultT, class... ArgTs>
 using FunctionPtr = ResultT (*)(ArgTs...);
 OKL_EXPORT_END
 } // namespace Okl
+
+#endif
+// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
+
+#ifndef OKBITFLAG_DETAIL_REFLECT_UTILS_HPP
+#define OKBITFLAG_DETAIL_REFLECT_UTILS_HPP
+
+
+#include <source_location>
+#include <string_view>
+
+// Needs to be in global namespace.
+struct OklBitflagReflectStruct {
+	void* m_member;
+	enum class EEnum : Okl::uint8 {
+		value
+	};
+};
+
+namespace Okl::Detail
+{
+template<auto... Vs>
+[[nodiscard]] constexpr std::string_view function_name() noexcept
+{
+	return std::source_location::current().function_name();
+}
+
+struct TEnumNameInfo {
+	static constexpr std::string_view func_name{function_name<OklBitflagReflectStruct::EEnum::value>()};
+	static constexpr size_t begin{func_name.find("OklBitflagReflectStruct::EEnum::value")};
+	static constexpr size_t end{
+	    func_name.size() -
+	    (func_name.find("OklBitflagReflectStruct::EEnum::value") +
+	     std::string_view{"OklBitflagReflectStruct::EEnum::value"}.size())};
+};
+} // namespace Okl::Detail
 
 #endif
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
@@ -1308,42 +1361,6 @@ template<class T>
 concept CThreeWayComparable = requires(T value) { value <=> value; };
 OKL_EXPORT_END
 } // namespace Okl
-
-#endif
-// Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
-
-#ifndef OKBITFLAG_DETAIL_REFLECT_UTILS_HPP
-#define OKBITFLAG_DETAIL_REFLECT_UTILS_HPP
-
-
-#include <source_location>
-#include <string_view>
-
-// Needs to be in global namespace.
-struct OklBitflagReflectStruct {
-	void* m_member;
-	enum class EEnum : Okl::uint8 {
-		value
-	};
-};
-
-namespace Okl::Detail
-{
-template<auto... Vs>
-[[nodiscard]] constexpr std::string_view function_name() noexcept
-{
-	return std::source_location::current().function_name();
-}
-
-struct TEnumNameInfo {
-	static constexpr std::string_view func_name{function_name<OklBitflagReflectStruct::EEnum::value>()};
-	static constexpr size_t begin{func_name.find("OklBitflagReflectStruct::EEnum::value")};
-	static constexpr size_t end{
-	    func_name.size() -
-	    (func_name.find("OklBitflagReflectStruct::EEnum::value") +
-	     std::string_view{"OklBitflagReflectStruct::EEnum::value"}.size())};
-};
-} // namespace Okl::Detail
 
 #endif
 // Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
@@ -1893,7 +1910,7 @@ constexpr std::string_view get_type_name() noexcept
 
 	if constexpr (!prefix.empty()) {
 		OKL_STATIC_VAR constexpr auto start{function.find(prefix) + prefix.size()};
-		OKL_STATIC_VAR constexpr auto end{function.find(suffix)};
+		OKL_STATIC_VAR constexpr auto end{function.rfind(suffix)};
 		return function.substr(start, end - start);
 	}
 	else {
@@ -1967,9 +1984,9 @@ struct TestContext {
 	[[nodiscard]] constexpr bool next_section();
 
 protected:
-	std::array<size_t, MaxDepth> target_path{}; /* Index to select at each nesting level for the current run. */
-	std::array<size_t, MaxDepth> node_counts{}; /* Number of nodes discovered at each level. */
-	std::array<size_t, MaxDepth> current_visit_counts{}; /* Number of nodes visited in the current run. */
+	std::array<size_t, MaxDepth + 1> target_path{}; /* Index to select at each nesting level for the current run. */
+	std::array<size_t, MaxDepth + 1> node_counts{}; /* Number of nodes discovered at each level. */
+	std::array<size_t, MaxDepth + 1> current_visit_counts{}; /* Number of nodes visited in the current run. */
 	size_t current_depth{0}; /* Nesting level in the current run. */
 	size_t path_length{1}; /* Length of the valid path for the next run. */
 };
@@ -2162,6 +2179,7 @@ void CliArgs::gather_all_of(const std::string_view name, std::invocable<std::str
 #if OKL_INTERNAL_WITH_EXCEPTIONS
 	#include <exception>
 #else
+	#include <cstdio>
 	#include <cstdlib>
 #endif
 
@@ -2234,6 +2252,7 @@ void Runner<ReporterT, ConfigT>::after_failed_assert(const AssertData& assert_da
 #if OKL_INTERNAL_WITH_EXCEPTIONS
 		throw AssertFailureException{}; // NOLINT(hicpp-exception-baseclass)
 #else
+		static_cast<void>(std::fflush(nullptr));
 		std::quick_exit(m_exit_zero ? 0 : 1);
 #endif
 	}
@@ -2435,7 +2454,7 @@ public:
 	void after_uncaught_exception(const TestNodeData&, std::string_view exception_message);
 
 protected:
-	static constexpr size_t max_depth{OKTEST_MAX_NESTED_NODES};
+	static constexpr size_t max_depth{OKTEST_MAX_NESTED_NODES + 1};
 	RunData m_summary{};
 	std::array<size_t, max_depth> m_asserts_failed{};
 	size_t m_current_assert{0};
@@ -2469,13 +2488,11 @@ void Reporter<LoggerT, ConfigT>::update_configs(const CliArgs& cli_args)
 template<class LoggerT, class ConfigT>
 void Reporter<LoggerT, ConfigT>::before_test_node(const TestNodeData& test_node)
 {
-	if (test_node.type == ETestNodeType::test_case) {
-		if (m_current_assert >= m_asserts_failed.size()) {
-			fmt::print(stderr, "\nerror: test cases can only be nested {} times.\n", m_asserts_failed.size());
-			std::terminate();
-		}
-		m_asserts_failed.at(m_current_assert++) = m_summary.failed_asserts;
+	if (m_current_assert >= m_asserts_failed.size()) {
+		fmt::print(stderr, "\nerror: test nodes can only be nested {} times.\n", m_asserts_failed.size());
+		std::terminate();
 	}
+	m_asserts_failed.at(m_current_assert++) = m_summary.failed_asserts;
 
 	m_logger.before_test_node(test_node);
 }
@@ -2491,15 +2508,11 @@ void Reporter<LoggerT, ConfigT>::after_test_node(const TestNodeData& test_node)
 	}
 
 	if (test_node.mode.has_flags(EMode::run_time)) {
+		const bool passed{m_summary.failed_asserts == m_asserts_failed.at(--m_current_assert)};
 		if (test_node.type == ETestNodeType::test_case) {
-			const bool passed{m_summary.failed_asserts == m_asserts_failed.at(--m_current_assert)};
 			passed ? ++m_summary.passed_test_cases : ++m_summary.failed_test_cases;
-			m_logger.after_runtime_test_node(test_node, passed);
 		}
-		else {
-			const bool passed{m_summary.failed_asserts == m_asserts_failed.at(m_current_assert)};
-			m_logger.after_runtime_test_node(test_node, passed);
-		}
+		m_logger.after_runtime_test_node(test_node, passed);
 	}
 }
 
@@ -2518,8 +2531,8 @@ void Reporter<LoggerT, ConfigT>::after_failed_assert(const AssertData& assert)
 }
 
 template<class LoggerT, class ConfigT>
-void Reporter<LoggerT, ConfigT>::after_uncaught_exception(const TestNodeData& test_node,
-                                                          const std::string_view exception_message)
+void Reporter<LoggerT, ConfigT>::
+    after_uncaught_exception(const TestNodeData& test_node, const std::string_view exception_message)
 {
 	++m_summary.failed_asserts;
 	m_logger.after_uncaught_exception(test_node, exception_message);
@@ -2722,7 +2735,7 @@ protected:
 	void print_user_message(std::string_view message) const;
 
 	LoggerConfig m_config{};
-	std::array<TestNodeData, OKTEST_MAX_NESTED_NODES> m_test_nodes{};
+	std::array<TestNodeData, OKTEST_MAX_NESTED_NODES + 1> m_test_nodes{};
 	size_t m_test_nodes_size{0};
 };
 
@@ -3247,32 +3260,138 @@ constexpr ExtractedUnaryExpression<ExpectedValue, LhsT>::operator Expression() c
 	return expr;
 }
 
-#define OKL_DEFINE_UNARY_EXPRESSION(op) \
-	template<auto ExpectedValue, class LhsT> \
-	constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator op(const auto& rhs) const \
-		requires std::convertible_to<decltype(lhs op rhs), decltype(ExpectedValue)> \
-	{ \
-		Expression expr{}; \
-		OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */ \
-		expr.success = static_cast<decltype(ExpectedValue)>(lhs op rhs) == ExpectedValue; \
-		if OKL_IS_NOT_CONSTEVAL { \
-			if (!expr.success) { \
-				expr.append_value(lhs); \
-				expr.append_value(std::string_view{" " OKL_STRINGIFY(op) " "}); \
-				expr.append_value(rhs); \
-			} \
-		} \
-		return expr; \
-	}
+template<auto ExpectedValue, class LhsT>
+constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator<=>(const auto& rhs) const
+    requires std::convertible_to<decltype(lhs <=> rhs), decltype(ExpectedValue)>
+{
+	OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */
+	const auto result{static_cast<decltype(ExpectedValue)>(lhs <=> rhs)};
 
-OKL_DEFINE_UNARY_EXPRESSION(<=>)
-OKL_DEFINE_UNARY_EXPRESSION(<)
-OKL_DEFINE_UNARY_EXPRESSION(>)
-OKL_DEFINE_UNARY_EXPRESSION(<=)
-OKL_DEFINE_UNARY_EXPRESSION(>=)
-OKL_DEFINE_UNARY_EXPRESSION(==)
-OKL_DEFINE_UNARY_EXPRESSION(!=)
-#undef OKL_DEFINE_UNARY_EXPRESSION
+	Expression expr{};
+	expr.success = result == ExpectedValue;
+	if OKL_IS_NOT_CONSTEVAL {
+		if (!expr.success) {
+			expr.append_value(lhs);
+			expr.append_value(std::string_view{" <=> "});
+			expr.append_value(rhs);
+		}
+	}
+	return expr;
+}
+
+template<auto ExpectedValue, class LhsT>
+constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator<(const auto& rhs) const
+    requires std::convertible_to<decltype(lhs < rhs), decltype(ExpectedValue)>
+{
+	OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */
+	const auto result{static_cast<decltype(ExpectedValue)>(lhs < rhs)};
+
+	Expression expr{};
+	expr.success = result == ExpectedValue;
+	if OKL_IS_NOT_CONSTEVAL {
+		if (!expr.success) {
+			expr.append_value(lhs);
+			expr.append_value(std::string_view{" < "});
+			expr.append_value(rhs);
+		}
+	}
+	return expr;
+}
+
+template<auto ExpectedValue, class LhsT>
+constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator>(const auto& rhs) const
+    requires std::convertible_to<decltype(lhs > rhs), decltype(ExpectedValue)>
+{
+	OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */
+	const auto result{static_cast<decltype(ExpectedValue)>(lhs > rhs)};
+
+	Expression expr{};
+	expr.success = result == ExpectedValue;
+	if OKL_IS_NOT_CONSTEVAL {
+		if (!expr.success) {
+			expr.append_value(lhs);
+			expr.append_value(std::string_view{" > "});
+			expr.append_value(rhs);
+		}
+	}
+	return expr;
+}
+
+template<auto ExpectedValue, class LhsT>
+constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator<=(const auto& rhs) const
+    requires std::convertible_to<decltype(lhs <= rhs), decltype(ExpectedValue)>
+{
+	OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */
+	const auto result{static_cast<decltype(ExpectedValue)>(lhs <= rhs)};
+
+	Expression expr{};
+	expr.success = result == ExpectedValue;
+	if OKL_IS_NOT_CONSTEVAL {
+		if (!expr.success) {
+			expr.append_value(lhs);
+			expr.append_value(std::string_view{" <= "});
+			expr.append_value(rhs);
+		}
+	}
+	return expr;
+}
+
+template<auto ExpectedValue, class LhsT>
+constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator>=(const auto& rhs) const
+    requires std::convertible_to<decltype(lhs >= rhs), decltype(ExpectedValue)>
+{
+	OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */
+	const auto result{static_cast<decltype(ExpectedValue)>(lhs >= rhs)};
+
+	Expression expr{};
+	expr.success = result == ExpectedValue;
+	if OKL_IS_NOT_CONSTEVAL {
+		if (!expr.success) {
+			expr.append_value(lhs);
+			expr.append_value(std::string_view{" >= "});
+			expr.append_value(rhs);
+		}
+	}
+	return expr;
+}
+
+template<auto ExpectedValue, class LhsT>
+constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator==(const auto& rhs) const
+    requires std::convertible_to<decltype(lhs == rhs), decltype(ExpectedValue)>
+{
+	OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */
+	const auto result{static_cast<decltype(ExpectedValue)>(lhs == rhs)};
+
+	Expression expr{};
+	expr.success = result == ExpectedValue;
+	if OKL_IS_NOT_CONSTEVAL {
+		if (!expr.success) {
+			expr.append_value(lhs);
+			expr.append_value(std::string_view{" == "});
+			expr.append_value(rhs);
+		}
+	}
+	return expr;
+}
+
+template<auto ExpectedValue, class LhsT>
+constexpr Expression ExtractedUnaryExpression<ExpectedValue, LhsT>::operator!=(const auto& rhs) const
+    requires std::convertible_to<decltype(lhs != rhs), decltype(ExpectedValue)>
+{
+	OKL_SUPPRESS_GSL("type.1") /* "Don't use a static_cast for arithmetic conversions". */
+	const auto result{static_cast<decltype(ExpectedValue)>(lhs != rhs)};
+
+	Expression expr{};
+	expr.success = result == ExpectedValue;
+	if OKL_IS_NOT_CONSTEVAL {
+		if (!expr.success) {
+			expr.append_value(lhs);
+			expr.append_value(std::string_view{" != "});
+			expr.append_value(rhs);
+		}
+	}
+	return expr;
+}
 } // namespace Okl::Test::Detail
 
 #endif
@@ -3444,6 +3563,7 @@ import std;
 #endif
 
 
+// C++23-ToDo: Add `OKL_COLD` to lambda.
 #define OKASSERT_PRIVATE_HANDLE_FAILURE(...) \
 	[&](const auto&... OKL_ASSERT_args) OKL_NOINLINE OKL_DEBUG_SECTION { \
 		if constexpr (::Okl::should_assert_log_once(OKL_ASSERT_assert_data.severity)) { \
@@ -5051,7 +5171,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  */
 #define OKL_REQUIRE(...) OKTEST_PRIVATE_CHECK(require, none, runtime_mode, true,, __VA_ARGS__)
 #define OKL_CONSTEXPR_REQUIRE(...) OKTEST_PRIVATE_CHECK(require, none, constexpr_mode, true, static_assert(__VA_ARGS__);, __VA_ARGS__)
-#define OKL_CONSTEVAL_REQUIRE(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(require, none, __VA_ARGS__)
+#define OKL_CONSTEVAL_REQUIRE(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(require, none, #__VA_ARGS__, __VA_ARGS__)
 
 /**
  * Checks a condition. If true, logs a failure and aborts the current test case.
@@ -5062,7 +5182,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  */
 #define OKL_REQUIRE_NOT(...) OKTEST_PRIVATE_CHECK(require, not_, runtime_mode, false,, __VA_ARGS__)
 #define OKL_CONSTEXPR_REQUIRE_NOT(...) OKTEST_PRIVATE_CHECK(require, not_, constexpr_mode, false, static_assert(!(__VA_ARGS__));, __VA_ARGS__)
-#define OKL_CONSTEVAL_REQUIRE_NOT(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(require, not_, !(__VA_ARGS__))
+#define OKL_CONSTEVAL_REQUIRE_NOT(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(require, not_, #__VA_ARGS__, !(__VA_ARGS__))
 
 /**
  * Checks a condition. If false, logs a failure but continues execution.
@@ -5071,7 +5191,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  */
 #define OKL_CHECK(...) OKTEST_PRIVATE_CHECK(check, none, runtime_mode, true,, __VA_ARGS__)
 #define OKL_CONSTEXPR_CHECK(...) OKTEST_PRIVATE_CHECK(check, none, constexpr_mode, true, static_assert(__VA_ARGS__);, __VA_ARGS__)
-#define OKL_CONSTEVAL_CHECK(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(check, none, __VA_ARGS__)
+#define OKL_CONSTEVAL_CHECK(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(check, none, #__VA_ARGS__, __VA_ARGS__)
 
 /**
  * Checks a condition. If true, logs a failure and aborts the current test case.
@@ -5080,7 +5200,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
  */
 #define OKL_CHECK_NOT(...) OKTEST_PRIVATE_CHECK(check, not_, runtime_mode, false,, __VA_ARGS__)
 #define OKL_CONSTEXPR_CHECK_NOT(...) OKTEST_PRIVATE_CHECK(check, not_, constexpr_mode, false, static_assert(!(__VA_ARGS__));, __VA_ARGS__)
-#define OKL_CONSTEVAL_CHECK_NOT(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(check, not_, !(__VA_ARGS__))
+#define OKL_CONSTEVAL_CHECK_NOT(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(check, not_, #__VA_ARGS__, !(__VA_ARGS__))
 
 #if OKL_INTERNAL_WITH_EXCEPTIONS
 	/**
@@ -5113,8 +5233,8 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 	 * @param ... The expression to evaluate.
 	 */
 	#define OKL_REQUIRE_NOTHROW(...) OKTEST_PRIVATE_CHECK_THROW(require, nothrow, runtime_mode, #__VA_ARGS__,, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
-	#define OKL_CONSTEXPR_REQUIRE_NOTHROW(...) OKTEST_PRIVATE_CHECK_THROW(require, nothrow, runtime_mode, #__VA_ARGS__, static_assert(!::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }));, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
-	#define OKL_CONSTEVAL_REQUIRE_NOTHROW(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(require, nothrow, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
+	#define OKL_CONSTEXPR_REQUIRE_NOTHROW(...) OKTEST_PRIVATE_CHECK_THROW(require, nothrow, constexpr_mode, #__VA_ARGS__, static_assert(!::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }));, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
+	#define OKL_CONSTEVAL_REQUIRE_NOTHROW(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(require, nothrow, #__VA_ARGS__, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
 
 	/**
 	 * Checks that the expression throws an exception of any type.
@@ -5141,7 +5261,7 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 	 */
 	#define OKL_CHECK_NOTHROW(...) OKTEST_PRIVATE_CHECK_THROW(check, nothrow, runtime_mode, #__VA_ARGS__,, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
 	#define OKL_CONSTEXPR_CHECK_NOTHROW(...) OKTEST_PRIVATE_CHECK_THROW(check, nothrow, constexpr_mode, #__VA_ARGS__, static_assert(!::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }));, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
-	#define OKL_CONSTEVAL_CHECK_NOTHROW(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(check, nothrow, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
+	#define OKL_CONSTEVAL_CHECK_NOTHROW(...) OKTEST_PRIVATE_CONSTEVAL_CHECK(check, nothrow, #__VA_ARGS__, !::Okl::Test::Detail::throws([&] { static_cast<void>(__VA_ARGS__); }))
 #endif
 
 
@@ -5164,10 +5284,10 @@ OKTEST_EXPORT int main(const int argc, char* argv[])
 		OKL_SUPPRESS_WARNING_MSVC(26444, "Don't try to declare a local variable with no name") \
 		::Okl::Test::Detail::AssertFailed<>{expressionString, {}, ::Okl::Test::EAssertType::assertType, ::Okl::Test::EAssertModifier::assertModifier, ::Okl::Test::assertMode}
 
-#define OKTEST_PRIVATE_CONSTEVAL_CHECK(assertType, assertModifier, ...) \
+#define OKTEST_PRIVATE_CONSTEVAL_CHECK(assertType, assertModifier, expressionString, ...) \
 	if constexpr (true) { \
 		static_assert(__VA_ARGS__); \
-		::Okl::Test::Detail::after_passed_assert(#__VA_ARGS__, {}, ::Okl::Test::EAssertType::assertType, ::Okl::Test::EAssertModifier::assertModifier, ::Okl::Test::consteval_mode); \
+		::Okl::Test::Detail::after_passed_assert(expressionString, {}, ::Okl::Test::EAssertType::assertType, ::Okl::Test::EAssertModifier::assertModifier, ::Okl::Test::consteval_mode); \
 	} \
 	else /* NOLINT(readability-inconsistent-ifelse-braces): Required for user messages. */ \
 		OKL_SUPPRESS_WARNING_MSVC(26444, "Don't try to declare a local variable with no name") \
@@ -5414,178 +5534,6 @@ OKL_NOINLINE OKASSERT_PRIVATE_DEBUG_SECTION bool report_assertion_failure(
 
 
 #endif
-// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
-
-
-
-#include <fmt/base.h>
-#include <fmt/format.h>
-
-#include <array>
-#include <iostream>
-#include <optional>
-#include <span>
-#include <ranges>
-#include <string_view>
-
-namespace Okl::Test
-{
-enum class OKL_FLAG_ENUM ECliArgType : uint8 {
-	flag = 1 << 0
-};
-using CliArgType = Bitflag<ECliArgType>;
-
-struct CliArgDefine {
-	std::string_view name{};
-	char short_name{};
-	CliArgType type{};
-	std::string_view default_value{};
-	std::string_view description{};
-};
-
-// clang-format off
-inline constexpr std::array cli_arg_defines{std::to_array<CliArgDefine>(
-	{{"theme", {}, {}, "auto", "Color theme to use."},
-	 {"help", 'h', ECliArgType::flag, {}, "Print help."},
-	 {"exit-zero", {}, ECliArgType::flag, {}, "Return exit code 0 even when tests fail."},
-	 {{}, {}, {}, {}, "Filters to select which tests to run, if none are provided, all tests will run."}})};
-// clang-format on
-
-[[noreturn]] void report_error(const std::string_view message)
-{
-	fmt::print(stderr, "Error: {}\n", message);
-	std::terminate();
-}
-
-CliArgs::CliArgs(const int argc, char* const argv[])
-{
-	OKL_WARNING_PUSH()
-	OKL_DISABLE_WARNING_CLANG("-Wunsafe-buffer-usage-in-container") // We want the params to be the same as main.
-	const std::span args{argv, static_cast<size_t>(argc)};
-	OKL_WARNING_POP()
-
-	bool expects_value{false};
-	for (const char* const arg : args | std::views::drop(1)) {
-		const std::string_view token{arg};
-
-		if (token.starts_with("--")) {
-			if (expects_value) {
-				report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size).name));
-			}
-
-			const std::string_view name_and_value{token.substr(2)};
-			const size_t split_index{name_and_value.find('=')};
-
-			const std::string_view name{name_and_value.substr(0, split_index)};
-			const std::string_view value{name_and_value.substr(name.size() + (split_index != std::string_view::npos))};
-			for (const CliArgDefine& define : cli_arg_defines) {
-				if (name == define.name) {
-					if (define.type.has_flags(ECliArgType::flag)) {
-						if (not value.empty()) {
-							report_error(fmt::format("Argument '{}' does not take a value", define.name));
-						}
-
-						at(m_args, m_args_size++) = CliArg{define.name};
-						break;
-					}
-
-					if (value.empty()) {
-						report_error(fmt::format("Argument '{}' is missing a value", define.name));
-					}
-					at(m_args, m_args_size++) = CliArg{define.name, value};
-					break;
-				}
-			}
-		}
-		else if (token.starts_with('-')) {
-			if (expects_value) {
-				report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size).name));
-			}
-
-			const std::string_view name{token.substr(1)};
-			for (const CliArgDefine& define : cli_arg_defines) {
-				if (name == std::string_view{&define.short_name, 1}) {
-					at(m_args, m_args_size++) = CliArg{define.name};
-					expects_value = not define.type.has_flags(ECliArgType::flag);
-					break;
-				}
-			}
-		}
-		else if (expects_value) {
-			at(m_args, m_args_size).value = token;
-			expects_value = false;
-		}
-		else {
-			bool handled_pos_arg{false};
-			for (const CliArgDefine& define : cli_arg_defines) {
-				if (define.name.empty()) {
-
-					at(m_args, m_args_size++) = CliArg{define.name, token};
-					handled_pos_arg = true;
-					break;
-				}
-			}
-
-			if (!handled_pos_arg) {
-				report_error(fmt::format("Unexpected positional argument '{}'.", token));
-			}
-		}
-	}
-	if (expects_value) {
-		report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size).name));
-	}
-}
-
-std::optional<std::string_view> CliArgs::get(const std::string_view name) const
-{
-	for (size_t i{0}; i < m_args_size; ++i) {
-		const CliArg& arg{m_args.at(i)};
-		if (name == arg.name) {
-			return arg.value;
-		}
-	}
-	return get_default(name);
-}
-
-std::optional<std::string_view> CliArgs::get_default(const std::string_view name) noexcept
-{
-	for (const CliArgDefine& define : cli_arg_defines) {
-		if (name == define.name && !define.default_value.empty()) {
-			return define.default_value;
-		}
-	}
-	return {};
-}
-
-namespace Detail
-{
-void print_help()
-{
-	fmt::print("Available arguments:\n");
-	for (const CliArgDefine& define : cli_arg_defines) {
-		fmt::print("  ");
-		if (define.short_name != char{}) {
-			fmt::print("-{}|", define.short_name);
-		}
-		if (define.name.empty()) {
-			fmt::print("{}", "test-filter");
-		}
-		else {
-			fmt::print("--{}", define.name);
-		}
-
-		if (!define.default_value.empty()) {
-			fmt::print(" (default: {})", define.default_value);
-		}
-
-		if (!define.description.empty()) {
-			fmt::print("\n      {}", define.description);
-		}
-		fmt::print("\n");
-	}
-}
-} // namespace Detail
-} // namespace Okl::Test
 // Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
 
@@ -5848,6 +5796,193 @@ OKTEST_EXPORT int main(const int argc, char* argv[]) { return Okl::Test::main(ar
 }
 	#endif
 #endif
+// Copyright 2026 Shiffted. Licensed under the Boost Software License, Version 1.0.
+
+
+
+#include <fmt/base.h>
+#include <fmt/format.h>
+
+#include <array>
+#include <optional>
+#include <ranges>
+#include <span>
+#include <string_view>
+
+namespace Okl::Test
+{
+namespace
+{
+enum class OKL_FLAG_ENUM ECliArgType : uint8 {
+	flag = 1 << 0
+};
+using CliArgType = Bitflag<ECliArgType>;
+
+struct CliArgDefine {
+	std::string_view name{};
+	char short_name{};
+	CliArgType type{};
+	std::string_view default_value{};
+	std::string_view description{};
+};
+} // namespace
+
+// clang-format off
+inline constexpr std::array cli_arg_defines{std::to_array<CliArgDefine>(
+	{{.name="theme", .short_name={}, .type={}, .default_value="auto", .description="Color theme to use."},
+	 {.name="help", .short_name='h', .type=ECliArgType::flag, .default_value={}, .description="Print help."},
+	 {.name="exit-zero", .short_name={}, .type=ECliArgType::flag, .default_value={}, .description="Return exit code 0 even when tests fail."},
+	 {.name={}, .short_name={}, .type={}, .default_value={}, .description="Filters to select which tests to run, if none are provided, all tests will run."}})};
+// clang-format on
+
+[[noreturn]] void report_error(const std::string_view message)
+{
+	fmt::print(stderr, "Error: {}\n", message);
+	std::exit(1);
+}
+
+CliArgs::CliArgs(const int argc, char* const argv[])
+{
+	OKL_WARNING_PUSH()
+	OKL_DISABLE_WARNING_CLANG("-Wunsafe-buffer-usage-in-container") // We want the params to be the same as main.
+	const std::span args{argv, static_cast<size_t>(argc)};
+	OKL_WARNING_POP()
+
+	bool expects_value{false};
+	for (const char* const arg : args | std::views::drop(1)) {
+		const std::string_view token{arg};
+
+		if (token.starts_with("--")) {
+			if (expects_value) {
+				report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size - 1).name));
+			}
+
+			const std::string_view name_and_value{token.substr(2)};
+			const size_t split_index{name_and_value.find('=')};
+
+			const std::string_view name{name_and_value.substr(0, split_index)};
+			const std::string_view value{name_and_value.substr(name.size() + (split_index != std::string_view::npos))};
+			bool handled{false};
+			for (const CliArgDefine& define : cli_arg_defines) {
+				if (name == define.name) {
+					if (define.type.has_flags(ECliArgType::flag)) {
+						if (not value.empty()) {
+							report_error(fmt::format("Argument '{}' does not take a value", define.name));
+						}
+
+						at(m_args, m_args_size++) = CliArg{define.name};
+						handled = true;
+						break;
+					}
+
+					if (value.empty()) {
+						report_error(fmt::format("Argument '{}' is missing a value", define.name));
+					}
+					at(m_args, m_args_size++) = CliArg{define.name, value};
+					handled = true;
+					break;
+				}
+			}
+
+			if (!handled) {
+				report_error(fmt::format("Unknown argument '--{}'", name));
+			}
+		}
+		else if (token.starts_with('-')) {
+			if (expects_value) {
+				report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size - 1).name));
+			}
+
+			const std::string_view name{token.substr(1)};
+			bool handled{false};
+			for (const CliArgDefine& define : cli_arg_defines) {
+				if (name == std::string_view{&define.short_name, 1}) {
+					at(m_args, m_args_size++) = CliArg{define.name};
+					expects_value = not define.type.has_flags(ECliArgType::flag);
+					handled = true;
+					break;
+				}
+			}
+
+			if (!handled) {
+				report_error(fmt::format("Unknown argument '-{}'", name));
+			}
+		}
+		else if (expects_value) {
+			at(m_args, m_args_size - 1).value = token;
+			expects_value = false;
+		}
+		else {
+			bool handled_pos_arg{false};
+			for (const CliArgDefine& define : cli_arg_defines) {
+				if (define.name.empty()) {
+
+					at(m_args, m_args_size++) = CliArg{define.name, token};
+					handled_pos_arg = true;
+					break;
+				}
+			}
+
+			if (!handled_pos_arg) {
+				report_error(fmt::format("Unexpected positional argument '{}'.", token));
+			}
+		}
+	}
+	if (expects_value) {
+		report_error(fmt::format("Argument '{}' is missing a value", at(m_args, m_args_size - 1).name));
+	}
+}
+
+std::optional<std::string_view> CliArgs::get(const std::string_view name) const
+{
+	for (size_t i{0}; i < m_args_size; ++i) {
+		const CliArg& arg{m_args.at(i)};
+		if (name == arg.name) {
+			return arg.value;
+		}
+	}
+	return get_default(name);
+}
+
+std::optional<std::string_view> CliArgs::get_default(const std::string_view name) noexcept
+{
+	for (const CliArgDefine& define : cli_arg_defines) {
+		if (name == define.name && !define.default_value.empty()) {
+			return define.default_value;
+		}
+	}
+	return {};
+}
+
+namespace Detail
+{
+void print_help()
+{
+	fmt::print("Available arguments:\n");
+	for (const CliArgDefine& define : cli_arg_defines) {
+		fmt::print("  ");
+		if (define.short_name != char{}) {
+			fmt::print("-{}|", define.short_name);
+		}
+		if (define.name.empty()) {
+			fmt::print("{}", "test-filter");
+		}
+		else {
+			fmt::print("--{}", define.name);
+		}
+
+		if (!define.default_value.empty()) {
+			fmt::print(" (default: {})", define.default_value);
+		}
+
+		if (!define.description.empty()) {
+			fmt::print("\n      {}", define.description);
+		}
+		fmt::print("\n");
+	}
+}
+} // namespace Detail
+} // namespace Okl::Test
 // Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
 #ifndef OKTEST_OKTEST_SHORT_HPP
