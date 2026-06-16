@@ -26,9 +26,9 @@ struct TestContext {
 	[[nodiscard]] constexpr bool next_section();
 
 protected:
-	std::array<size_t, MaxDepth> target_path{}; /* Index to select at each nesting level for the current run. */
-	std::array<size_t, MaxDepth> node_counts{}; /* Number of nodes discovered at each level. */
-	std::array<size_t, MaxDepth> current_visit_counts{}; /* Number of nodes visited in the current run. */
+	std::array<size_t, MaxDepth + 1> target_path{}; /* Index to select at each nesting level for the current run. */
+	std::array<size_t, MaxDepth + 1> node_counts{}; /* Number of nodes discovered at each level. */
+	std::array<size_t, MaxDepth + 1> current_visit_counts{}; /* Number of nodes visited in the current run. */
 	size_t current_depth{0}; /* Nesting level in the current run. */
 	size_t path_length{1}; /* Length of the valid path for the next run. */
 };

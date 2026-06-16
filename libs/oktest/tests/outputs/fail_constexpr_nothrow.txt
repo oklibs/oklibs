@@ -1,0 +1,10 @@
+
+==========================================
+%[FAIL%] in test case "fail constexpr nothrow"
+└╴at libs[\\/]oktest[\\/]tests[\\/]fail_constexpr_nothrow%.cpp:26
+  CONSTEXPR_REQUIRE_NOTHROW%(throw_at_runtime%(%)%)
+
+==========================================
+error: some tests failed
+  Tests:      1 failed, 0 passed, 1 total
+  Assertions: 1 failed, 0 passed, 1 total
