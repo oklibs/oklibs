@@ -212,7 +212,8 @@ TEST_CASE("casts.narrow_cast()")
 
 	SECTION("should convert losslessly between signed and unsigned integers")
 	{
-		OKL_STATIC_VAR constexpr Okl::uint32 max_as_uint32{(std::numeric_limits<Okl::int32>::max())};
+		OKL_STATIC_VAR constexpr Okl::uint32 max_as_uint32{
+		    Okl::narrow_cast<Okl::uint32>(std::numeric_limits<Okl::int32>::max())};
 		CHECK(Okl::narrow_cast<Okl::uint32>(0) == Okl::uint32{0});
 		CHECK(Okl::narrow_cast<Okl::uint32>(std::numeric_limits<Okl::int32>::max()) == max_as_uint32);
 		CHECK(Okl::narrow_cast<Okl::int32>(static_cast<Okl::uint16>(42)) == Okl::int32{42});
