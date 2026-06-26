@@ -14,6 +14,8 @@ namespace Okl
 OKL_EXPORT_BEGIN
 template<class T> [[nodiscard]] constexpr int exponent_bits() noexcept;
 template<class T> [[nodiscard]] constexpr bool is_infinity(T value) noexcept;
+template<class T> [[nodiscard]] constexpr bool is_positive_infinity(T value) noexcept;
+template<class T> [[nodiscard]] constexpr bool is_negative_infinity(T value) noexcept;
 template<std::floating_point T> [[nodiscard]] constexpr bool exactly_equal(T lhs, T rhs) noexcept;
 template<std::floating_point T, CArithmetic ExpT> [[nodiscard]] consteval T exp2(ExpT exp) noexcept;
 
@@ -40,7 +42,30 @@ template<class T>
 constexpr bool is_infinity(const T value) noexcept
 {
 	if constexpr (std::numeric_limits<T>::has_infinity) {
+		return Okl::exactly_equal(value, std::numeric_limits<T>::infinity()) ||
+		       Okl::exactly_equal(value, -std::numeric_limits<T>::infinity());
+	}
+	else {
+		return false;
+	}
+}
+
+template<class T>
+constexpr bool is_positive_infinity(const T value) noexcept
+{
+	if constexpr (std::numeric_limits<T>::has_infinity) {
 		return Okl::exactly_equal(value, std::numeric_limits<T>::infinity());
+	}
+	else {
+		return false;
+	}
+}
+
+template<class T>
+constexpr bool is_negative_infinity(const T value) noexcept
+{
+	if constexpr (std::numeric_limits<T>::has_infinity) {
+		return Okl::exactly_equal(value, -std::numeric_limits<T>::infinity());
 	}
 	else {
 		return false;

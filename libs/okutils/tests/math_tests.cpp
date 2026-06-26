@@ -46,10 +46,10 @@ CONSTEXPR_TEST_CASE("is_infinity()")
 		CHECK(Okl::is_infinity(std::numeric_limits<double>::infinity()));
 		CHECK(Okl::is_infinity(std::numeric_limits<long double>::infinity()));
 	}
-	SCOPE("should return false for negative infinity")
+	SCOPE("should return true for negative infinity")
 	{
-		CHECK(!Okl::is_infinity(-std::numeric_limits<float>::infinity()));
-		CHECK(!Okl::is_infinity(-std::numeric_limits<double>::infinity()));
+		CHECK(Okl::is_infinity(-std::numeric_limits<float>::infinity()));
+		CHECK(Okl::is_infinity(-std::numeric_limits<double>::infinity()));
 	}
 	SCOPE("should return false for finite floating point values")
 	{
@@ -66,6 +66,68 @@ CONSTEXPR_TEST_CASE("is_infinity()")
 		CHECK(!Okl::is_infinity(std::numeric_limits<int>::min()));
 		CHECK(!Okl::is_infinity(0u));
 		CHECK(!Okl::is_infinity(std::numeric_limits<unsigned int>::max()));
+	}
+};
+
+CONSTEXPR_TEST_CASE("is_positive_infinity()")
+{
+	SCOPE("should return true for positive infinity")
+	{
+		CHECK(Okl::is_positive_infinity(std::numeric_limits<float>::infinity()));
+		CHECK(Okl::is_positive_infinity(std::numeric_limits<double>::infinity()));
+		CHECK(Okl::is_positive_infinity(std::numeric_limits<long double>::infinity()));
+	}
+	SCOPE("should return false for negative infinity")
+	{
+		CHECK(!Okl::is_positive_infinity(-std::numeric_limits<float>::infinity()));
+		CHECK(!Okl::is_positive_infinity(-std::numeric_limits<double>::infinity()));
+	}
+	SCOPE("should return false for finite floating point values")
+	{
+		CHECK(!Okl::is_positive_infinity(0.0f));
+		CHECK(!Okl::is_positive_infinity(1.0f));
+		CHECK(!Okl::is_positive_infinity(-1.0));
+		CHECK(!Okl::is_positive_infinity(std::numeric_limits<float>::max()));
+		CHECK(!Okl::is_positive_infinity(std::numeric_limits<double>::lowest()));
+	}
+	SCOPE("should return false for integer types that have no infinity")
+	{
+		CHECK(!Okl::is_positive_infinity(0));
+		CHECK(!Okl::is_positive_infinity(std::numeric_limits<int>::max()));
+		CHECK(!Okl::is_positive_infinity(std::numeric_limits<int>::min()));
+		CHECK(!Okl::is_positive_infinity(0u));
+		CHECK(!Okl::is_positive_infinity(std::numeric_limits<unsigned int>::max()));
+	}
+};
+
+CONSTEXPR_TEST_CASE("is_negative_infinity()")
+{
+	SCOPE("should return false for positive infinity")
+	{
+		CHECK(!Okl::is_negative_infinity(std::numeric_limits<float>::infinity()));
+		CHECK(!Okl::is_negative_infinity(std::numeric_limits<double>::infinity()));
+		CHECK(!Okl::is_negative_infinity(std::numeric_limits<long double>::infinity()));
+	}
+	SCOPE("should return true for negative infinity")
+	{
+		CHECK(Okl::is_negative_infinity(-std::numeric_limits<float>::infinity()));
+		CHECK(Okl::is_negative_infinity(-std::numeric_limits<double>::infinity()));
+	}
+	SCOPE("should return false for finite floating point values")
+	{
+		CHECK(!Okl::is_negative_infinity(0.0f));
+		CHECK(!Okl::is_negative_infinity(1.0f));
+		CHECK(!Okl::is_negative_infinity(-1.0));
+		CHECK(!Okl::is_negative_infinity(std::numeric_limits<float>::max()));
+		CHECK(!Okl::is_negative_infinity(std::numeric_limits<double>::lowest()));
+	}
+	SCOPE("should return false for integer types that have no infinity")
+	{
+		CHECK(!Okl::is_negative_infinity(0));
+		CHECK(!Okl::is_negative_infinity(std::numeric_limits<int>::max()));
+		CHECK(!Okl::is_negative_infinity(std::numeric_limits<int>::min()));
+		CHECK(!Okl::is_negative_infinity(0u));
+		CHECK(!Okl::is_negative_infinity(std::numeric_limits<unsigned int>::max()));
 	}
 };
 
