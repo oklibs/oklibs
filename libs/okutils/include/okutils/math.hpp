@@ -16,7 +16,7 @@ template<class T> [[nodiscard]] constexpr int exponent_bits() noexcept;
 template<class T> [[nodiscard]] constexpr bool is_infinity(T value) noexcept;
 template<class T> [[nodiscard]] constexpr bool is_positive_infinity(T value) noexcept;
 template<class T> [[nodiscard]] constexpr bool is_negative_infinity(T value) noexcept;
-template<std::floating_point T> [[nodiscard]] constexpr bool exactly_equal(T lhs, T rhs) noexcept;
+template<CArithmetic T> [[nodiscard]] constexpr bool exactly_equal(T lhs, T rhs) noexcept;
 template<std::floating_point T, CArithmetic ExpT> [[nodiscard]] consteval T exp2(ExpT exp) noexcept;
 
 template<CArithmetic T> [[nodiscard]] constexpr bool will_addition_error(T lhs, T rhs) noexcept;
@@ -73,7 +73,7 @@ constexpr bool is_negative_infinity(const T value) noexcept
 }
 
 /** Checks if two floating point values are EXACTLY equal. */
-template<std::floating_point T>
+template<CArithmetic T>
 constexpr bool exactly_equal(const T lhs, const T rhs) noexcept
 {
 	OKL_WARNING_PUSH_CLANG()
