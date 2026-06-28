@@ -71,6 +71,7 @@ constexpr auto at(RangeT&& range, const std::ranges::range_size_t<RangeT> index)
 	OKL_ASSERT(debug, (index >= 0 && index < std::ranges::size(range)), "index = {}, ranges.size = {}", index,
 	           std::ranges::size(range));
 
+	OKL_SUPPRESS_GSL("bounds.1") // "Don't use pointer arithmetic".
 	OKL_SUPPRESS_GSL("bounds.2") // "Only index into arrays using constant expressions".
 	OKL_SUPPRESS_GSL("bounds.4") // "Prefer to use gsl::at()".
 	return std::forward<RangeT>(range)[index];
