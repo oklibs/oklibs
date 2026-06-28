@@ -2,10 +2,10 @@
 
 #if !defined(OKL_USE_MODULES)
 	#include <okbase/types.hpp>
-	#include <okbitflag/okbitflag.hpp>
+	#include <okbitflag.hpp>
 #endif
 #include <okbase/defines.hpp>
-#include <oktest/oktest_short.hpp>
+#include <oktest_short.hpp>
 
 #if defined(OKL_USE_MODULES)
 import okl.base;

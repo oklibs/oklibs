@@ -15,7 +15,7 @@
 	#include "oktest/output_redirector.hpp" // IWYU pragma: export
 	#include "oktest/theme.hpp" // IWYU pragma: export
 #endif
-#include "oktest/oktest.hpp"
+#include "oktest.hpp"
 
 #define TEST_CASE(name) OKL_TEST_CASE(name)
 #define TEST_CASE_TEMPLATE(name, ...) OKL_TEST_CASE_TEMPLATE(name, __VA_ARGS__)

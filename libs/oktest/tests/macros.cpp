@@ -1,6 +1,6 @@
 // Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
-#include <oktest/oktest.hpp>
+#include <oktest.hpp>
 
 #if !defined(OKL_USE_STD_MODULE)
 	#include <stdexcept>

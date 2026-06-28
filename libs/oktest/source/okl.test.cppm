@@ -12,7 +12,7 @@ module;
 #define OKBASE_TYPES_HPP
 #include "okbase/types.hpp"
 #define OKBITFLAG_OKBITFLAG_HPP
-#include "okbitflag/okbitflag.hpp"
+#include "okbitflag.hpp"
 #define OKUTILS_UTILS_HPP
 #include "okutils/utils.hpp"
 

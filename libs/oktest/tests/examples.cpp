@@ -1,7 +1,7 @@
 // Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
 #include <okbase/defines.hpp>
-#include <oktest/oktest_short.hpp>
+#include <oktest_short.hpp>
 
 #if !defined(OKL_USE_STD_MODULE)
 	#include <cstdint>

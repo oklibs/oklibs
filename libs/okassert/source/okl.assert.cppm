@@ -14,7 +14,7 @@ module;
 #define OKBASE_TYPES_HPP
 #include "okbase/types.hpp"
 #define OKBITFLAG_OKBITFLAG_HPP
-#include "okbitflag/okbitflag.hpp"
+#include "okbitflag.hpp"
 
 #include <fmt/base.h>
 #include <fmt/color.h>

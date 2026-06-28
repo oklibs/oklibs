@@ -9,7 +9,7 @@
 	#include <oktest/test_context.hpp>
 #endif
 #include <okbase/defines.hpp>
-#include <oktest/oktest_short.hpp>
+#include <oktest_short.hpp>
 
 #if defined(OKL_USE_STD_MODULE)
 import std;

@@ -2,7 +2,7 @@
 
 #define OKASSERT_PRIVATE_NO_IMPORT
 #include <okassert/okassert.hpp>
-#include <oktest/oktest_short.hpp>
+#include <oktest_short.hpp>
 
 #if defined(OKL_USE_MODULES)
 import okl.assert;

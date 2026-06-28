@@ -1,7 +1,7 @@
 // Copyright 2025 Shiffted. Licensed under the Boost Software License, Version 1.0.
 
 #include <fmt/base.h>
-#include <oktest/oktest_short.hpp>
+#include <oktest_short.hpp>
 
 TEST_CASE("sections")
 {

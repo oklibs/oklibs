@@ -38,7 +38,7 @@ See [Limitations](#limitations) and [ToDos](#todos).
 ## Basic Usage
 
 ```cpp
-#include <oktest/oktest_short.hpp>
+#include <oktest_short.hpp>
 
 TEST_CASE("Runtime test") {
     int x = 21;
@@ -206,7 +206,7 @@ specialization, and then include that header in place of the default `<oktest/ok
 `<oktest/oktest_short.hpp>`).
 
 ```cpp
-#include <oktest/oktest.hpp> // IWYU pragma: export
+#include <oktest.hpp> // IWYU pragma: export
 
 template<>
 struct Okl::Test::Config<Okl::Test::CustomRunner> {

@@ -4,7 +4,7 @@
 	#include <oktest/output_redirector.hpp>
 #endif
 #include <fmt/base.h>
-#include <oktest/oktest_short.hpp>
+#include <oktest_short.hpp>
 
 #if !defined(OKL_USE_STD_MODULE)
 	#include <cstdio>

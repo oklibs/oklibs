@@ -4,7 +4,7 @@
 #define OKTEST_CORE_TYPES_HPP
 
 #include "okbase/types.hpp"
-#include "okbitflag/okbitflag.hpp"
+#include "okbitflag.hpp"
 
 #include <array>
 #include <string_view>

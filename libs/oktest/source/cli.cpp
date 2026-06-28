@@ -4,7 +4,7 @@
 
 #include "okbase/defines.hpp"
 #include "okbase/types.hpp"
-#include "okbitflag/okbitflag.hpp"
+#include "okbitflag.hpp"
 #include "okutils/utils.hpp"
 
 #include <fmt/base.h>

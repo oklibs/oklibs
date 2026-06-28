@@ -30,4 +30,4 @@ import std;
 #endif
 
 #include "okbitflag/detail/reflect_utils.hpp"
-#include "okbitflag/okbitflag.hpp"
+#include "okbitflag.hpp"

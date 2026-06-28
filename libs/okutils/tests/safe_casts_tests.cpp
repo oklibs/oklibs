@@ -5,7 +5,7 @@
 	#include <okutils/safe_casts.hpp>
 	#include <okutils/type_traits.hpp>
 #endif
-#include <oktest/oktest_short.hpp>
+#include <oktest_short.hpp>
 
 #if !defined(OKL_USE_STD_MODULE)
 	#include <cmath>

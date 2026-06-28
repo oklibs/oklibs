@@ -3,7 +3,7 @@
 #if !defined(OKL_USE_MODULES)
 	#include <oktest/test_context.hpp>
 #endif
-#include <oktest/oktest_short.hpp>
+#include <oktest_short.hpp>
 
 TEST_CASE("section.nesting_below_limit")
 {

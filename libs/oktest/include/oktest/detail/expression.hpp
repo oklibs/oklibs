@@ -22,7 +22,7 @@ struct ExpressionExtractor {
 };
 
 struct Expression {
-	fmt::basic_memory_buffer<char, 512> result_string{};
+	fmt::basic_memory_buffer<char, 256> result_string{};
 	bool success{true};
 
 	Expression() = default;

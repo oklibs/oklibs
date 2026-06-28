@@ -4,7 +4,7 @@
 	#include <type_traits>
 #endif
 
-#include <oktest/oktest_short.hpp>
+#include <oktest_short.hpp>
 
 #if defined(OKL_USE_STD_MODULE)
 import std;

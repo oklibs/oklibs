@@ -7,7 +7,7 @@
 #endif
 #include <okassert/okassert.hpp>
 #include <okbase/defines.hpp>
-#include <oktest/oktest_short.hpp>
+#include <oktest_short.hpp>
 
 #if !defined(OKL_USE_STD_MODULE)
 	#include <cstdint>
