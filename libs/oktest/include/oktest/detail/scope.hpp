@@ -17,7 +17,8 @@ OKL_EXPORT_BEGIN
 template<class...>
 struct Scope {
 	std::string_view m_name{};
-	std::source_location m_source_location{};
+	const char* m_file_name{};
+	std::uint_least32_t m_line{};
 
 	explicit constexpr Scope(std::string_view name, const std::source_location& = std::source_location::current());
 	constexpr ~Scope() noexcept(false);
@@ -34,7 +35,7 @@ OKL_EXPORT_END
 
 template<class... Ts>
 constexpr Scope<Ts...>::Scope(const std::string_view name, const std::source_location& source_location)
-    : m_name{name}, m_source_location{source_location}
+    : m_name{name}, m_file_name{source_location.file_name()}, m_line{source_location.line()}
 {
 	get_runner<Ts...>().before_test_node(TestNodeData{
 	    .name = name,
@@ -51,8 +52,8 @@ constexpr Scope<Ts...>::~Scope() noexcept(false)
 	get_runner<Ts...>().after_test_node(TestNodeData{
 	    .name = m_name,
 	    .type_name = {},
-	    .file_name = m_source_location.file_name(),
-	    .line = m_source_location.line(),
+	    .file_name = m_file_name,
+	    .line = m_line,
 	    .type = ETestNodeType::scope,
 	    .mode = runtime_mode});
 }

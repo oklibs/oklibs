@@ -18,7 +18,8 @@ template<class...>
 struct Section {
 	std::string_view m_name{};
 	TestContext<>& m_context;
-	std::source_location m_source_location{};
+	const char* m_file_name{};
+	std::uint_least32_t m_line{};
 	bool m_entered{false};
 
 	constexpr Section(std::string_view name,
@@ -40,7 +41,7 @@ OKL_EXPORT_END
 template<class... Ts>
 constexpr Section<
     Ts...>::Section(const std::string_view name, TestContext<>& context, const std::source_location& source_location)
-    : m_name{name}, m_context{context}, m_source_location{source_location}
+    : m_name{name}, m_context{context}, m_file_name{source_location.file_name()}, m_line{source_location.line()}
 {
 	if (context.enter_section()) {
 		m_entered = true;
@@ -61,8 +62,8 @@ constexpr Section<Ts...>::~Section() noexcept(false)
 		get_runner<Ts...>().after_test_node(TestNodeData{
 		    .name = m_name,
 		    .type_name = {},
-		    .file_name = m_source_location.file_name(),
-		    .line = m_source_location.line(),
+		    .file_name = m_file_name,
+		    .line = m_line,
 		    .type = ETestNodeType::section,
 		    .mode = runtime_mode});
 		m_context.leave_section();
