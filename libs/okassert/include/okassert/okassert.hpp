@@ -6,6 +6,8 @@
 #if !defined(OKL_USE_MODULES)
 	#include "okassert/base.hpp" // IWYU pragma: export
 	#include "okassert/detail/expression.hpp" // IWYU pragma: export
+#else
+	#include <fmt/format.h>
 #endif
 #include "okbase/defines.hpp"
 
@@ -14,8 +16,6 @@
 #if !defined(OKL_USE_STD_MODULE)
 	#include <array>
 	#include <atomic>
-#else
-	#include <fmt/format.h>
 #endif
 
 #if defined(OKL_USE_MODULES) && !defined(OKASSERT_PRIVATE_NO_IMPORT)
