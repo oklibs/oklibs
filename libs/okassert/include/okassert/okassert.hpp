@@ -21,7 +21,7 @@
 #if defined(OKL_USE_MODULES) && !defined(OKASSERT_PRIVATE_NO_IMPORT)
 import okl.assert;
 #endif
-#if defined(OKL_USE_STD_MODULE)
+#if defined(OKL_USE_STD_MODULE) && !defined(OKASSERT_PRIVATE_NO_IMPORT)
 import std;
 #endif
 
